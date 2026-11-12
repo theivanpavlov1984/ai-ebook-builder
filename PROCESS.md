@@ -18,7 +18,14 @@ The checklist is what I'll verify against before submitting.
 I should make and justify myself. Sent two: who the primary user is, and whether PDF is enough.
 
 **Setup.** Next.js 16 (App Router) + TypeScript + Tailwind CSS 4. No backend: AI generation
-is simulated on the client, which the brief allows.
+is simulated on the client, which the brief allows. Deployed to Vercel from day one
+(https://ai-ebook-builder-mu.vercel.app), so every push to `main` is live.
+
+**Desk research, round 1.** Claude searched the web and read competitor sites and reviews;
+I asked it to separate vendor claims from independent evidence, because marketing pages
+say "best" and "10 minutes" about everything. Output: `RESEARCH.md` – two families of tools,
+the common flow, pain points, design hypotheses. What AI can't do here: actually use the tools
+and talk to people – that's round 2, done by me.
 
 ---
 
