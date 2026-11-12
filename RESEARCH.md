@@ -60,10 +60,47 @@ Two details stand out:
    book's theme and mood.
 7. **Be honest about AI output:** nudge the user to review facts before publishing.
 
-## 5. Next steps
+## 5. Hands-on: getebook.ai (Nov 12)
 
-- [ ] Hands-on: create one book in 2 tools (e.g. getebook.ai and Inkfluence AI) – screenshots of each step,
-      time to first value, where it confused me.
+Same input I'll use in our prototype: **"Design Systems for Small Teams"** – a topic I know well,
+so I can judge the content, not just the UI.
+
+**Flow:** one text field → AI guesses the format ("How-To Guide", change if wrong) → sign-in →
+title picked automatically → outline of 10 chapters → build (checklist of steps) → pick a cover from 2 →
+preview → paywall to download. About 8 minutes from outline to finished book.
+
+**Worth keeping**
+- A single, friendly starting field with "See examples" and "Help me pick" – zero blank-page anxiety.
+- Smart default + easy override: "We think this is a How-To Guide – Not this? Change it".
+- Generation shown as a named checklist (idea → angle → outline → each chapter → layout → cover → build).
+- Outline is shown before the long build, as a checkpoint.
+
+**Where it falls short**
+| Issue | Why it matters |
+|---|---|
+| **Never asks who the book is for.** | The outline went deep into "three-tier semantic tokens from JSON to CSS" and "fluid typography scales". As a design-system practitioner I'd say that's too technical for founders and small teams – the audience was guessed, not asked. |
+| **Title is chosen for you** ("Design Systems for *Small Product* Teams"), only a "Change" link. | The user's own idea gets silently rewritten. |
+| **Outline control is all-or-nothing:** "Regenerate" the whole outline for 3 credits; no editing a single chapter. | Control means starting over. |
+| **8 minutes of ticking checkboxes.** Chapter text isn't readable until the end. | Waiting time could be reviewing time. |
+| **Both covers share one look** (dark navy, "tech" 3D or heavy type), one has the title cropped at the top, tiny unreadable labels. | Looks generated, not designed; low variety between options. |
+| **No adjustment step after generation** in the flow – editing lives in a separate "Editor" section. | No way to say "make chapter 2 simpler" in context. |
+| **Cost estimate was off:** "about 35 credits", actually spent 42 (50 → 8). | Small, but it erodes trust right before the paywall. |
+| **No share option**, download only after paying. | (The paywall is their business model; not relevant for us, but sharing is in our brief.) |
+
+**What this changes for us**
+1. Ask for the audience explicitly (the brief requires it anyway) and use it visibly in the outline.
+2. Offer several titles, keep the user's own wording as one of them.
+3. Let people edit the outline per chapter (rename, remove, reorder) before writing.
+4. Make the wait readable: show chapters as they are written.
+5. Covers: different art directions per option, never crop the title, no fake micro-text.
+6. Adjust in context after generation: per-chapter regenerate with a direction.
+
+> Note: screenshots for the deliverable must be cropped – the originals show my account details.
+
+## 6. Next steps
+
+- [x] Hands-on: getebook.ai (above)
+- [ ] Hands-on: one more tool (e.g. Inkfluence AI) – optional if time is short.
 - [ ] 3–5 short conversations with people who could use this (coaches, experts, marketers).
 - [ ] UI patterns: onboarding, multi-step creation, long-running progress, AI regeneration controls.
 
