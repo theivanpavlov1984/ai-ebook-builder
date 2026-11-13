@@ -60,7 +60,20 @@ Two details stand out:
    book's theme and mood.
 7. **Be honest about AI output:** nudge the user to review facts before publishing.
 
-## 5. Hands-on: getebook.ai (Nov 12)
+## 5. Designrr: what the problem was (Contrast case study, 2023)
+
+Contrast redesigned Designrr's onboarding and core editor (contrastux.com/work/designrr).
+The stated problem: despite powerful features, **users weren't reaching the "aha moment" fast enough,
+and many churned before completing their first project**. Result reported: +97% engagement.
+
+I couldn't get into Designrr to test it hands-on (its site leads to paid plans, and I couldn't sign in),
+so this case study and public reviews are my main sources on it.
+
+**What this means for us:** the riskiest part of an eBook tool isn't generation quality –
+it's the first minutes. Success = the user reaches a book they like before they lose patience.
+That's why the flow aims for a readable chapter in under a minute and keeps every early step optional.
+
+## 6. Hands-on: getebook.ai (Nov 12)
 
 Same input I'll use in our prototype: **"Design Systems for Small Teams"** – a topic I know well,
 so I can judge the content, not just the UI.
@@ -97,15 +110,57 @@ preview → paywall to download. About 8 minutes from outline to finished book.
 
 > Note: screenshots for the deliverable must be cropped – the originals show my account details.
 
-## 6. Next steps
+## 7. Voice of users: review and forum mining (Nov 13)
+
+Instead of interviews (no time to recruit within the deadline), I read what real users write:
+Designrr reviews on Trustpilot (positive and 1–3 star) and Reddit threads from people making
+lead-magnet eBooks (r/DigitalMarketing, r/Emailmarketing, r/GrowthHacking).
+
+*Limitation:* this is secondary research – self-selected reviewers, small forum sample, no follow-up questions.
+It shows motivations and pains, not how people would behave in our product.
+
+### Why they make a lead-magnet eBook
+- **To get emails and clients.** A life coach turning her 50+ blog posts into a free PDF "in exchange for emails";
+  a new agency writing a guide with a call-to-action to a paid audit; a sales team sharing a PDF on LinkedIn.
+- **They already have the knowledge – writing is the bottleneck.** A Designrr reviewer had wanted to write for years
+  but found the "extra fill-in words" too laborious; AI writing the connective text is what unblocked them.
+- **They want it to sound like them.** Positive reviews praise output that "sounds exactly like me";
+  the harshest one says no real author wants generated content.
+
+### What goes wrong
+- **Scope creep.** An agency founder: a planned 7–15 page guide "keeps getting longer" and they worry it hurts conversion.
+  Replies: keep it under ~20 pages, "no one is going to sit and read 15 pages usually".
+- **Fighting the editor.** "Feels like Word and isn't intuitive"; page numbers redone 10+ times;
+  images can't be placed as intended; formatting lost on import. One reviewer was still working
+  on a "2-minute" book after 4 weeks.
+- **Overpromising and upsells erode trust:** fake countdown timers, features locked behind upgrades,
+  surprise renewals. (Business-model issues, but they show how fragile trust is in this category.)
+- **Export doesn't work** where they need it (file "unsupported").
+
+### What they expect
+- **PDF is the lead-magnet format;** EPUB is for selling on Kindle (a Reddit reply makes exactly this split –
+  consistent with the stakeholder's answer).
+- **Actionable over comprehensive:** "solve an acute problem" – the format is just the vehicle.
+- **A next step inside the book:** a call-to-action to the author's paid offer.
+
+### What this changes for us
+1. **Short by default:** target 10–20 pages, show page count and reading time, and nudge when the outline grows.
+2. **Ask "what should readers do next?"** and turn the answer into the closing call-to-action page.
+3. **Keep the user's voice:** tone choice now; optionally "paste a paragraph you wrote" to match the voice (bonus idea).
+4. **No layout editing at all** – formatting is automatic, adjustments are made by intent.
+5. **Honest promises:** real time estimates, no fake urgency, the download just works.
+6. **One problem, one audience:** the Describe step pushes toward a specific, actionable topic.
+
+## 8. Next steps
 
 - [x] Hands-on: getebook.ai (above)
 - [ ] Hands-on: one more tool (e.g. Inkfluence AI) – optional if time is short.
-- [ ] 3–5 short conversations with people who could use this (coaches, experts, marketers).
+- [x] Voice of users from reviews and forums (above) – instead of interviews, given the deadline.
 - [ ] UI patterns: onboarding, multi-step creation, long-running progress, AI regeneration controls.
 
 ## Sources
 
+- Contrast UX, Designrr case study – contrastux.com/work/designrr
 - Designrr homepage – designrr.io
 - Designrr vs Canva – designrr.io/designrr-vs-canva
 - Software Advice, Designrr reviews – softwareadvice.com
@@ -116,3 +171,7 @@ preview → paywall to download. About 8 minutes from outline to finished book.
 - Piktochart AI ebook generator – piktochart.com/ai-ebook-generator
 - FlipHTML5 AI ebook generator – fliphtml5.com/ai/ai-ebook-generator
 - Google Play, "AI Ebook Generator – Create Book" reviews – play.google.com
+- Trustpilot, Designrr reviews incl. 1–3 star – trustpilot.com/review/designrr.io
+- Reddit: "Long or short PDFs as lead magnets" (r/DigitalMarketing), "Client wants an ebook"
+  (r/Emailmarketing), "Are eBooks and checklists still effective as lead magnets?" (r/GrowthHacking)
+- Designrr blog, "How long should your lead magnet ebook be" – designrr.io *(vendor content)*

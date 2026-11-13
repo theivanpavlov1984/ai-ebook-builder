@@ -27,6 +27,30 @@ say "best" and "10 minutes" about everything. Output: `RESEARCH.md` – two fami
 the common flow, pain points, design hypotheses. What AI can't do here: actually use the tools
 and talk to people – that's round 2, done by me.
 
+**Hands-on with a competitor.** I made a real book in getebook.ai with the same topic I'll use
+in the demo. This part AI couldn't do for me: Claude read my screenshots and helped structure the notes,
+but the judgment on content quality (the outline was too technical for the audience) is mine.
+
+**Flow, draft v1.** Claude drafted `FLOW.md` from the research: principles, screens, failure states,
+cover system, cuts. Each principle is tied to a research finding, so decisions aren't based on taste alone.
+To review tomorrow with fresh eyes before any design work.
+
+---
+
+## Day 2 – Fri, Nov 13: stakeholder answers, second opinion
+
+**Stakeholder answers.** Primary user: people creating a lead magnet. PDF is enough.
+This changed the flow: shorter practical books, a call-to-action page at the end,
+covers that must read as thumbnails, and EPUB moved out of scope.
+
+**Second opinion from another model.** I asked ChatGPT for references and compared its list
+with my research. Kept two ideas: a browsable gallery of real example books on the landing page
+(supports a decision I'd already made), and Reedsy as a reference for interior book typography.
+Threw away the rest: two tools are built around "I already have content", which is not our scenario –
+the brief starts from a rough idea. And a template catalog (Gamma) is the opposite of what the brief asks:
+choosing a template before content is exactly "a template with text swapped in".
+I also didn't copy its claims into research unverified – only what I opened and saw myself.
+
 ---
 
 ## Template for the next entries
