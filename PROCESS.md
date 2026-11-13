@@ -51,6 +51,18 @@ the brief starts from a rough idea. And a template catalog (Gamma) is the opposi
 choosing a template before content is exactly "a template with text swapped in".
 I also didn't copy its claims into research unverified – only what I opened and saw myself.
 
+**Visual direction.** Claude built three directions of the same screen as live HTML mockups
+(warm editorial / quiet studio / bold publisher). I picked warm editorial and took the wordmark from
+the bold one. Seeing them side by side settled in minutes what would have been a long discussion in words.
+
+**Design system.** Written as a spec first (`docs/design-system.md`), then a step-by-step build plan,
+then built test-first: 3-tier tokens in CSS variables (the same architecture I use in production),
+Tailwind mapped to the semantic tier, ~10 components, and a `/system` page.
+Where the AI's plan was wrong, I kept a record of the decision:
+- Tailwind's `--color-*` namespace would have collided with my semantic token names – renamed to `--primer-*`.
+- One planned cover palette failed contrast – a test caught it, the color was darkened.
+- A test guards against raw colors in components, so the system can't quietly drift.
+
 ---
 
 ## Template for the next entries

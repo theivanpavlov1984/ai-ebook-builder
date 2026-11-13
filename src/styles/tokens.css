@@ -1,0 +1,87 @@
+/*
+ * Primer design tokens — three tiers (docs/design-system.md §4).
+ * primitive → semantic (--primer-*) → component (--primer-<component>-*).
+ * Components never use primitives directly; Tailwind maps its theme to the semantic tier (globals.css).
+ */
+
+:root {
+  /* ── Primitives ─────────────────────────────────────────── */
+  --paper-0: #ffffff;
+  --paper-50: #fbf8f3;
+  --paper-100: #f5f0e8;
+  --paper-200: #ede6da;
+  --paper-300: #e7dfd3;
+  --paper-400: #d6cbbb;
+
+  --ink-900: #1f1b16;
+  --ink-700: #3d362e;
+  --ink-500: #7a7166;
+  --ink-400: #9a9085;
+
+  --terracotta-50: #fbf0ea;
+  --terracotta-100: #f4ded3;
+  --terracotta-300: #e2a07f;
+  --terracotta-500: #c2512c;
+  --terracotta-700: #9a3b1c;
+
+  --red-50: #fdecec;
+  --red-600: #c0262d;
+  --green-50: #eaf4ee;
+  --green-600: #2f7a4f;
+  --amber-50: #fdf4e3;
+  --amber-600: #a86a10;
+
+  /* ── Semantic ───────────────────────────────────────────── */
+  --primer-bg-canvas: var(--paper-50);
+  --primer-bg-surface: var(--paper-0);
+  --primer-bg-subtle: var(--paper-100);
+  --primer-bg-inverse: var(--ink-900);
+
+  --primer-text-primary: var(--ink-900);
+  --primer-text-secondary: var(--ink-500);
+  --primer-text-inverse: var(--paper-50);
+  --primer-text-accent: var(--terracotta-700);
+
+  --primer-border-default: var(--paper-300);
+  --primer-border-strong: var(--paper-400);
+
+  --primer-accent: var(--terracotta-500);
+  --primer-accent-subtle: var(--terracotta-100);
+  --primer-focus-ring: color-mix(in srgb, var(--terracotta-500) 35%, transparent);
+
+  --primer-danger: var(--red-600);
+  --primer-danger-subtle: var(--red-50);
+  --primer-success: var(--green-600);
+  --primer-success-subtle: var(--green-50);
+  --primer-warning: var(--amber-600);
+  --primer-warning-subtle: var(--amber-50);
+
+  /* Shadows, motion */
+  --primer-shadow-sm: 0 1px 2px color-mix(in srgb, var(--ink-900) 6%, transparent);
+  --primer-shadow-md: 0 4px 16px color-mix(in srgb, var(--ink-900) 8%, transparent);
+  --primer-shadow-book: 0 1px 2px color-mix(in srgb, var(--ink-900) 8%, transparent),
+    0 12px 28px color-mix(in srgb, var(--ink-900) 18%, transparent);
+  --primer-duration-fast: 150ms;
+  --primer-duration-base: 250ms;
+  --primer-duration-slow: 400ms;
+  --primer-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ── Component ──────────────────────────────────────────── */
+  --primer-button-primary-bg: var(--primer-bg-inverse);
+  --primer-button-primary-text: var(--primer-text-inverse);
+  --primer-input-border: var(--primer-border-default);
+  --primer-input-border-focus: var(--primer-accent);
+  --primer-chip-selected-bg: var(--primer-bg-inverse);
+}
+
+/* Reduced motion: drop movement, keep opacity fades. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-property: opacity !important;
+    scroll-behavior: auto !important;
+  }
+}
