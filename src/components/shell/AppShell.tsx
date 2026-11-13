@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { focusRing } from "@/components/ui/Button";
+import { DemoControls } from "./DemoControls";
+import { OfflineBanner } from "./OfflineBanner";
 
 export function Wordmark({ className }: { className?: string }) {
   return (
@@ -45,8 +47,14 @@ export function AppShell({ active, children }: { active: "new" | "books"; childr
             );
           })}
         </nav>
+        <div className="mt-auto">
+          <DemoControls />
+        </div>
       </aside>
-      <main className="min-w-0 flex-1">{children}</main>
+      <main className="min-w-0 flex-1">
+        <OfflineBanner />
+        {children}
+      </main>
     </div>
   );
 }
