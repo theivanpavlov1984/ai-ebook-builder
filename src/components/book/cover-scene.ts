@@ -30,8 +30,26 @@ export type CoverScene = {
     tight: boolean;
   };
   author?: TextBlock;
-  subtitle?: TextBlock;
+  subtitle?: { lines: string[]; x: number; y: number; lineGap: number; size: number; color: string; opacity: number };
 };
+
+const SUBTITLE_SIZE = 8;
+const SUBTITLE_GAP = 10;
+/** ~0.5 em average glyph width at 8 px inside the 168 px safe area. */
+const SUBTITLE_CHARS = 42;
+
+/** Up to two lines; a longer subtitle ends with an ellipsis on the second line. */
+function wrapSubtitle(subtitle: string): string[] {
+  const lines = wrap(subtitle, SUBTITLE_CHARS);
+  if (lines.length <= 2) return lines;
+  let second = "";
+  for (const word of lines.slice(1).join(" ").split(" ")) {
+    const next = second ? `${second} ${word}` : word;
+    if (next.length > SUBTITLE_CHARS - 1) break;
+    second = next;
+  }
+  return [lines[0], `${second}…`];
+}
 
 type TitleStyle = { font: FontRole; base: number; min: number; weight: number; charWidth: number; lineHeight: number };
 
@@ -137,7 +155,8 @@ export function coverScene(
   const lineGap = size * style.lineHeight;
   const typographic = design.direction === "typographic";
   const subtitle = opts?.subtitle?.trim();
-  const subtitleSpace = subtitle ? 26 : 0;
+  const subLines = subtitle ? wrapSubtitle(subtitle) : [];
+  const subtitleSpace = subLines.length ? 16 + subLines.length * SUBTITLE_GAP : 0;
   const y = typographic ? PAD + 30 + size : H - PAD - subtitleSpace - (lines.length - 1) * lineGap;
   const ink = design.palette.ink;
 
@@ -148,8 +167,16 @@ export function coverScene(
     shapes: art(design),
     title: { lines, x: PAD, y, size, lineGap, font: style.font, weight: style.weight, color: ink, tight: typographic },
     author: opts?.author?.trim() ? { text: opts.author.trim(), x: PAD, y: PAD + 8, size: 7, color: ink } : undefined,
-    subtitle: subtitle
-      ? { text: subtitle.length > 60 ? `${subtitle.slice(0, 57)}…` : subtitle, x: PAD, y: H - PAD, size: 8, color: ink, opacity: 0.8 }
+    subtitle: subLines.length
+      ? {
+          lines: subLines,
+          x: PAD,
+          y: H - PAD - (subLines.length - 1) * SUBTITLE_GAP,
+          lineGap: SUBTITLE_GAP,
+          size: SUBTITLE_SIZE,
+          color: ink,
+          opacity: 0.8,
+        }
       : undefined,
   };
 }

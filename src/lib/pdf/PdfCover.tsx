@@ -50,7 +50,11 @@ export function PdfCover({ scene, width, height, fonts }: { scene: CoverScene; w
           fillOpacity={scene.subtitle.opacity}
           style={{ fontFamily: family("ui", fonts), fontSize: scene.subtitle.size }}
         >
-          {scene.subtitle.text}
+          {scene.subtitle.lines.map((line, i) => (
+            <Tspan key={i} x={scene.subtitle!.x} y={scene.subtitle!.y + i * scene.subtitle!.lineGap}>
+              {line}
+            </Tspan>
+          ))}
         </Text>
       )}
     </Svg>

@@ -26,6 +26,23 @@ describe("coverScene", () => {
     expect(s.shapes.length).toBeGreaterThan(0);
   });
 
+  it("wraps a long subtitle onto two lines that fit the cover", () => {
+    const sub = "A practical guide for founders and product teams of 3–10 people";
+    const s = coverScene(getCoverDesign({ title: TITLE, mood: "practical" }), TITLE, { subtitle: sub });
+    expect(s.subtitle!.lines.length).toBe(2);
+    expect(s.subtitle!.lines.join(" ")).toBe(sub);
+    for (const line of s.subtitle!.lines) expect(line.length).toBeLessThanOrEqual(42);
+  });
+
+  it("keeps a short subtitle on one line and trims a very long one with an ellipsis", () => {
+    const d = getCoverDesign({ title: TITLE, mood: "practical" });
+    expect(coverScene(d, TITLE, { subtitle: "A practical guide" }).subtitle!.lines).toEqual(["A practical guide"]);
+    const long = coverScene(d, TITLE, { subtitle: "word ".repeat(40).trim() }).subtitle!.lines;
+    expect(long).toHaveLength(2);
+    expect(long[1].endsWith("…")).toBe(true);
+    expect(long[1].length).toBeLessThanOrEqual(42);
+  });
+
   it("includes author and subtitle only when given", () => {
     const d = getCoverDesign({ title: TITLE, mood: "practical" });
     expect(coverScene(d, TITLE).author).toBeUndefined();

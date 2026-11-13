@@ -77,7 +77,11 @@ export function Cover({
           fontSize={scene.subtitle.size}
           style={{ fontFamily: fontFamily.ui }}
         >
-          {scene.subtitle.text}
+          {scene.subtitle.lines.map((line, i) => (
+            <tspan key={i} x={scene.subtitle!.x} dy={i === 0 ? 0 : scene.subtitle!.lineGap}>
+              {line}
+            </tspan>
+          ))}
         </text>
       )}
     </svg>
