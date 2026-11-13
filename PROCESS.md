@@ -65,6 +65,31 @@ Where the AI's plan was wrong, I kept a record of the decision:
 
 ---
 
+## Day 3 – Sat, Nov 14: building the flow
+
+**Build decisions first, then a plan.** Before code, I wrote down the few build choices a reviewer would
+notice (`docs/product-build.md`). The one real trade-off – a real PDF file vs the browser's print dialog –
+was my call: a real file, because the brief says "download" and a print dialog reads as a workaround.
+
+**Test-first, with AI writing most of the code.** Each step of the flow was built against tests written
+before the code – including the cases most likely to break in a review: refreshing mid-generation,
+a reviewer's own topic, a cut share link, changing the topic after the outline exists, undoing rewrites.
+
+**Where AI was wrong, and how we caught it:**
+- The first demo chapter came out ~600 words against a 700–900 target; the content test failed and it was expanded.
+- A test for the cover fallback was set up with the wrong starting style – the test was wrong, not the code.
+- Next.js 16's prerendering rejected reading the book id outside a Suspense boundary – fixed with a route layout.
+- Rasterizing the generated PDF showed chapter titles overlapping their summaries in the contents –
+  invisible in unit tests, fixed after looking at the actual pages.
+- A cover thumbnail rendered 3× too large because two width classes fought each other – spotted in the browser.
+
+**Comparing with Contrast's own work.** Looking at the Designrr redesign screens, two things stood out:
+the single big prompt on the start screen (we'd made the same call) and a book landing page with an email form.
+Our share page was only a reader, so I turned it into a lead-magnet landing page – it's what the user
+actually needs the book for.
+
+---
+
 ## Template for the next entries
 
 **What I asked AI** –

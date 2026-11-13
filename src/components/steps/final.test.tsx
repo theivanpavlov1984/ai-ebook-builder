@@ -118,12 +118,35 @@ describe("SharedPage", () => {
     expect(screen.getByText(/this link looks incomplete/i)).toBeInTheDocument();
   });
 
-  it("renders the shared book", () => {
+  function openLanding() {
     const id = newBook();
     window.location.hash = `#${encodeBook(st().books[id])}`;
-    render(<SharedPage />);
+    render(<SharedPage subscribeMs={0} download={vi.fn().mockResolvedValue(undefined)} />);
+  }
+
+  it("is a lead-magnet landing page: cover, pitch and an email form – content locked", () => {
+    openLanding();
     expect(screen.getByRole("heading", { level: 1, name: "Bread Before Breakfast" })).toBeInTheDocument();
-    expect(screen.getByText("Paragraph two of 3.")).toBeInTheDocument();
+    expect(screen.getByText("Chapter title 2")).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.queryByText("Paragraph two of 3.")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /made with primer/i })).toBeInTheDocument();
+  });
+
+  it("asks for a valid email", async () => {
+    openLanding();
+    await userEvent.type(screen.getByLabelText(/email/i), "not-an-email");
+    await userEvent.click(screen.getByRole("button", { name: /get the ebook/i }));
+    expect(screen.getByText(/enter a valid email/i)).toBeInTheDocument();
+    expect(screen.queryByText("Paragraph two of 3.")).not.toBeInTheDocument();
+  });
+
+  it("unlocks the book and the PDF after a valid email", async () => {
+    openLanding();
+    await userEvent.type(screen.getByLabelText(/email/i), "reader@example.com");
+    await userEvent.click(screen.getByRole("button", { name: /get the ebook/i }));
+    expect(await screen.findByText("Paragraph two of 3.")).toBeInTheDocument();
+    expect(screen.getByText(/it's yours/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /download pdf/i })).toBeInTheDocument();
   });
 });

@@ -1,17 +1,24 @@
 "use client";
 
+import { Check, Download } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { bookDesign } from "@/components/book/BookPanel";
 import { Cover } from "@/components/book/Cover";
 import { Wordmark } from "@/components/shell/AppShell";
-import { focusRing } from "@/components/ui/Button";
+import { Button, focusRing } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Field";
 import { ctaText } from "@/lib/ai/generate";
+import { simulate } from "@/lib/ai/simulate";
 import type { Book } from "@/lib/book/types";
 import { cn } from "@/lib/cn";
+import { downloadPdf } from "@/lib/pdf/download";
 import { decodeBook } from "@/lib/share";
 
-export function SharedPage() {
+type Download = (book: Book) => Promise<void>;
+type Props = { subscribeMs?: number; download?: Download };
+
+export function SharedPage({ subscribeMs = 700, download = downloadPdf }: Props) {
   const [state, setState] = useState<{ status: "loading" } | { status: "invalid" } | { status: "ok"; book: Book }>({
     status: "loading",
   });
@@ -41,37 +48,123 @@ export function SharedPage() {
       </main>
     );
   }
-  return <SharedBook book={state.book} />;
+  return <LeadLanding book={state.book} subscribeMs={subscribeMs} download={download} />;
 }
 
-export function SharedBook({ book }: { book: Book }) {
-  const cta = ctaText(book);
-  return (
-    <main className="mx-auto max-w-[680px] px-6 py-16">
-      <header className="flex flex-col items-center gap-6 text-center">
-        <Cover design={bookDesign(book)} title={book.title} subtitle={book.subtitle} author={book.author} size="lg" />
-        <div>
-          <h1 className="font-display text-3xl font-medium">{book.title}</h1>
-          {book.subtitle && <p className="mt-2 text-md text-secondary">{book.subtitle}</p>}
-          <p className="mt-2 text-sm text-secondary">by {book.author}</p>
-        </div>
-      </header>
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-      <nav aria-label="Contents" className="mt-14 border-y border-default py-6">
-        <p className="text-xs font-medium tracking-wider text-secondary uppercase">Contents</p>
-        <ol className="mt-3 flex flex-col gap-2">
+/** The share link is a lead-magnet landing page: readers leave an email to get the book. */
+function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs: number; download: Download }) {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState<string>();
+  const [status, setStatus] = useState<"idle" | "sending" | "unlocked">("idle");
+  const [downloading, setDownloading] = useState(false);
+  const pitch = book.subtitle || book.chapters[0]?.summary || "";
+
+  async function submit(e: FormEvent) {
+    e.preventDefault();
+    if (!EMAIL.test(email.trim())) {
+      setError("Enter a valid email so we can send you the book.");
+      return;
+    }
+    setError(undefined);
+    setStatus("sending");
+    try {
+      await simulate("subscribe", () => null, { ms: subscribeMs });
+      setStatus("unlocked");
+    } catch {
+      setStatus("idle");
+      setError("Something went wrong on our side – please try again.");
+    }
+  }
+
+  async function onDownload() {
+    setDownloading(true);
+    try {
+      await download(book);
+    } finally {
+      setDownloading(false);
+    }
+  }
+
+  return (
+    <main className="mx-auto max-w-[1040px] px-8 py-14">
+      <section className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-14">
+        <Cover design={bookDesign(book)} title={book.title} subtitle={book.subtitle} author={book.author} size="none" className="w-72" />
+        <div>
+          <p className="text-xs font-medium tracking-wider text-accent-strong uppercase">Free eBook</p>
+          <h1 className="mt-2 font-display text-3xl font-medium">{book.title}</h1>
+          {pitch && <p className="mt-3 text-md text-secondary">{pitch}</p>}
+          <p className="mt-2 text-sm text-secondary">by {book.author}</p>
+
+          {status === "unlocked" ? (
+            <div role="status" className="mt-8 flex flex-col items-start gap-4 rounded-lg border border-default bg-surface p-5">
+              <p className="flex items-center gap-2 font-medium">
+                <Check aria-hidden className="size-4 text-success" /> It&apos;s yours – start reading below, or take the PDF with you.
+              </p>
+              <Button onClick={() => void onDownload()} loading={downloading} icon={<Download aria-hidden className="size-4" />}>
+                Download PDF
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="mt-8 flex flex-col gap-3" noValidate>
+              <div className="flex items-start gap-3">
+                <div className="flex-1">
+                  <Input
+                    label="Email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (error) setError(undefined);
+                    }}
+                    error={error}
+                  />
+                </div>
+                <Button type="submit" loading={status === "sending"} className="mt-[26px]">
+                  Get the eBook
+                </Button>
+              </div>
+              <p className="text-xs text-secondary">Free, instant access. Prototype: your email isn’t sent or stored anywhere.</p>
+            </form>
+          )}
+        </div>
+      </section>
+
+      <section className="mt-16 border-t border-default pt-10">
+        <h2 className="font-display text-xl font-medium">What you’ll learn</h2>
+        <ol className="mt-5 grid grid-cols-2 gap-x-10 gap-y-5">
           {book.chapters.map((c, i) => (
-            <li key={c.id}>
-              <a href={`#ch-${i + 1}`} onClick={(e) => { e.preventDefault(); document.getElementById(`ch-${i + 1}`)?.scrollIntoView({ behavior: "smooth" }); }} className={cn("rounded-sm font-display text-md hover:text-accent-strong", focusRing)}>
-                {i + 1}. {c.title}
-              </a>
+            <li key={c.id} className="flex gap-3">
+              <span className="font-display text-lg text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <p className="font-display text-md font-medium">{c.title}</p>
+                <p className="text-sm text-secondary">{c.summary}</p>
+              </div>
             </li>
           ))}
         </ol>
-      </nav>
+      </section>
 
+      {status === "unlocked" && <Reader book={book} />}
+
+      <footer className="mt-16 flex justify-center">
+        <Link href="/" className={cn("rounded-sm text-sm text-secondary hover:text-primary", focusRing)}>
+          Made with Primer – make your own book
+        </Link>
+      </footer>
+    </main>
+  );
+}
+
+function Reader({ book }: { book: Book }) {
+  const cta = ctaText(book);
+  return (
+    <article className="mx-auto mt-16 max-w-[680px]">
       {book.chapters.map((c, i) => (
-        <section key={c.id} id={`ch-${i + 1}`} className="mt-14">
+        <section key={c.id} id={`ch-${i + 1}`} className="mt-14 first:mt-0">
           <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {i + 1}</p>
           <h2 className="mt-1 font-display text-2xl font-medium">{c.title}</h2>
           <div className="mt-5 flex flex-col gap-4 font-display text-reader">
@@ -83,7 +176,6 @@ export function SharedBook({ book }: { book: Book }) {
           </div>
         </section>
       ))}
-
       <section className="mt-16 rounded-lg border-l-4 border-accent bg-surface p-8">
         <p className="text-xs font-medium tracking-wider text-secondary uppercase">{cta.heading}</p>
         {cta.body.split("\n\n").map((p, i) => (
@@ -92,12 +184,6 @@ export function SharedBook({ book }: { book: Book }) {
           </p>
         ))}
       </section>
-
-      <footer className="mt-16 flex justify-center">
-        <Link href="/" className={cn("rounded-sm text-sm text-secondary hover:text-primary", focusRing)}>
-          Made with Primer – make your own book
-        </Link>
-      </footer>
-    </main>
+    </article>
   );
 }

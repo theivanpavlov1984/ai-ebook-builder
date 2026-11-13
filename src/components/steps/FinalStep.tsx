@@ -147,13 +147,16 @@ function Final({ id, download }: { id: string; download: Download }) {
               <Button variant="secondary" onClick={() => void onCopy()} icon={<Link2 aria-hidden className="size-4" />}>
                 Copy share link
               </Button>
+              <p className="text-xs text-secondary">
+                The link opens a landing page for your book – readers leave their email to get it.
+              </p>
               <label className="sr-only" htmlFor="share-link">
                 Share link
               </label>
               <input id="share-link" readOnly value={link} onFocus={(e) => e.currentTarget.select()} className={cn("h-9 w-full truncate rounded-md border border-default bg-canvas px-3 text-xs text-secondary", focusRing)} />
               {link && (
                 <a href={link} target="_blank" rel="noreferrer" className={cn("inline-flex items-center gap-1.5 self-start rounded-sm text-sm text-accent-strong", focusRing)}>
-                  Open the reader page <ExternalLink aria-hidden className="size-3.5" />
+                  Open the landing page <ExternalLink aria-hidden className="size-3.5" />
                 </a>
               )}
             </div>

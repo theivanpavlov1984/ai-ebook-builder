@@ -19,7 +19,9 @@ and they've never made a book.
   (website, booking link, newsletter) – generated with the rest, editable.
 - **The cover has to sell in a thumbnail:** it'll live on landing pages and social posts,
   so the title must read at small sizes.
-- **Bonus idea:** the share page doubles as a simple landing page for the book.
+- **Built (bonus):** the share link opens a lead-magnet landing page – cover, pitch, "What you'll learn"
+  and an email form; the book and the PDF unlock after a valid email. Email sending is simulated.
+  Contrast's own Designrr work ends in exactly this kind of page – it's where a lead magnet earns its keep.
 
 **What they fear:** a blank page, a result that looks cheap or obviously AI-made, losing their work,
 and a tool that's harder to learn than the book is to write.
