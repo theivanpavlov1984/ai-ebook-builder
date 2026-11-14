@@ -75,24 +75,25 @@ ink-900       text-primary  input-border-focus
 
 ### 4.2 Color – semantic
 
-| Token                        | Maps to               | Use                                           |
-| ---------------------------- | --------------------- | --------------------------------------------- |
-| `bg-canvas`                  | paper-50              | Page background                               |
-| `bg-surface`                 | paper-0               | Cards, inputs, panels                         |
-| `bg-subtle`                  | paper-100             | Sidebar, side panels, hover                   |
-| `bg-inverse`                 | ink-900               | Primary button, selected chip                 |
-| `text-primary`               | ink-900               | Body and headings                             |
-| `text-secondary`             | ink-500               | Hints, meta                                   |
-| `text-inverse`               | paper-50              | On dark                                       |
-| `text-accent`                | terracotta-700        | Links, active nav                             |
-| `border-default`             | paper-300             | Inputs, cards, dividers                       |
-| `border-strong`              | paper-400             | Hover borders                                 |
-| `accent`                     | terracotta-500        | Active step, focus, brand details             |
-| `accent-subtle`              | terracotta-100        | Active nav background, highlights             |
-| `focus-ring`                 | terracotta-500 at 35% | Focus outline                                 |
-| `danger` / `danger-subtle`   | red-600 / red-50      | Errors                                        |
-| `success` / `success-subtle` | green-600 / green-50  | Done states                                   |
-| `warning` / `warning-subtle` | amber-600 / amber-50  | Soft nudges (e.g. "the book is getting long") |
+| Token                        | Maps to                    | Use                                           |
+| ---------------------------- | -------------------------- | --------------------------------------------- |
+| `bg-canvas`                  | paper-50                   | Page background                               |
+| `bg-surface`                 | paper-0                    | Cards, inputs, panels                         |
+| `bg-subtle`                  | paper-100                  | Sidebar, side panels, hover                   |
+| `bg-inverse`                 | ink-900                    | Primary button, selected chip                 |
+| `text-primary`               | ink-900                    | Body and headings                             |
+| `text-secondary`             | ink-500                    | Hints, meta                                   |
+| `text-inverse`               | paper-50                   | On dark                                       |
+| `text-accent`                | terracotta-700             | Links, active nav                             |
+| `border-default`             | paper-300                  | Inputs, cards, dividers                       |
+| `border-strong`              | paper-400                  | Hover borders                                 |
+| `accent`                     | terracotta-500             | Active step, focus, brand details             |
+| `accent-subtle`              | terracotta-100             | Active nav background, highlights             |
+| `focus-ring`                 | terracotta-500 at 35%      | Focus outline                                 |
+| `danger` / `danger-subtle`   | red-600 / red-50           | Errors                                        |
+| `success` / `success-subtle` | green-600 / green-50       | Done states                                   |
+| `warning` / `warning-subtle` | amber-600 / amber-50       | Soft nudges (e.g. "the book is getting long") |
+| `glow-warm` / `glow-deep`    | peach-200 / terracotta-300 | Soft light behind the landing hero only       |
 
 **Rules**
 
@@ -103,11 +104,11 @@ ink-900       text-primary  input-border-focus
 
 ### 4.3 Typography
 
-| Role           | Font                          | Use                                                                     |
-| -------------- | ----------------------------- | ----------------------------------------------------------------------- |
-| `font-display` | **Newsreader** (500)          | Screen headlines, book titles in UI, chapter text in the reader and PDF |
-| `font-ui`      | **Geist** (400 / 500 / 600)   | Everything else in the interface                                        |
-| `font-brand`   | **Bricolage Grotesque** (800) | The wordmark only                                                       |
+| Role           | Font                                | Use                                                                     |
+| -------------- | ----------------------------------- | ----------------------------------------------------------------------- |
+| `font-display` | **Newsreader** (500)                | Screen headlines, book titles in UI, chapter text in the reader and PDF |
+| `font-ui`      | **Geist** (400 / 500 / 600)         | Everything else in the interface                                        |
+| `font-brand`   | **Bricolage Grotesque** (800 / 700) | The wordmark (800); landing headings (700)                              |
 
 Scale (size / line height, px):
 
@@ -120,7 +121,8 @@ Scale (size / line height, px):
 | `text-lg`     | 20 / 28 | Display | Section titles          |
 | `text-xl`     | 28 / 34 | Display | Panel titles            |
 | `text-2xl`    | 36 / 42 | Display | Screen headlines        |
-| `text-3xl`    | 48 / 52 | Display | Home headline           |
+| `text-3xl`    | 48 / 52 | Display | Large statements        |
+| `text-hero`   | 70 / 71 | Brand   | Landing headline, −2.5% |
 | `reader-body` | 18 / 30 | Display | Chapter text            |
 
 ### 4.4 Spacing, radius, elevation, motion
@@ -128,7 +130,8 @@ Scale (size / line height, px):
 - **Spacing:** 4 px base – 4, 8, 12, 16, 20, 24, 32, 40, 48, 64.
 - **Radius:** `sm` 6 · `md` 10 · `lg` 16 · `full` (chips, pills).
 - **Shadows:** `sm` `0 1px 2px rgba(31,27,22,.06)` · `md` `0 4px 16px rgba(31,27,22,.08)` ·
-  `book` `0 1px 2px rgba(0,0,0,.08), 0 12px 28px rgba(31,27,22,.18)` (covers only).
+  `book` `0 1px 2px rgba(0,0,0,.08), 0 12px 28px rgba(31,27,22,.18)` (covers only) ·
+  `hero` – a soft terracotta-tinted lift for the landing prompt card.
 - **Motion:** `fast` 150 ms · `base` 250 ms · `slow` 400 ms, easing `cubic-bezier(.2,.8,.2,1)`.
   With `prefers-reduced-motion`, movement is removed and only opacity changes remain.
 

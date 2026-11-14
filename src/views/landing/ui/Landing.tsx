@@ -1,11 +1,10 @@
 "use client";
 
-import { Library } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { ProgressList, Wordmark, focusRing } from "@/shared/ui";
+import { ChipGroup, ProgressList, Wordmark, focusRing } from "@/shared/ui";
 import { cn } from "@/shared/lib";
-import { ContinueCard } from "@/entities/book";
+import { ContinueCard, type Mood } from "@/entities/book";
 import { ExampleShelf } from "@/widgets/example-shelf";
 import { LivePreview } from "@/widgets/live-preview";
 import { StartForm } from "@/features/start-book";
@@ -67,50 +66,94 @@ const steps = [
   },
 ];
 
+const tones: { value: Mood; label: string }[] = [
+  { value: "practical", label: "Practical" },
+  { value: "inspiring", label: "Inspiring" },
+  { value: "calm", label: "Calm" },
+  { value: "bold", label: "Bold" },
+  { value: "playful", label: "Playful" },
+];
+
+/** Move to the hero and put the cursor in the topic field. */
+function focusStart() {
+  setTimeout(() => document.querySelector<HTMLTextAreaElement>("#start textarea")?.focus(), 300);
+}
+
+const navLink = cn("rounded-sm text-base text-secondary hover:text-primary", focusRing);
+
 export function Landing() {
   const [topic, setTopic] = useState("");
+  const [mood, setMood] = useState<Mood>("practical");
 
   return (
-    <div className="min-h-screen bg-canvas">
-      <header className="mx-auto flex max-w-[1160px] items-center justify-between px-8 py-6">
+    <div className="relative min-h-screen bg-canvas">
+      {/* Soft warm light behind the hero – decoration only. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[1080px] overflow-hidden">
+        <div className="absolute top-36 -left-64 h-[820px] w-[640px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-warm),transparent)] opacity-85 blur-3xl" />
+        <div className="absolute top-4 -right-60 h-[860px] w-[680px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-deep),transparent)] opacity-60 blur-3xl" />
+        <div className="absolute top-[420px] left-1/2 h-[420px] w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent-subtle),transparent)] blur-2xl" />
+      </div>
+
+      <header className="relative mx-auto flex max-w-[1280px] items-center justify-between px-16 py-5">
         <Link href="/" aria-label="Primer home" className={cn("rounded-sm", focusRing)}>
-          <Wordmark />
+          <Wordmark className="text-2xl" />
         </Link>
-        <Link
-          href="/books"
+        <nav aria-label="Main" className="flex items-center gap-9">
+          <a href="#how" className={navLink}>
+            How it works
+          </a>
+          <a href="#examples" className={navLink}>
+            Examples
+          </a>
+          <Link href="/books" className={navLink}>
+            My books
+          </Link>
+        </nav>
+        <a
+          href="#start"
+          onClick={focusStart}
           className={cn(
-            "flex items-center gap-2 rounded-md px-3 py-2 text-base text-secondary hover:text-primary",
+            "inline-flex h-10 items-center rounded-full bg-inverse px-5 text-base font-medium text-on-inverse hover:opacity-90",
             focusRing,
           )}
         >
-          <Library aria-hidden className="size-4" /> My books
-        </Link>
+          Start my book
+        </a>
       </header>
 
       <main>
-        <section
-          id="start"
-          className="mx-auto grid max-w-[1160px] grid-cols-[minmax(0,1fr)_420px] items-center gap-20 px-8 pt-10 pb-24"
-        >
-          <div className="flex max-w-[600px] flex-col gap-7">
-            <h1 className="font-display text-[64px] leading-[1.02] font-medium tracking-[-0.01em]">
-              Turn what you know into a free eBook
-            </h1>
-            <p className="text-md text-secondary">
-              For coaches, experts and creators who want more subscribers. Write one sentence – Primer writes the
-              chapters, designs the cover and gives you a PDF and a sign-up page. About five minutes, no writing skills
-              needed.
-            </p>
-            <StartForm value={topic} onValueChange={setTopic} />
-            <p className="text-sm text-secondary">Free, no sign-up.</p>
+        <section id="start" className="relative flex flex-col items-center px-8 pt-6 pb-16 text-center">
+          <p className="inline-flex h-8 items-center gap-2 rounded-full border border-default bg-surface/60 px-3.5 text-sm text-secondary">
+            <span aria-hidden className="size-1.5 rounded-full bg-accent" />
+            Lead-magnet eBooks for coaches, experts and creators
+          </p>
+          <h1 className="mt-5 max-w-[780px] font-brand text-hero font-bold">Turn what you know into a free eBook</h1>
+          <p className="mt-5 max-w-[620px] text-lg text-secondary">
+            Write one sentence. Primer writes the chapters, designs the cover and gives you a PDF and a sign-up page –
+            in about five minutes.
+          </p>
+          <div className="mt-7 mb-3">
+            <ChipGroup
+              label="Tone"
+              options={tones}
+              mode="single"
+              value={mood}
+              onChange={setMood}
+              appearance="segmented"
+            />
+          </div>
+          <StartForm value={topic} onValueChange={setTopic} mood={mood} />
+          <div className="mt-4 w-full max-w-[760px] text-left empty:hidden">
             <ContinueCard />
           </div>
-          <LivePreview topic={topic} />
+          <div className="mt-7">
+            <LivePreview topic={topic} mood={mood} />
+          </div>
         </section>
 
         <section aria-labelledby="how" className="border-y border-default bg-surface">
           <div className="mx-auto max-w-[1160px] px-8 py-20">
-            <h2 id="how" className="font-display text-2xl font-medium">
+            <h2 id="how" className="font-brand text-2xl font-bold tracking-tight">
               How it works
             </h2>
             <ol className="mt-12 grid grid-cols-3 gap-12">
@@ -132,7 +175,7 @@ export function Landing() {
           aria-labelledby="gets"
           className="mx-auto grid max-w-[1160px] grid-cols-[320px_minmax(0,1fr)] gap-16 px-8 py-20"
         >
-          <h2 id="gets" className="font-display text-2xl font-medium">
+          <h2 id="gets" className="font-brand text-2xl font-bold tracking-tight">
             What you get
           </h2>
           <dl className="grid grid-cols-2 gap-x-12">
@@ -148,7 +191,7 @@ export function Landing() {
         <section aria-labelledby="examples" className="bg-subtle">
           <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-16 px-8 py-20">
             <div className="max-w-[360px]">
-              <h2 id="examples" className="font-display text-2xl font-medium">
+              <h2 id="examples" className="font-brand text-2xl font-bold tracking-tight">
                 See real examples
               </h2>
               <p className="mt-3 text-base text-secondary">
@@ -160,7 +203,7 @@ export function Landing() {
         </section>
 
         <section className="mx-auto flex max-w-[1160px] flex-col items-start gap-6 px-8 py-24">
-          <p className="max-w-[720px] font-display text-3xl leading-tight font-medium">
+          <p className="max-w-[720px] font-brand text-3xl leading-tight font-bold tracking-tight">
             You already know enough to fill a book. It takes about five minutes to prove it.
           </p>
           <a

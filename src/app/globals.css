@@ -21,6 +21,8 @@
   --color-strong: var(--primer-border-strong);
   --color-accent: var(--primer-accent);
   --color-accent-subtle: var(--primer-accent-subtle);
+  --color-glow-warm: var(--primer-glow-warm);
+  --color-glow-deep: var(--primer-glow-deep);
   --color-focus: var(--primer-focus-ring);
   --color-danger: var(--primer-danger);
   --color-danger-subtle: var(--primer-danger-subtle);
@@ -51,6 +53,9 @@
   --text-2xl--line-height: 2.625rem;
   --text-3xl: 3rem;
   --text-3xl--line-height: 3.25rem;
+  --text-hero: 4.375rem;
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.025em;
   --text-reader: 1.125rem;
   --text-reader--line-height: 1.875rem;
 
@@ -63,6 +68,7 @@
   --shadow-sm: var(--primer-shadow-sm);
   --shadow-md: var(--primer-shadow-md);
   --shadow-book: var(--primer-shadow-book);
+  --shadow-hero: var(--primer-shadow-hero);
 
   --ease-standard: var(--primer-ease);
 }

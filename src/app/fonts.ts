@@ -16,10 +16,10 @@ export const geist = Geist({
   display: "swap",
 });
 
-/** Wordmark only. */
+/** Wordmark (800) and landing headings (700). */
 export const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: "800",
+  weight: ["700", "800"],
   variable: "--font-bricolage",
   display: "swap",
 });

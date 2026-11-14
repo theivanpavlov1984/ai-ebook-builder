@@ -35,8 +35,26 @@ export function Chip({
 
 type Option<T extends string> = { value: T; label: string };
 
+/** `segmented`: one pill track, the chosen option raised – for a compact choice like tone. Single mode only. */
+type Appearance = "chips" | "segmented";
+
+const segmentBase = cn(
+  "inline-flex h-8 items-center rounded-full border border-transparent px-3.5 text-sm whitespace-nowrap",
+  "transition-[background-color,color,box-shadow] duration-150 ease-standard",
+  focusRing,
+);
+const segmentOff = "text-secondary hover:text-primary";
+const segmentOn = "bg-surface text-primary shadow-sm";
+
 type ChipGroupProps<T extends string> =
-  | { label: string; options: Option<T>[]; mode: "single"; value: T; onChange: (v: T) => void }
+  | {
+      label: string;
+      options: Option<T>[];
+      mode: "single";
+      value: T;
+      onChange: (v: T) => void;
+      appearance?: Appearance;
+    }
   | { label: string; options: Option<T>[]; mode: "multi"; value: T[]; onChange: (v: T[]) => void };
 
 export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
@@ -63,7 +81,8 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
     );
   }
 
-  const { value, onChange } = props;
+  const { value, onChange, appearance = "chips" } = props;
+  const segmented = appearance === "segmented";
   const selectedIndex = Math.max(
     0,
     options.findIndex((o) => o.value === value),
@@ -86,7 +105,13 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
   }
 
   return (
-    <div role="radiogroup" aria-label={label} className="flex flex-wrap gap-2">
+    <div
+      role="radiogroup"
+      aria-label={label}
+      className={
+        segmented ? "inline-flex gap-0.5 rounded-full border border-default bg-subtle/85 p-1" : "flex flex-wrap gap-2"
+      }
+    >
       {options.map((o, i) => {
         const on = o.value === value;
         return (
@@ -101,7 +126,7 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
             tabIndex={i === selectedIndex ? 0 : -1}
             onClick={() => onChange(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            className={cn(chipBase, on ? chipOn : chipOff)}
+            className={segmented ? cn(segmentBase, on ? segmentOn : segmentOff) : cn(chipBase, on ? chipOn : chipOff)}
           >
             {o.label}
           </button>

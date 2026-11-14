@@ -43,15 +43,23 @@ describe("Landing", () => {
     expect(within(preview).getByText(/example/i)).toBeInTheDocument();
     await userEvent.type(screen.getByLabelText(/what's your book about/i), "Sourdough baking for busy parents");
     expect(await within(preview).findByRole("img", { name: /Sourdough Baking for Busy Parents/ })).toBeInTheDocument();
-    expect(within(preview).getAllByRole("listitem").length).toBeGreaterThanOrEqual(3);
   });
 
-  it("'Try another style' changes the cover style", async () => {
+  it("the tone sets the style of the visitor's cover and is saved on the new book", async () => {
     render(<Landing />);
     const preview = screen.getByRole("region", { name: /preview/i });
-    const before = preview.querySelector("svg[data-direction]")!.getAttribute("data-direction");
-    await userEvent.click(within(preview).getByRole("button", { name: /try another style/i }));
-    expect(preview.querySelector("svg[data-direction]")!.getAttribute("data-direction")).not.toBe(before);
+    // Example covers around it are decorative; the visitor's cover is the only image the preview exposes.
+    const yours = () => within(preview).getByRole("img").getAttribute("data-direction");
+    expect(within(preview).getByRole("img")).toHaveAccessibleName(/Morning Routines for Remote Workers/);
+    expect(yours()).toBe("editorial");
+    await userEvent.click(screen.getByRole("radio", { name: "Bold" }));
+    expect(yours()).toBe("typographic");
+
+    await userEvent.type(screen.getByLabelText(/what's your book about/i), "Sourdough baking for busy parents");
+    await userEvent.click(screen.getAllByRole("button", { name: /start my book/i })[0]);
+    const [book] = Object.values(useBooks.getState().books);
+    expect(book.mood).toBe("bold");
+    expect(book.cover.direction).toBe("typographic");
   });
 
   it("example books open a real sample you can read", () => {

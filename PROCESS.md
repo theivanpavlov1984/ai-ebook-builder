@@ -122,6 +122,18 @@ fills an empty audience itself – a third button would only repeat them. During
 browser that fought with the `<title>` Next.js renders from metadata and left the next page with an empty title.
 Rendering React's `<title>` didn't help either – Next's element comes first in `<head>`, so the browser ignored ours.
 The fix: put our own `<title>` element before Next's for the time of the Build step and remove it on leaving.
+It still failed on Vercel: in a production build React moves the metadata `<title>` back to the top after navigation.
+Our element now stays first by watching `<head>` and moving only itself.
+
+**Landing hero, from a moodboard.** The old hero read as a generic AI template, so I collected five landing pages
+in Doop (getebook.ai, Inkfluence, Squibler, Jet Admin, Lovable) next to ours and commented on what to take.
+Jet Admin's centered prompt card won – Primer is "one field" at heart. AI drew two variants in Doop with that
+layout: our warm palette and Jet's blue-lavender one. I picked warm: the cool one looks like every other AI tool
+and fights the book covers. Headings moved to Bricolage Grotesque – the wordmark's face – at 700, not 800, because
+Inkfluence, a direct competitor, uses exactly Bricolage 800. The tone switch above the field is real: it restyles
+the visitor's cover live and is saved on the new book. AI's first build broke silently: `weight: "700 800"` is not
+valid for this font in `next/font`, the dev server kept serving stale CSS, and the headline rendered at 14 px;
+a production build showed the classes were fine and a dev-server restart fixed it.
 
 ---
 
