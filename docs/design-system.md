@@ -104,11 +104,11 @@ ink-900       text-primary  input-border-focus
 
 ### 4.3 Typography
 
-| Role           | Font                                | Use                                                                     |
-| -------------- | ----------------------------------- | ----------------------------------------------------------------------- |
-| `font-display` | **Newsreader** (500)                | Screen headlines, book titles in UI, chapter text in the reader and PDF |
-| `font-ui`      | **Geist** (400 / 500 / 600)         | Everything else in the interface                                        |
-| `font-brand`   | **Bricolage Grotesque** (800 / 700) | The wordmark (800); landing headings (700)                              |
+| Role           | Font                                | Use                                                                      |
+| -------------- | ----------------------------------- | ------------------------------------------------------------------------ |
+| `font-display` | **Newsreader** (500)                | The book itself: book and chapter titles, chapter text, PDF, shared page |
+| `font-ui`      | **Geist** (400 / 500 / 600)         | Everything else in the interface                                         |
+| `font-brand`   | **Bricolage Grotesque** (800 / 700) | The wordmark (800); interface headings (700, tight tracking)             |
 
 Scale (size / line height, px):
 
@@ -118,12 +118,14 @@ Scale (size / line height, px):
 | `text-sm`     | 13 / 20 | UI      | Secondary UI text       |
 | `text-base`   | 14 / 22 | UI      | Default UI text         |
 | `text-md`     | 16 / 24 | UI      | Inputs, emphasized body |
-| `text-lg`     | 20 / 28 | Display | Section titles          |
-| `text-xl`     | 28 / 34 | Display | Panel titles            |
-| `text-2xl`    | 36 / 42 | Display | Screen headlines        |
-| `text-3xl`    | 48 / 52 | Display | Large statements        |
+| `text-lg`     | 20 / 28 | Either  | Section, book titles    |
+| `text-xl`     | 28 / 34 | Either  | Panel titles            |
+| `text-2xl`    | 36 / 42 | Brand   | Screen headlines        |
+| `text-3xl`    | 48 / 52 | Brand   | Large statements        |
 | `text-hero`   | 70 / 71 | Brand   | Landing headline, −2.5% |
 | `reader-body` | 18 / 30 | Display | Chapter text            |
+
+**Rule:** the interface speaks in a grotesk (Bricolage headings, Geist text); the book speaks in a serif. Anything the reader of the book will see – titles, chapters, the shared page – stays in Newsreader, so the product feels modern and the book still feels like a book.
 
 ### 4.4 Spacing, radius, elevation, motion
 

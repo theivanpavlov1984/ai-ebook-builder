@@ -76,7 +76,7 @@ function Final({ id, download }: { id: string; download: Download }) {
         <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={5} />
         <div className="grid grid-cols-[minmax(0,1fr)_340px] gap-12">
           <section aria-label="Preview">
-            <h1 className="font-display text-2xl font-medium">Your book is ready to share</h1>
+            <h1 className="font-brand text-2xl font-bold tracking-tight">Your book is ready to share</h1>
             <p className="mt-2 text-md text-secondary">
               {book.chapters.length} chapters · ~{pages} pages · {minutes}-minute read
             </p>

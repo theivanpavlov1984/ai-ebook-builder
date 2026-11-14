@@ -9,7 +9,7 @@ export function NotFound() {
   return (
     <AppShell active="new">
       <div className="mx-auto flex max-w-xl flex-col items-start gap-4 px-10 py-24">
-        <h1 className="font-display text-2xl font-medium">We couldn’t find this book</h1>
+        <h1 className="font-brand text-2xl font-bold tracking-tight">We couldn’t find this book</h1>
         <p className="text-md text-secondary">
           Books are saved in this browser. If you started it on another device or cleared your browser data, it won’t be
           here.

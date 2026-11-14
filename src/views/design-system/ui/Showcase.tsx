@@ -36,12 +36,16 @@ const colors = [
 ];
 
 const type = [
-  { name: "text-3xl · display", cls: "font-display text-3xl font-medium", sample: "Turn what you know into a book" },
-  { name: "text-2xl · display", cls: "font-display text-2xl font-medium", sample: "What's your book about?" },
-  { name: "text-xl · display", cls: "font-display text-xl font-medium", sample: "Your outline" },
-  { name: "text-lg · display", cls: "font-display text-lg font-medium", sample: "Chapter 1 — Start with an audit" },
+  { name: "text-hero · brand", cls: "font-brand text-hero font-bold", sample: "Turn what you know" },
+  { name: "text-2xl · brand", cls: "font-brand text-2xl font-bold tracking-tight", sample: "Tell us about your book" },
+  { name: "text-xl · brand", cls: "font-brand text-xl font-bold tracking-tight", sample: "Your outline" },
   {
-    name: "reader · display",
+    name: "text-lg · display (book)",
+    cls: "font-display text-lg font-medium",
+    sample: "Chapter 1 — Start with an audit",
+  },
+  {
+    name: "reader · display (book)",
     cls: "font-display text-reader",
     sample: "A design system is a shared language. Start small.",
   },
@@ -58,7 +62,7 @@ const directions: ArtDirection[] = ["editorial", "geometric", "organic", "typogr
 function Section({ title, note, children }: { title: string; note?: string; children: ReactNode }) {
   return (
     <section className="border-t border-default py-10">
-      <h2 className="font-display text-xl font-medium">{title}</h2>
+      <h2 className="font-brand text-xl font-bold tracking-tight">{title}</h2>
       {note && <p className="mt-1 max-w-2xl text-base text-secondary">{note}</p>}
       <div className="mt-6">{children}</div>
     </section>
@@ -76,10 +80,11 @@ export function Showcase() {
     <div className="mx-auto max-w-5xl px-10 py-12">
       <header className="pb-10">
         <Wordmark className="text-[40px]" />
-        <h1 className="mt-6 font-display text-3xl font-medium">Design system</h1>
+        <h1 className="mt-6 font-brand text-3xl font-bold tracking-tight">Design system</h1>
         <p className="mt-2 max-w-2xl text-md text-secondary">
-          Warm editorial: paper tones, ink text, one terracotta accent, serif headlines. Tokens in three tiers —
-          primitive → semantic → component. Everything on this page is built from them.
+          Warm editorial: paper tones, ink text, one terracotta accent. Grotesk headlines in the interface, a serif for
+          the book itself. Tokens in three tiers — primitive → semantic → component. Everything on this page is built
+          from them.
         </p>
       </header>
 

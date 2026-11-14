@@ -40,7 +40,7 @@ export function ContinueCard() {
       <Cover design={bookDesign(latest)} title={title} size="none" className="w-12" />
       <div className="flex-1">
         <p className="text-xs text-secondary">{stageLabel[latest.stage]} · saved on this device</p>
-        <p className="font-display text-md font-medium">Continue “{title}”</p>
+        <p className="font-brand text-md font-bold tracking-tight">Continue “{title}”</p>
       </div>
       <ArrowRight aria-hidden className="size-4 text-secondary" />
     </Link>

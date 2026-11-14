@@ -19,7 +19,7 @@ const gets = [
 /** Small, inert pieces of the real interface – showing each step instead of describing it. */
 function MiniInput() {
   return (
-    <div aria-hidden className="rounded-md border border-default bg-surface px-3 py-2.5 font-display text-md">
+    <div aria-hidden className="rounded-md border border-default bg-surface px-3 py-2.5 text-md">
       Calm mornings for busy founders
       <span className="ml-0.5 inline-block h-4 w-px animate-pulse bg-accent align-middle" />
     </div>
@@ -159,8 +159,8 @@ export function Landing() {
             <ol className="mt-12 grid grid-cols-3 gap-12">
               {steps.map(({ title, text, Visual }, i) => (
                 <li key={title} className="flex flex-col gap-4">
-                  <span className="font-display text-3xl leading-none text-accent">{i + 1}</span>
-                  <p className="font-display text-xl font-medium">{title}</p>
+                  <span className="font-brand text-3xl leading-none font-bold text-accent">{i + 1}</span>
+                  <p className="font-brand text-xl font-bold tracking-tight">{title}</p>
                   <p className="text-base text-secondary">{text}</p>
                   <div className="mt-2">
                     <Visual />
@@ -181,7 +181,7 @@ export function Landing() {
           <dl className="grid grid-cols-2 gap-x-12">
             {gets.map(([title, text]) => (
               <div key={title} className="border-t border-default py-6">
-                <dt className="font-display text-lg font-medium">{title}</dt>
+                <dt className="font-brand text-lg font-bold tracking-tight">{title}</dt>
                 <dd className="mt-1 text-base text-secondary">{text}</dd>
               </div>
             ))}

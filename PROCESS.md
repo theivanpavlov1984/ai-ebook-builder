@@ -134,6 +134,7 @@ Inkfluence, a direct competitor, uses exactly Bricolage 800. The tone switch abo
 the visitor's cover live and is saved on the new book. AI's first build broke silently: `weight: "700 800"` is not
 valid for this font in `next/font`, the dev server kept serving stale CSS, and the headline rendered at 14 px;
 a production build showed the classes were fine and a dev-server restart fixed it.
+Then the same headings across the app: screen, dialog and empty-state titles moved to Bricolage, while everything the book's reader sees – book and chapter titles, chapter text, the shared page – stays in the Newsreader serif.
 
 ---
 

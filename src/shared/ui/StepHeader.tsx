@@ -26,7 +26,7 @@ export function StepHeader({
           <ArrowLeft aria-hidden className="size-3.5" /> {back.label}
         </Link>
       )}
-      <h1 className="font-display text-2xl font-medium">{title}</h1>
+      <h1 className="font-brand text-2xl font-bold tracking-tight">{title}</h1>
       {intro && <p className="mt-2 text-md text-secondary">{intro}</p>}
     </header>
   );

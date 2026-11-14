@@ -30,7 +30,9 @@ export function Dialog({
           className="fixed top-1/2 left-1/2 z-50 w-[min(480px,calc(100vw-48px))] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-surface p-6 shadow-md"
         >
           <div className="flex items-start justify-between gap-4">
-            <DialogPrimitive.Title className="font-display text-xl font-medium">{title}</DialogPrimitive.Title>
+            <DialogPrimitive.Title className="font-brand text-xl font-bold tracking-tight">
+              {title}
+            </DialogPrimitive.Title>
             <DialogPrimitive.Close
               aria-label="Close"
               className={cn("rounded-sm p-1 text-secondary hover:text-primary", focusRing)}

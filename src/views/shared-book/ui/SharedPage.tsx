@@ -32,7 +32,7 @@ export function SharedPage({ subscribeMs = 700, download = downloadPdf }: Props)
     return (
       <main className="mx-auto flex max-w-xl flex-col items-start gap-4 px-6 py-24">
         <Wordmark />
-        <h1 className="mt-6 font-display text-2xl font-medium">This link looks incomplete</h1>
+        <h1 className="mt-6 font-brand text-2xl font-bold tracking-tight">This link looks incomplete</h1>
         <p className="text-md text-secondary">
           Shared books live entirely inside the link. If it was cut off when it was copied or pasted, ask the author to
           send it again.

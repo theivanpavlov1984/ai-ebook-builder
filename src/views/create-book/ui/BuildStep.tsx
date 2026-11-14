@@ -165,7 +165,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
           </>
         ) : (
           <div className="flex h-full min-h-[300px] flex-col items-center justify-center gap-2 text-center">
-            <p className="font-display text-xl font-medium">Your first chapter is on its way</p>
+            <p className="font-brand text-xl font-bold tracking-tight">Your first chapter is on its way</p>
             <p className="text-base text-secondary">It will appear here as it&rsquo;s written.</p>
           </div>
         )}

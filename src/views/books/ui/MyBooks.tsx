@@ -17,7 +17,7 @@ export function MyBooks() {
   if (list.length === 0) {
     return (
       <div className="flex flex-col items-start gap-4 rounded-lg border border-dashed border-strong p-10">
-        <p className="font-display text-xl font-medium">No books yet</p>
+        <p className="font-brand text-xl font-bold tracking-tight">No books yet</p>
         <p className="text-base text-secondary">Your first one takes about five minutes.</p>
         <Link
           href="/"
