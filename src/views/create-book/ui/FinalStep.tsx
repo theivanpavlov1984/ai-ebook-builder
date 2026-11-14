@@ -72,7 +72,7 @@ function Final({ id, download }: { id: string; download: Download }) {
 
   return (
     <AppShell active="new">
-      <div className="mx-auto flex max-w-[1180px] flex-col gap-10 px-10 py-8">
+      <div className="mx-auto flex max-w-[1080px] flex-col gap-10 px-10 py-8">
         <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={5} />
         <div className="grid grid-cols-[minmax(0,1fr)_340px] gap-12">
           <section aria-label="Preview">

@@ -11,6 +11,13 @@ describe("Stepper", () => {
     expect(screen.getByText("Build").closest("li")).not.toHaveAttribute("aria-current");
   });
 
+  it("keeps every step the same shape, so finishing a step doesn't shift the row", () => {
+    const { container } = render(<Stepper steps={["Describe", "Title", "Outline"]} current={1} />);
+    const markers = [...container.querySelectorAll("li")].map((li) => li.querySelector("[data-marker]"));
+    expect(markers.every(Boolean)).toBe(true);
+    expect(markers[2]).toHaveTextContent("3");
+  });
+
   it("is a labelled list", () => {
     render(<Stepper steps={["Describe", "Title"]} current={0} />);
     expect(screen.getByRole("list", { name: /progress/i })).toBeInTheDocument();

@@ -9,8 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  // scrollbar-gutter: stable keeps room for the scrollbar, so pages don't shift sideways when they grow taller.
   return (
-    <html lang="en" className={`${newsreader.variable} ${geist.variable} ${bricolage.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${newsreader.variable} ${geist.variable} ${bricolage.variable} h-full [scrollbar-gutter:stable] antialiased`}
+    >
       <body className="min-h-full bg-canvas font-ui text-base text-primary">
         <ToastProvider>{children}</ToastProvider>
       </body>
