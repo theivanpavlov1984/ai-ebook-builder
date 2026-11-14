@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { directionsForMood, useBooks, type Chapter } from "@/entities/book";
 import { ToastProvider } from "@/shared/ui";
 import { setFailures } from "@/shared/api";
-import { BuildStep, type Timing } from "./BuildStep";
+import { BuildStep, buildTabTitle, type Timing } from "./BuildStep";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }), usePathname: () => "/" }));
@@ -48,7 +48,25 @@ const allDone = (id: string) => {
   return b.chapters.every((c) => c.status === "done") && b.cover.status === "done";
 };
 
+describe("buildTabTitle", () => {
+  it("counts chapters, then the cover, then says the book is ready", () => {
+    expect(buildTabTitle(0, 6, false)).toBe("Writing 1 of 6 · Primer");
+    expect(buildTabTitle(2, 6, false)).toBe("Writing 3 of 6 · Primer");
+    expect(buildTabTitle(6, 6, false)).toBe("Designing the cover · Primer");
+    expect(buildTabTitle(6, 6, true)).toBe("✓ Your book is ready · Primer");
+  });
+});
+
 describe("BuildStep", () => {
+  it("shows progress in the tab title and restores it on leaving", async () => {
+    document.title = "Primer";
+    const id = newBook();
+    const { unmount } = wrap(<BuildStep id={id} timing={fast} />);
+    await waitFor(() => expect(document.title).toBe("✓ Your book is ready · Primer"));
+    unmount();
+    expect(document.title).toBe("Primer");
+  });
+
   it("writes every chapter and the cover, then offers the review", async () => {
     const id = newBook();
     wrap(<BuildStep id={id} timing={fast} />);

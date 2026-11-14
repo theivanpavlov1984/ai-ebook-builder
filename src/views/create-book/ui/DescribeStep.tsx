@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { Sparkles, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { CreationLayout, NotFound } from "@/widgets/layout";
@@ -15,6 +15,8 @@ import {
   forwardStage,
 } from "@/entities/book";
 import { Button, Chip, ChipGroup, Dialog, Input, Textarea, useToast, SectionLabel, StepHeader } from "@/shared/ui";
+import { simulate } from "@/shared/api";
+import { fastTrack } from "../model/fastTrack";
 
 const moods: { value: Mood; label: string }[] = [
   { value: "practical", label: "Practical" },
@@ -43,6 +45,7 @@ function DescribeForm({ id }: { id: string }) {
   const [topicSuggestions, setTopicSuggestions] = useState<string[]>([]);
   const [audienceError, setAudienceError] = useState<string>();
   const [confirmRedraft, setConfirmRedraft] = useState(false);
+  const [writing, setWriting] = useState(false);
 
   const audiences = suggestAudiences(book.topic);
 
@@ -57,6 +60,25 @@ function DescribeForm({ id }: { id: string }) {
     }
     updateBook(id, { stage: forwardStage(useBooks.getState().books[id], "title") });
     router.push(`/book/${id}/title`);
+  }
+
+  async function writeNow() {
+    const check = validateTopic(book.topic);
+    setTopicError(check.ok ? undefined : check.message);
+    setTopicSuggestions(check.ok ? [] : check.suggestions);
+    if (!check.ok) return;
+
+    const redraft = book.chapters.length > 0 && book.topic.trim() !== initialTopic.current.trim();
+    setWriting(true);
+    try {
+      const current = useBooks.getState().books[id];
+      const picks = await simulate("outline", () => fastTrack(current, { redraft }), { ms: 600 });
+      updateBook(id, { ...picks, stage: forwardStage(current, "build") }, { snapshot: redraft });
+      router.push(`/book/${id}/build`);
+    } catch {
+      setWriting(false);
+      show({ tone: "error", message: "Couldn’t draft the outline. Try again, or continue step by step." });
+    }
   }
 
   function submit() {
@@ -182,8 +204,25 @@ function DescribeForm({ id }: { id: string }) {
           autoGrow
         />
 
-        <div>
-          <Button type="submit">Continue</Button>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button type="submit" disabled={writing}>
+              Continue
+            </Button>
+            <Button
+              variant="secondary"
+              loading={writing}
+              icon={<Zap aria-hidden className="size-4 text-accent" />}
+              onClick={() => void writeNow()}
+            >
+              Write it now
+            </Button>
+          </div>
+          <p className="text-sm text-secondary">
+            In a hurry? “Write it now” skips the title and outline steps and uses our suggestions
+            {book.audience.trim() ? "" : ", including who it’s for"}. You can rename the book and rewrite any chapter
+            later.
+          </p>
         </div>
       </form>
 

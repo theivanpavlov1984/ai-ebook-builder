@@ -13,8 +13,8 @@ import {
   type Chapter,
   useBook,
   forwardStage,
-  newChapterId,
 } from "@/entities/book";
+import { toChapter } from "../model/fastTrack";
 import { simulate } from "@/shared/api";
 import { cn } from "@/shared/lib";
 
@@ -27,15 +27,6 @@ export function OutlineStep({ id }: { id: string }) {
   if (!hydrated || !book) return null;
   return <OutlineEditor id={id} />;
 }
-
-const toChapter = (c: { title: string; summary: string }): Chapter => ({
-  id: newChapterId(),
-  title: c.title,
-  summary: c.summary,
-  body: [],
-  status: "idle",
-  versions: [],
-});
 
 function OutlineEditor({ id }: { id: string }) {
   const router = useRouter();

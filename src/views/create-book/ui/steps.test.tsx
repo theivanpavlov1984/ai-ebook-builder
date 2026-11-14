@@ -58,6 +58,47 @@ describe("DescribeStep", () => {
     expect(push).toHaveBeenCalledWith(`/book/${id}/title`);
   });
 
+  it("'Write it now' picks the audience, title and outline, then goes straight to Build", async () => {
+    const id = newBook({ audience: "" });
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /write it now/i }));
+    await waitFor(() => expect(push).toHaveBeenCalledWith(`/book/${id}/build`));
+    const b = st().books[id];
+    expect(b.audience).not.toBe("");
+    expect(b.title).toBe("Sourdough Baking for Busy Parents");
+    expect(b.chapters.length).toBeGreaterThanOrEqual(3);
+    expect(b.chapters.every((c) => c.status === "idle")).toBe(true);
+    expect(b.stage).toBe("build");
+  });
+
+  it("'Write it now' keeps what the user already chose", async () => {
+    const id = newBook({ title: "Bread Before Breakfast", chapters: chapters(4) });
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /write it now/i }));
+    await waitFor(() => expect(push).toHaveBeenCalled());
+    const b = st().books[id];
+    expect(b.audience).toBe("Parents with full-time jobs");
+    expect(b.title).toBe("Bread Before Breakfast");
+    expect(b.chapters.map((c) => c.id)).toEqual(["c1", "c2", "c3", "c4"]);
+  });
+
+  it("'Write it now' still needs a real topic", async () => {
+    const id = newBook();
+    st().updateBook(id, { topic: "" });
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /write it now/i }));
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("'Write it now' explains a failed outline and stays on the page", async () => {
+    setFailures(["outline"]);
+    const id = newBook();
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /write it now/i }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/couldn.t draft the outline/i);
+    expect(push).not.toHaveBeenCalled();
+  });
+
   it("suggested audiences fill the field", async () => {
     const id = newBook({ audience: "" });
     wrap(<DescribeStep id={id} />);

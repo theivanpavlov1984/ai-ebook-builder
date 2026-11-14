@@ -114,6 +114,15 @@ Keep or Discard decides. The text only changes on Keep, so Undo and versions wor
 AI proposed a "Try again" button too; I dropped it – the simulated rewrite is deterministic, so it would return the same
 text and look broken. "Rewrite again" with another direction does the honest version of it.
 
+**Fast path and tab progress.** The other two changes from the references. "Write it now" on the Describe step skips
+Title and Outline with the defaults they would suggest – Gamma's "Express" idea. I didn't add a separate
+"Decide for me" button: the audience chips already are one-click decisions, tone has a default, and "Write it now"
+fills an empty audience itself – a third button would only repeat them. During Build the tab title counts
+"Writing 3 of 6" and ends with "✓ Your book is ready". AI's first version set `document.title` directly; in the
+browser that fought with the `<title>` Next.js renders from metadata and left the next page with an empty title.
+Rendering React's `<title>` didn't help either – Next's element comes first in `<head>`, so the browser ignored ours.
+The fix: put our own `<title>` element before Next's for the time of the Build step and remove it on leaving.
+
 ---
 
 ## Template for the next entries

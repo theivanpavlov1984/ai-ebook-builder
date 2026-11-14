@@ -81,6 +81,9 @@ Three short questions on one screen:
   whole point of a lead magnet.
 - Validation is a conversation, not an error: too short or too vague → a clarifying question with chips
   ("Design systems – for which team: startups, agencies, enterprise?").
+- **Fast path – "Write it now":** next to Continue. It skips Title and Outline and uses the defaults those steps
+  would suggest (the user's own wording as the title, the drafted outline, the first suggested audience if the field
+  is empty), then goes straight to Build. Only the topic is required. The guided path stays the default.
 
 ### 2. Title
 
@@ -108,6 +111,8 @@ Not a spinner – the book is assembled in front of the user:
   The cover fades in from a sketch to the final design.
 - **Top:** honest progress ("Writing chapter 3 of 8 · about 40 seconds left").
 - The user can read chapter 1 while the rest is being written.
+- **The tab title shows progress** ("Writing 3 of 6 · Primer" → "✓ Your book is ready · Primer"),
+  so a user who switches tabs knows when to come back.
 - Simulated timing: ~45–60 seconds in total – realistic, but short enough for a demo.
 
 ### 5. Review & adjust ("the studio")

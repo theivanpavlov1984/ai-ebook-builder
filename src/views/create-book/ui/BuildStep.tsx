@@ -2,7 +2,7 @@
 
 import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { bookDesign, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { ProgressList, Button, focusRing, StepHeader } from "@/shared/ui";
@@ -11,6 +11,12 @@ import { cn } from "@/shared/lib";
 import { defaultTiming, useGeneration, type Timing } from "../model/useGeneration";
 
 export type { Timing };
+
+export function buildTabTitle(finished: number, total: number, done: boolean): string {
+  if (done) return "✓ Your book is ready · Primer";
+  if (total > 0 && finished >= total) return "Designing the cover · Primer";
+  return `Writing ${Math.min(finished + 1, Math.max(total, 1))} of ${total} · Primer`;
+}
 
 export function BuildStep({ id, timing = defaultTiming }: { id: string; timing?: Timing }) {
   const { book, hydrated, notFound } = useBook(id);
@@ -32,6 +38,24 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
   }, []);
 
   const finished = book.chapters.filter((c) => c.status === "done");
+  // Progress in the tab title, so a user who switches tabs knows when to come back.
+  // The browser shows the first <title> in <head>. Next.js renders the page title from metadata,
+  // so we put our own element in front of it and remove it on leaving – Next's element is never touched.
+  const tabTitle = buildTabTitle(finished.length, book.chapters.length, done);
+  const titleEl = useRef<HTMLTitleElement | null>(null);
+  useEffect(() => {
+    const el = document.createElement("title");
+    document.head.prepend(el);
+    titleEl.current = el;
+    return () => {
+      el.remove();
+      titleEl.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (titleEl.current) titleEl.current.textContent = tabTitle;
+  }, [tabTitle]);
+
   const shownId = viewing ?? streaming?.id ?? finished.at(-1)?.id;
   const shown = book.chapters.find((c) => c.id === shownId);
   const shownIndex = book.chapters.findIndex((c) => c.id === shownId);
