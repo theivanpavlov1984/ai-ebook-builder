@@ -6,14 +6,18 @@ import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { Textarea } from "@/components/ui/Field";
+import { exampleTopics } from "@/lib/ai/content/templates";
 import { shapeIdea } from "@/lib/ai/generate";
 import { validateTopic } from "@/lib/ai/validate";
 import { useBooks } from "@/lib/book/store";
 
-export function StartForm() {
+/** Works on its own, or controlled (`value` + `onValueChange`) when a parent previews the topic live. */
+export function StartForm({ value, onValueChange }: { value?: string; onValueChange?: (v: string) => void } = {}) {
   const router = useRouter();
   const createBook = useBooks((s) => s.createBook);
-  const [topic, setTopic] = useState("");
+  const [inner, setInner] = useState("");
+  const topic = value ?? inner;
+  const setTopic = (v: string) => (onValueChange ? onValueChange(v) : setInner(v));
   const [error, setError] = useState<string>();
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -57,7 +61,7 @@ export function StartForm() {
         autoGrow
         className="text-lg"
       />
-      {suggestions.length > 0 && (
+      {suggestions.length > 0 ? (
         <div className="flex flex-wrap gap-2" aria-label="Suggestions">
           {suggestions.map((s) => (
             <Chip key={s} onToggle={() => choose(s)}>
@@ -65,10 +69,21 @@ export function StartForm() {
             </Chip>
           ))}
         </div>
+      ) : (
+        !topic.trim() && (
+          <div role="group" aria-label="Try an example" className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-secondary">Try an example:</span>
+            {exampleTopics.map((s) => (
+              <Chip key={s} onToggle={() => choose(s)}>
+                {s}
+              </Chip>
+            ))}
+          </div>
+        )
       )}
       <div className="flex items-center gap-3">
         <Button type="submit" icon={<ArrowRight aria-hidden className="size-4" />} className="flex-row-reverse">
-          Start your book
+          Start my book
         </Button>
         <Button
           variant="ghost"

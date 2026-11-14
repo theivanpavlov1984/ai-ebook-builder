@@ -17,7 +17,7 @@ describe("StartForm", () => {
   it("creates a book and opens the Describe step for a valid topic", async () => {
     render(<StartForm />);
     await userEvent.type(screen.getByLabelText(/what's your book about/i), "Morning routines for remote workers");
-    await userEvent.click(screen.getByRole("button", { name: /start your book/i }));
+    await userEvent.click(screen.getByRole("button", { name: /start my book/i }));
     const [id] = Object.keys(useBooks.getState().books);
     expect(useBooks.getState().books[id].topic).toBe("Morning routines for remote workers");
     expect(push).toHaveBeenCalledWith(`/book/${id}/describe`);
@@ -26,7 +26,7 @@ describe("StartForm", () => {
   it("explains an invalid topic, offers suggestions and does not navigate", async () => {
     render(<StartForm />);
     await userEvent.type(screen.getByLabelText(/what's your book about/i), "marketing");
-    await userEvent.click(screen.getByRole("button", { name: /start your book/i }));
+    await userEvent.click(screen.getByRole("button", { name: /start my book/i }));
     expect(screen.getByText(/let's narrow it down/i)).toBeInTheDocument();
     expect(push).not.toHaveBeenCalled();
     await userEvent.click(screen.getByRole("button", { name: "Email marketing for solo founders" }));
