@@ -45,9 +45,16 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
   const titleEl = useRef<HTMLTitleElement | null>(null);
   useEffect(() => {
     const el = document.createElement("title");
-    document.head.prepend(el);
+    const keepFirst = () => {
+      if (document.head.querySelector("title") !== el) document.head.prepend(el);
+    };
+    keepFirst();
+    // React may re-insert the metadata <title> at the top of <head> after navigation; stay in front of it.
+    const observer = new MutationObserver(keepFirst);
+    observer.observe(document.head, { childList: true });
     titleEl.current = el;
     return () => {
+      observer.disconnect();
       el.remove();
       titleEl.current = null;
     };

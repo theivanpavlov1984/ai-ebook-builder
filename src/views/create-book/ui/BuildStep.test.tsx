@@ -63,6 +63,10 @@ describe("BuildStep", () => {
     const id = newBook();
     const { unmount } = wrap(<BuildStep id={id} timing={fast} />);
     await waitFor(() => expect(document.title).toBe("✓ Your book is ready · Primer"));
+    // The framework's own <title> moving back to the top must not win.
+    const framework = document.head.querySelector("title:not(:first-of-type)") as HTMLTitleElement;
+    document.head.prepend(framework);
+    await waitFor(() => expect(document.title).toBe("✓ Your book is ready · Primer"));
     unmount();
     expect(document.title).toBe("Primer");
   });
