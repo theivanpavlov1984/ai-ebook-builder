@@ -20,10 +20,11 @@ const stageLabel = {
 
 export function ContinueCard() {
   const hydrated = useHydrated();
-  const latest = useBooks((s) =>
-    Object.values(s.books)
-      .filter((b) => !b.finalizedAt)
-      .sort((a, b) => b.updatedAt - a.updatedAt)[0],
+  const latest = useBooks(
+    (s) =>
+      Object.values(s.books)
+        .filter((b) => !b.finalizedAt)
+        .sort((a, b) => b.updatedAt - a.updatedAt)[0],
   );
   if (!hydrated || !latest) return null;
   const title = latest.title || latest.topic;

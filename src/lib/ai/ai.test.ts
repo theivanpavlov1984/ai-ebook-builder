@@ -3,7 +3,11 @@ import { ctaText, draftOutline, shapeIdea, suggestAudiences, suggestTitles, writ
 import { failuresFromUrl, setFailures, simulate, streamParagraphs, SimulatedFailure } from "./simulate";
 import { validateTopic } from "./validate";
 
-const custom = { topic: "Sourdough baking for busy parents", audience: "Parents with full-time jobs", mood: "calm" as const };
+const custom = {
+  topic: "Sourdough baking for busy parents",
+  audience: "Parents with full-time jobs",
+  mood: "calm" as const,
+};
 const words = (p: string[]) => p.join(" ").split(/\s+/).length;
 
 describe("validateTopic", () => {
@@ -101,9 +105,9 @@ describe("generation", () => {
   });
 
   it("ctaText uses the author's call to action when given", () => {
-    expect(ctaText({ cta: "Book a free 20-minute call at example.com", author: "Ivan Pavlov", title: "X" }).body).toMatch(
-      /Book a free 20-minute call/,
-    );
+    expect(
+      ctaText({ cta: "Book a free 20-minute call at example.com", author: "Ivan Pavlov", title: "X" }).body,
+    ).toMatch(/Book a free 20-minute call/);
     expect(ctaText({ cta: "", author: "Ivan Pavlov", title: "X" }).heading.length).toBeGreaterThan(0);
   });
 });

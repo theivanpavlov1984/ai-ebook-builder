@@ -10,10 +10,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${newsreader.variable} ${geist.variable} ${bricolage.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${newsreader.variable} ${geist.variable} ${bricolage.variable} h-full antialiased`}>
       <body className="min-h-full bg-canvas font-ui text-base text-primary">
         <ToastProvider>{children}</ToastProvider>
       </body>

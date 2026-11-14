@@ -83,7 +83,14 @@ export function decodeBook(hash: string): Book | null {
     title: p.t,
     subtitle: p.s,
     author: p.a,
-    chapters: p.ch.map(([title, summary, body], i) => ({ id: `s${i}`, title, summary, body, status: "done", versions: [] })),
+    chapters: p.ch.map(([title, summary, body], i) => ({
+      id: `s${i}`,
+      title,
+      summary,
+      body,
+      status: "done",
+      versions: [],
+    })),
     cover: { direction: p.c[0], variant: p.c[1], status: "done" },
   };
 }

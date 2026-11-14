@@ -35,7 +35,12 @@ export function DemoControls() {
           <div className="mt-2 flex flex-col gap-1.5">
             {toggles.map((t) => (
               <label key={t.key} className="flex cursor-pointer items-center gap-2 text-sm">
-                <input type="checkbox" checked={active.includes(t.key)} onChange={() => toggle(t.key)} className="size-4 accent-accent" />
+                <input
+                  type="checkbox"
+                  checked={active.includes(t.key)}
+                  onChange={() => toggle(t.key)}
+                  className="size-4 accent-accent"
+                />
                 {t.label}
               </label>
             ))}
@@ -49,7 +54,10 @@ export function DemoControls() {
           setActive(activeFailures());
           setOpen(!open);
         }}
-        className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-xs text-secondary hover:bg-surface hover:text-primary", focusRing)}
+        className={cn(
+          "flex items-center gap-2 rounded-md px-3 py-2 text-xs text-secondary hover:bg-surface hover:text-primary",
+          focusRing,
+        )}
       >
         <FlaskConical aria-hidden className="size-3.5" />
         Demo controls

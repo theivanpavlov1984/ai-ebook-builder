@@ -5,7 +5,8 @@ export type PdfFonts = "embedded" | "standard";
 
 /** Font family per role. "standard" uses built-in PDF fonts (no network) – used in tests. */
 export function family(role: FontRole, fonts: PdfFonts): string {
-  if (fonts === "standard") return role === "display" ? "Times-Roman" : role === "brand" ? "Helvetica-Bold" : "Helvetica";
+  if (fonts === "standard")
+    return role === "display" ? "Times-Roman" : role === "brand" ? "Helvetica-Bold" : "Helvetica";
   return role === "display" ? "Newsreader" : role === "brand" ? "Bricolage" : "Geist";
 }
 
@@ -30,7 +31,10 @@ export function registerPdfFonts(baseUrl: string): void {
       { src: f("geist-latin-600-normal.woff"), fontWeight: 600 },
     ],
   });
-  Font.register({ family: "Bricolage", fonts: [{ src: f("bricolage-grotesque-latin-800-normal.woff"), fontWeight: 800 }] });
+  Font.register({
+    family: "Bricolage",
+    fonts: [{ src: f("bricolage-grotesque-latin-800-normal.woff"), fontWeight: 800 }],
+  });
   // Keep words whole – no automatic hyphenation in a lead magnet.
   Font.registerHyphenationCallback((word) => [word]);
   registered = true;

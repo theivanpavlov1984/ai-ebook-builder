@@ -26,7 +26,12 @@ export function activeFailures(): string[] {
 
 export function failuresFromUrl(search: string): string[] {
   const raw = new URLSearchParams(search).get("fail");
-  return raw ? raw.split(",").map((s) => s.trim()).filter(Boolean) : [];
+  return raw
+    ? raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
 }
 
 function shouldFail(key: string): boolean {

@@ -11,9 +11,10 @@ Typically an expert, coach or creator who wants a short, useful non-fiction guid
 in exchange for an email. They know their subject, but they are not writers or designers,
 and they've never made a book.
 
-**Their job:** *"Turn what I know into something that looks professional, fast enough that I actually finish it."*
+**Their job:** _"Turn what I know into something that looks professional, fast enough that I actually finish it."_
 
 **What "lead magnet" changes:**
+
 - **Short and practical:** 6–8 chapters, ~15–25 pages, actionable – not a novel.
 - **The book has a goal beyond reading:** a closing page with the author's call to action
   (website, booking link, newsletter) – generated with the rest, editable.
@@ -49,27 +50,30 @@ A persistent **book card** stays visible through steps 1–3: it fills in as the
 Steps are shown in a simple progress bar; the user can go back to any completed step without losing data.
 
 ### 0. Home (inside the app)
-**App shell:** a slim sidebar – *New book* and *My books*. Familiar for a SaaS tool, but nothing more:
+
+**App shell:** a slim sidebar – _New book_ and _My books_. Familiar for a SaaS tool, but nothing more:
 no stats, no achievements – they don't help someone who comes to make one lead magnet.
 
-**First visit** – no empty dashboard ("0 eBooks" is a dead end). The home screen *is* the start:
+**First visit** – no empty dashboard ("0 eBooks" is a dead end). The home screen _is_ the start:
+
 - One sentence: what it does and how long it takes (~5 minutes).
 - The first question right there: "What's your book about?" – typing it starts step 1.
 - A shelf of 3 example books in **different cover styles** – proof of quality before the first click.
 
-**Returning user** – *My books*: a shelf of covers with status (draft / finalized), share link and download.
+**Returning user** – _My books_: a shelf of covers with status (draft / finalized), share link and download.
 The covers are the hero of the screen, not numbers.
 
 ### 1. Describe the book
+
 Three short questions on one screen:
 
-| Question | Input | Help |
-|---|---|---|
-| **What's your book about?** (topic) | Short text | Example chips; "Help me shape this idea" |
-| **Who is it for?** (audience) | Short text | Suggested audiences based on the topic |
+| Question                               | Input                                                 | Help                                                                 |
+| -------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- |
+| **What's your book about?** (topic)    | Short text                                            | Example chips; "Help me shape this idea"                             |
+| **Who is it for?** (audience)          | Short text                                            | Suggested audiences based on the topic                               |
 | **How should it feel?** (theme / mood) | Choice: practical · inspiring · calm · bold · playful | Each option shows a mini cover preview – mood drives the cover style |
 
-- *Interpretation:* the brief asks for "topic, theme and audience". I read **theme** as the book's
+- _Interpretation:_ the brief asks for "topic, theme and audience". I read **theme** as the book's
   mood and voice, because that's what a non-writer can answer, and it's what both the writing tone
   and the cover design need.
 - Optional fourth question: **What should readers do after reading?** (book a call, join a newsletter,
@@ -79,21 +83,24 @@ Three short questions on one screen:
   ("Design systems – for which team: startups, agencies, enterprise?").
 
 ### 2. Title
+
 - 4 AI suggestions in different styles: clear · benefit-led · bold · playful.
 - **The user's own wording is always one of the options** (getebook.ai silently rewrote it).
 - Optional subtitle and author name.
 - "More ideas" refreshes suggestions but keeps the selected one.
 
 ### 3. Outline (checkpoint)
+
 - AI drafts 6–8 chapters, each with a one-line summary.
 - Per chapter: rename, remove, reorder (drag), "suggest another idea". Plus "Add chapter".
 - Shows the expected result: "6 chapters · ~16 pages · 20-minute read · ready in about a minute".
   If the outline grows past ~20 pages, a gentle nudge: lead magnets work best short.
 - One button: **Write my book**. "Looks good" is the default – editing is optional.
-- *Why a separate step:* it's the cheapest moment to steer the AI, and it answers
+- _Why a separate step:_ it's the cheapest moment to steer the AI, and it answers
   "control without starting over" before the long generation.
 
 ### 4. Build (generation)
+
 Not a spinner – the book is assembled in front of the user:
 
 - **Left:** the list of steps, each with status – outline ✓ → chapter 1…n → cover → layout.
@@ -104,6 +111,7 @@ Not a spinner – the book is assembled in front of the user:
 - Simulated timing: ~45–60 seconds in total – realistic, but short enough for a demo.
 
 ### 5. Review & adjust ("the studio")
+
 Three columns:
 
 - **Left – Structure:** table of contents with status of each chapter.
@@ -111,11 +119,13 @@ Three columns:
 - **Right – Adjust:** actions for whatever is selected.
 
 **Adjust a chapter:**
-- One-click directions: *simpler · more detailed · shorter · more practical (add steps) · warmer tone*.
+
+- One-click directions: _simpler · more detailed · shorter · more practical (add steps) · warmer tone_.
 - Or a free instruction: "Add an example for a 3-person startup".
 - Every rewrite creates a **version** – compare with the previous one, keep or restore.
 
 **Adjust the cover:**
+
 - 3 options in **different art directions** (see section 5).
 - "Shuffle" varies the composition inside the chosen direction.
 - Edit title, subtitle, author name – the cover re-fits automatically.
@@ -123,12 +133,14 @@ Three columns:
 Global **undo** for every change.
 
 ### 6. Finalize
+
 - Full preview as book spreads.
 - A short check before sharing: author name set · facts reviewed ("AI can make mistakes – skim the
   chapters before you share") – a gentle checklist, not a blocker.
 - **Download PDF** and **Share link** (copy). The book stays editable – finalize is not a dead end.
 
 ### 7. Shared book (public page)
+
 - A clean reading page: cover, table of contents, chapters.
 - Works without a backend: the book is encoded into the link.
 - Small "Made with Primer" link – the growth loop.
@@ -137,19 +149,19 @@ Global **undo** for every change.
 
 Every step has loading, empty, error and success states. Specific cases:
 
-| Situation | What the user sees |
-|---|---|
-| Topic empty or a single word | Clarifying question + example chips |
-| Gibberish ("asdf") | "I couldn't make sense of that – here are some examples to start from" |
-| Topic too broad ("business") | "Let's narrow it down" + chips with narrower topics |
-| Title too long | Soft hint; cover auto-fits the text, never crops it |
-| All chapters removed from the outline | "A book needs at least 3 chapters" + restore last removed |
-| **One chapter fails to generate** | That chapter is marked, with "Try again"; the rest of the book continues |
-| **The whole generation fails** | Inputs and finished parts are kept; "Resume" continues from the last finished step |
-| Cover fails | Falls back to another art direction automatically |
-| Tab closed or refreshed | State is saved locally; "Continue your book" banner on return |
-| Download fails | "Try again" + open a printable version as a fallback |
-| Offline | Banner; actions that need "AI" wait and resume |
+| Situation                             | What the user sees                                                                 |
+| ------------------------------------- | ---------------------------------------------------------------------------------- |
+| Topic empty or a single word          | Clarifying question + example chips                                                |
+| Gibberish ("asdf")                    | "I couldn't make sense of that – here are some examples to start from"             |
+| Topic too broad ("business")          | "Let's narrow it down" + chips with narrower topics                                |
+| Title too long                        | Soft hint; cover auto-fits the text, never crops it                                |
+| All chapters removed from the outline | "A book needs at least 3 chapters" + restore last removed                          |
+| **One chapter fails to generate**     | That chapter is marked, with "Try again"; the rest of the book continues           |
+| **The whole generation fails**        | Inputs and finished parts are kept; "Resume" continues from the last finished step |
+| Cover fails                           | Falls back to another art direction automatically                                  |
+| Tab closed or refreshed               | State is saved locally; "Continue your book" banner on return                      |
+| Download fails                        | "Try again" + open a printable version as a fallback                               |
+| Offline                               | Banner; actions that need "AI" wait and resume                                     |
 
 **For the demo video:** a hidden "simulate failures" switch (dev menu) to show these states on purpose.
 
@@ -178,16 +190,16 @@ No backend and no real AI – the brief allows simulation. To keep it convincing
 
 ## 7. Out of scope (and why)
 
-| Cut | Why |
-|---|---|
-| Accounts, sign-up | Not needed to prove the experience; removes friction. "My books" is stored locally |
-| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book |
-| Real AI / backend | Allowed by the brief; time goes to UX and craft instead |
-| Full text editor | The brief says it's not needed; intent-based adjustments fit non-writers better |
-| Images inside chapters | Nice to have; cover quality matters more |
-| EPUB | The stakeholder confirmed PDF is enough |
-| Mobile layout | The brief asks for a desktop web tool |
-| Multiple languages | Not in the brief |
+| Cut                                             | Why                                                                                |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Accounts, sign-up                               | Not needed to prove the experience; removes friction. "My books" is stored locally |
+| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book                  |
+| Real AI / backend                               | Allowed by the brief; time goes to UX and craft instead                            |
+| Full text editor                                | The brief says it's not needed; intent-based adjustments fit non-writers better    |
+| Images inside chapters                          | Nice to have; cover quality matters more                                           |
+| EPUB                                            | The stakeholder confirmed PDF is enough                                            |
+| Mobile layout                                   | The brief asks for a desktop web tool                                              |
+| Multiple languages                              | Not in the brief                                                                   |
 
 ## 8. How I'd measure success (if this were live)
 

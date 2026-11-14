@@ -23,8 +23,7 @@ const sizes: Record<Size, string> = {
   sm: "h-8 px-3 text-sm gap-1.5",
 };
 
-export const focusRing =
-  "outline-none focus-visible:ring-4 focus-visible:ring-focus";
+export const focusRing = "outline-none focus-visible:ring-4 focus-visible:ring-focus";
 
 export function Button({
   variant = "primary",

@@ -69,7 +69,10 @@ export const useBooks = create<BooksState>()(
         },
 
         updateChapter: (id, chapterId, patch) =>
-          patchBook(id, (b) => ({ ...b, chapters: b.chapters.map((c) => (c.id === chapterId ? { ...c, ...patch } : c)) })),
+          patchBook(id, (b) => ({
+            ...b,
+            chapters: b.chapters.map((c) => (c.id === chapterId ? { ...c, ...patch } : c)),
+          })),
 
         rewriteChapter: (id, chapterId, body) =>
           patchBook(id, (b) => ({

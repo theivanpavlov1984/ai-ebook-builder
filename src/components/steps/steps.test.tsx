@@ -23,7 +23,14 @@ function newBook(patch = {}) {
 }
 
 const chapters = (n: number): Chapter[] =>
-  Array.from({ length: n }, (_, i) => ({ id: `c${i + 1}`, title: `Chapter ${i + 1}`, summary: "s", body: [], status: "idle", versions: [] }));
+  Array.from({ length: n }, (_, i) => ({
+    id: `c${i + 1}`,
+    title: `Chapter ${i + 1}`,
+    summary: "s",
+    body: [],
+    status: "idle",
+    versions: [],
+  }));
 
 beforeEach(() => {
   push.mockReset();
@@ -121,7 +128,9 @@ describe("OutlineStep", () => {
     const id = newBook({ title: "Bread" });
     wrap(<OutlineStep id={id} />);
     expect(screen.getByText(/drafting your outline/i)).toBeInTheDocument();
-    await waitFor(() => expect(screen.getAllByRole("textbox", { name: /chapter \d title/i })).toHaveLength(6), { timeout: 3000 });
+    await waitFor(() => expect(screen.getAllByRole("textbox", { name: /chapter \d title/i })).toHaveLength(6), {
+      timeout: 3000,
+    });
   });
 
   it("recovers from a failed draft with Try again", async () => {
@@ -129,7 +138,9 @@ describe("OutlineStep", () => {
     const id = newBook({ title: "Bread" });
     wrap(<OutlineStep id={id} />);
     await userEvent.click(await screen.findByRole("button", { name: /try again/i }, { timeout: 3000 }));
-    await waitFor(() => expect(screen.getAllByRole("textbox", { name: /chapter \d title/i })).toHaveLength(6), { timeout: 3000 });
+    await waitFor(() => expect(screen.getAllByRole("textbox", { name: /chapter \d title/i })).toHaveLength(6), {
+      timeout: 3000,
+    });
   });
 
   it("removes chapters but never below three", async () => {

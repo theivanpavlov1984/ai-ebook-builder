@@ -24,7 +24,9 @@ describe("Cover", () => {
     expect(lines.join(" ")).toBe(LONG);
     expect(lines.length).toBeLessThanOrEqual(5);
 
-    const { container: short } = render(<Cover design={getCoverDesign({ title: TITLE, mood: "practical" })} title={TITLE} />);
+    const { container: short } = render(
+      <Cover design={getCoverDesign({ title: TITLE, mood: "practical" })} title={TITLE} />,
+    );
     const shortSize = Number(titleLines(short).text.getAttribute("font-size"));
     expect(Number(text.getAttribute("font-size"))).toBeLessThan(shortSize);
   });
@@ -38,7 +40,9 @@ describe("Cover", () => {
         ))}
       </>,
     );
-    const found = Array.from(container.querySelectorAll("svg[data-direction]")).map((s) => s.getAttribute("data-direction"));
+    const found = Array.from(container.querySelectorAll("svg[data-direction]")).map((s) =>
+      s.getAttribute("data-direction"),
+    );
     expect(found).toEqual(directions);
   });
 

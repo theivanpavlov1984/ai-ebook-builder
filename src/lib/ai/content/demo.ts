@@ -109,4 +109,8 @@ export const demoTitles = {
   playful: ["One Button to Rule Them All"],
 };
 
-export const demoAudiences = ["Founders of early-stage startups", "Product teams of 3–10 people", "Freelance designers"];
+export const demoAudiences = [
+  "Founders of early-stage startups",
+  "Product teams of 3–10 people",
+  "Freelance designers",
+];

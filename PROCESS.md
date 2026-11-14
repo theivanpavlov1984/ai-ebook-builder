@@ -59,6 +59,7 @@ the bold one. Seeing them side by side settled in minutes what would have been a
 then built test-first: 3-tier tokens in CSS variables (the same architecture I use in production),
 Tailwind mapped to the semantic tier, ~10 components, and a `/system` page.
 Where the AI's plan was wrong, I kept a record of the decision:
+
 - Tailwind's `--color-*` namespace would have collided with my semantic token names – renamed to `--primer-*`.
 - One planned cover palette failed contrast – a test caught it, the color was darkened.
 - A test guards against raw colors in components, so the system can't quietly drift.
@@ -76,6 +77,7 @@ before the code – including the cases most likely to break in a review: refres
 a reviewer's own topic, a cut share link, changing the topic after the outline exists, undoing rewrites.
 
 **Where AI was wrong, and how we caught it:**
+
 - The first demo chapter came out ~600 words against a 700–900 target; the content test failed and it was expanded.
 - A test for the cover fallback was set up with the wrong starting style – the test was wrong, not the code.
 - Next.js 16's prerendering rejected reading the book id outside a Suspense boundary – fixed with a route layout.

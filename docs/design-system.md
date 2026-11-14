@@ -24,18 +24,19 @@ stats dashboard); looks like a template; inconsistent spacing or type between sc
 Logo from a bolder direction: a heavy grotesk wordmark **Primer\*** with a terracotta asterisk.
 
 Chosen from three mockups (warm editorial / quiet studio / bold publisher):
-- *Warm editorial* keeps the warmth Ivan liked in getebook.ai but adds a book character, so it doesn't
+
+- _Warm editorial_ keeps the warmth Ivan liked in getebook.ai but adds a book character, so it doesn't
   read as a competitor's clone.
-- *Quiet studio* was more premium but colder and further from the brief's audience.
-- *Bold publisher* was memorable but too loud for a calm step-by-step flow – kept only its wordmark.
+- _Quiet studio_ was more premium but colder and further from the brief's audience.
+- _Bold publisher_ was memorable but too loud for a calm step-by-step flow – kept only its wordmark.
 
 ## 3. Approaches considered (how it's built)
 
-| Approach | Trade-off | Decision |
-|---|---|---|
-| **Own tokens (3 tiers) in CSS variables + Tailwind reading them + own components; Radix primitives only for dialog/menu accessibility** | A bit more work up front; full control and a design system that's genuinely ours | **Picked** – the brief asks to *define* a design system, and this mirrors how I build them in production |
-| shadcn/ui themed with our colors | Fastest; but the result looks like every shadcn app, and the "system" is mostly someone else's | Rejected – works against "distinctive" |
-| Plain CSS Modules, no Tailwind | No utility layer; slower to build screens in 4 days | Rejected – no benefit for a prototype |
+| Approach                                                                                                                                | Trade-off                                                                                      | Decision                                                                                                 |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Own tokens (3 tiers) in CSS variables + Tailwind reading them + own components; Radix primitives only for dialog/menu accessibility** | A bit more work up front; full control and a design system that's genuinely ours               | **Picked** – the brief asks to _define_ a design system, and this mirrors how I build them in production |
+| shadcn/ui themed with our colors                                                                                                        | Fastest; but the result looks like every shadcn app, and the "system" is mostly someone else's | Rejected – works against "distinctive"                                                                   |
+| Plain CSS Modules, no Tailwind                                                                                                          | No utility layer; slower to build screens in 4 days                                            | Rejected – no benefit for a prototype                                                                    |
 
 ## 4. Token architecture
 
@@ -57,43 +58,44 @@ ink-900       text-primary  input-border-focus
 
 ### 4.1 Color – primitives
 
-| Token | Value | Token | Value |
-|---|---|---|---|
-| `paper-0` | `#FFFFFF` | `ink-900` | `#1F1B16` |
-| `paper-50` | `#FBF8F3` | `ink-700` | `#3D362E` |
-| `paper-100` | `#F5F0E8` | `ink-500` | `#7A7166` |
-| `paper-200` | `#EDE6DA` | `ink-400` | `#9A9085` |
-| `paper-300` | `#E7DFD3` | | |
-| `paper-400` | `#D6CBBB` | | |
-| `terracotta-50` | `#FBF0EA` | `red-50` | `#FDECEC` |
-| `terracotta-100` | `#F4DED3` | `red-600` | `#C0262D` |
-| `terracotta-300` | `#E2A07F` | `green-50` | `#EAF4EE` |
+| Token            | Value     | Token       | Value     |
+| ---------------- | --------- | ----------- | --------- |
+| `paper-0`        | `#FFFFFF` | `ink-900`   | `#1F1B16` |
+| `paper-50`       | `#FBF8F3` | `ink-700`   | `#3D362E` |
+| `paper-100`      | `#F5F0E8` | `ink-500`   | `#7A7166` |
+| `paper-200`      | `#EDE6DA` | `ink-400`   | `#9A9085` |
+| `paper-300`      | `#E7DFD3` |             |           |
+| `paper-400`      | `#D6CBBB` |             |           |
+| `terracotta-50`  | `#FBF0EA` | `red-50`    | `#FDECEC` |
+| `terracotta-100` | `#F4DED3` | `red-600`   | `#C0262D` |
+| `terracotta-300` | `#E2A07F` | `green-50`  | `#EAF4EE` |
 | `terracotta-500` | `#C2512C` | `green-600` | `#2F7A4F` |
-| `terracotta-700` | `#9A3B1C` | `amber-50` | `#FDF4E3` |
-| | | `amber-600` | `#A86A10` |
+| `terracotta-700` | `#9A3B1C` | `amber-50`  | `#FDF4E3` |
+|                  |           | `amber-600` | `#A86A10` |
 
 ### 4.2 Color – semantic
 
-| Token | Maps to | Use |
-|---|---|---|
-| `bg-canvas` | paper-50 | Page background |
-| `bg-surface` | paper-0 | Cards, inputs, panels |
-| `bg-subtle` | paper-100 | Sidebar, side panels, hover |
-| `bg-inverse` | ink-900 | Primary button, selected chip |
-| `text-primary` | ink-900 | Body and headings |
-| `text-secondary` | ink-500 | Hints, meta |
-| `text-inverse` | paper-50 | On dark |
-| `text-accent` | terracotta-700 | Links, active nav |
-| `border-default` | paper-300 | Inputs, cards, dividers |
-| `border-strong` | paper-400 | Hover borders |
-| `accent` | terracotta-500 | Active step, focus, brand details |
-| `accent-subtle` | terracotta-100 | Active nav background, highlights |
-| `focus-ring` | terracotta-500 at 35% | Focus outline |
-| `danger` / `danger-subtle` | red-600 / red-50 | Errors |
-| `success` / `success-subtle` | green-600 / green-50 | Done states |
-| `warning` / `warning-subtle` | amber-600 / amber-50 | Soft nudges (e.g. "the book is getting long") |
+| Token                        | Maps to               | Use                                           |
+| ---------------------------- | --------------------- | --------------------------------------------- |
+| `bg-canvas`                  | paper-50              | Page background                               |
+| `bg-surface`                 | paper-0               | Cards, inputs, panels                         |
+| `bg-subtle`                  | paper-100             | Sidebar, side panels, hover                   |
+| `bg-inverse`                 | ink-900               | Primary button, selected chip                 |
+| `text-primary`               | ink-900               | Body and headings                             |
+| `text-secondary`             | ink-500               | Hints, meta                                   |
+| `text-inverse`               | paper-50              | On dark                                       |
+| `text-accent`                | terracotta-700        | Links, active nav                             |
+| `border-default`             | paper-300             | Inputs, cards, dividers                       |
+| `border-strong`              | paper-400             | Hover borders                                 |
+| `accent`                     | terracotta-500        | Active step, focus, brand details             |
+| `accent-subtle`              | terracotta-100        | Active nav background, highlights             |
+| `focus-ring`                 | terracotta-500 at 35% | Focus outline                                 |
+| `danger` / `danger-subtle`   | red-600 / red-50      | Errors                                        |
+| `success` / `success-subtle` | green-600 / green-50  | Done states                                   |
+| `warning` / `warning-subtle` | amber-600 / amber-50  | Soft nudges (e.g. "the book is getting long") |
 
 **Rules**
+
 - The primary button is **dark ink, not the accent** – keeps the UI calm and away from the coral-SaaS look.
 - Terracotta is close to red, so **errors use a cooler red and always come with an icon and text** –
   color is never the only signal.
@@ -101,25 +103,25 @@ ink-900       text-primary  input-border-focus
 
 ### 4.3 Typography
 
-| Role | Font | Use |
-|---|---|---|
-| `font-display` | **Newsreader** (500) | Screen headlines, book titles in UI, chapter text in the reader and PDF |
-| `font-ui` | **Geist** (400 / 500 / 600) | Everything else in the interface |
-| `font-brand` | **Bricolage Grotesque** (800) | The wordmark only |
+| Role           | Font                          | Use                                                                     |
+| -------------- | ----------------------------- | ----------------------------------------------------------------------- |
+| `font-display` | **Newsreader** (500)          | Screen headlines, book titles in UI, chapter text in the reader and PDF |
+| `font-ui`      | **Geist** (400 / 500 / 600)   | Everything else in the interface                                        |
+| `font-brand`   | **Bricolage Grotesque** (800) | The wordmark only                                                       |
 
 Scale (size / line height, px):
 
-| Token | Size | Font | Use |
-|---|---|---|---|
-| `text-xs` | 12 / 16 | UI | Labels, meta |
-| `text-sm` | 13 / 20 | UI | Secondary UI text |
-| `text-base` | 14 / 22 | UI | Default UI text |
-| `text-md` | 16 / 24 | UI | Inputs, emphasized body |
-| `text-lg` | 20 / 28 | Display | Section titles |
-| `text-xl` | 28 / 34 | Display | Panel titles |
-| `text-2xl` | 36 / 42 | Display | Screen headlines |
-| `text-3xl` | 48 / 52 | Display | Home headline |
-| `reader-body` | 18 / 30 | Display | Chapter text |
+| Token         | Size    | Font    | Use                     |
+| ------------- | ------- | ------- | ----------------------- |
+| `text-xs`     | 12 / 16 | UI      | Labels, meta            |
+| `text-sm`     | 13 / 20 | UI      | Secondary UI text       |
+| `text-base`   | 14 / 22 | UI      | Default UI text         |
+| `text-md`     | 16 / 24 | UI      | Inputs, emphasized body |
+| `text-lg`     | 20 / 28 | Display | Section titles          |
+| `text-xl`     | 28 / 34 | Display | Panel titles            |
+| `text-2xl`    | 36 / 42 | Display | Screen headlines        |
+| `text-3xl`    | 48 / 52 | Display | Home headline           |
+| `reader-body` | 18 / 30 | Display | Chapter text            |
 
 ### 4.4 Spacing, radius, elevation, motion
 
@@ -132,7 +134,7 @@ Scale (size / line height, px):
 
 ### 4.5 Layout
 
-- **App shell:** sidebar 220 px (wordmark, *New book*, *My books*) + content.
+- **App shell:** sidebar 220 px (wordmark, _New book_, _My books_) + content.
 - **Creation steps (1–3):** form column max 640 px + book card panel 280 px on the right.
 - **Studio (step 5):** three columns – structure 260 px · book (flexible) · adjust panel 320 px.
 - Target desktop widths 1280–1600 px; works down to 1024 px.
@@ -141,19 +143,19 @@ Scale (size / line height, px):
 
 Each has default, hover, focus, active, disabled and – where relevant – loading and error states.
 
-| Component | Variants / notes |
-|---|---|
-| **Button** | primary (ink), secondary (surface + border), ghost; sizes md / sm; loading state |
-| **Input** | label, hint, error message; focus ring in accent |
-| **Textarea** | same as Input, auto-grow |
-| **Chip** | choice (single / multi), suggestion; selected = ink background |
-| **Card** | surface + border; interactive variant with hover |
-| **Stepper** | the 5-step progress (Describe → Title → Outline → Build → Review); done / current / upcoming |
-| **Progress list** | generation steps with status: waiting / working / done / failed + retry |
-| **Toast** | success / error / info; with optional action ("Undo") |
-| **Dialog** | built on Radix for focus and keyboard handling; our styling |
-| **Cover** | renders a book cover from title, author, mood and art direction (see `FLOW.md` §5) |
-| **Book card** | cover + title + status + actions (for *My books* and the side panel) |
+| Component         | Variants / notes                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------------- |
+| **Button**        | primary (ink), secondary (surface + border), ghost; sizes md / sm; loading state             |
+| **Input**         | label, hint, error message; focus ring in accent                                             |
+| **Textarea**      | same as Input, auto-grow                                                                     |
+| **Chip**          | choice (single / multi), suggestion; selected = ink background                               |
+| **Card**          | surface + border; interactive variant with hover                                             |
+| **Stepper**       | the 5-step progress (Describe → Title → Outline → Build → Review); done / current / upcoming |
+| **Progress list** | generation steps with status: waiting / working / done / failed + retry                      |
+| **Toast**         | success / error / info; with optional action ("Undo")                                        |
+| **Dialog**        | built on Radix for focus and keyboard handling; our styling                                  |
+| **Cover**         | renders a book cover from title, author, mood and art direction (see `FLOW.md` §5)           |
+| **Book card**     | cover + title + status + actions (for _My books_ and the side panel)                         |
 
 **Covers have their own palettes** per art direction – they are content, not UI, so they don't use the
 app's semantic tokens. They do follow the same typography rules: the title always fits, no fake micro-text.

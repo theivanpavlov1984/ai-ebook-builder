@@ -39,7 +39,9 @@ export function Dialog({
             </DialogPrimitive.Close>
           </div>
           {description && (
-            <DialogPrimitive.Description className="mt-1.5 text-base text-secondary">{description}</DialogPrimitive.Description>
+            <DialogPrimitive.Description className="mt-1.5 text-base text-secondary">
+              {description}
+            </DialogPrimitive.Description>
           )}
           {children && <div className="mt-5">{children}</div>}
           {footer && <div className="mt-6 flex justify-end gap-2">{footer}</div>}

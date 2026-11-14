@@ -21,7 +21,10 @@ export function LivePreview({ topic }: { topic: string }) {
 
   const title = titleCase(source.replace(/[.!?]+$/, ""));
   const design = getCoverDesign({ title, mood: "practical", direction });
-  const chapters = useMemo(() => draftOutline({ topic: source, audience: "", mood: "practical" }).slice(0, 3), [source]);
+  const chapters = useMemo(
+    () => draftOutline({ topic: source, audience: "", mood: "practical" }).slice(0, 3),
+    [source],
+  );
 
   return (
     <section aria-label="Preview of your book" className="relative w-[420px]">
@@ -51,7 +54,10 @@ export function LivePreview({ topic }: { topic: string }) {
       <button
         type="button"
         onClick={() => setStyleIndex(styleIndex + 1)}
-        className={cn("mt-2 inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-secondary hover:text-primary", focusRing)}
+        className={cn(
+          "mt-2 inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-secondary hover:text-primary",
+          focusRing,
+        )}
       >
         <Shuffle aria-hidden className="size-4" /> Try another style
       </button>

@@ -22,7 +22,13 @@ export function MyBooks() {
       <div className="flex flex-col items-start gap-4 rounded-lg border border-dashed border-strong p-10">
         <p className="font-display text-xl font-medium">No books yet</p>
         <p className="text-base text-secondary">Your first one takes about five minutes.</p>
-        <Link href="/" className={cn("inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse", focusRing)}>
+        <Link
+          href="/"
+          className={cn(
+            "inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse",
+            focusRing,
+          )}
+        >
           <Plus aria-hidden className="size-4" /> Start your first book
         </Link>
       </div>

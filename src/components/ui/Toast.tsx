@@ -52,7 +52,12 @@ function ToastView({ toast, onDismiss }: { toast: ToastItem; onDismiss: (id: num
           {action.label}
         </button>
       )}
-      <button type="button" aria-label="Dismiss" onClick={() => onDismiss(id)} className={cn("rounded-sm opacity-70 hover:opacity-100", focusRing)}>
+      <button
+        type="button"
+        aria-label="Dismiss"
+        onClick={() => onDismiss(id)}
+        className={cn("rounded-sm opacity-70 hover:opacity-100", focusRing)}
+      >
         <X aria-hidden className="size-4" />
       </button>
     </div>

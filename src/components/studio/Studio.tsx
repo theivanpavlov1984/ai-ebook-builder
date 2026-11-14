@@ -65,7 +65,12 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
 
         <div className="grid flex-1 grid-cols-[260px_minmax(0,1fr)_320px]">
           <nav aria-label="Book structure" className="flex flex-col gap-1 border-r border-default bg-subtle p-4">
-            <button type="button" aria-label="Cover" onClick={() => setSelected("cover")} className={navItem(selected === "cover")}>
+            <button
+              type="button"
+              aria-label="Cover"
+              onClick={() => setSelected("cover")}
+              className={navItem(selected === "cover")}
+            >
               <Cover design={bookDesign(book)} title={title} size="none" className="w-8 shadow-sm" />
               <span className="pt-1">Cover</span>
             </button>
@@ -82,7 +87,9 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
           <main className="min-w-0 overflow-y-auto px-12 py-10">
             {chapter ? (
               <article className="mx-auto max-w-[640px]">
-                <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {chapterIndex + 1}</p>
+                <p className="text-xs font-medium tracking-wider text-secondary uppercase">
+                  Chapter {chapterIndex + 1}
+                </p>
                 <h2 className="mt-1 font-display text-2xl font-medium">{chapter.title}</h2>
                 <div className="mt-6 flex flex-col gap-4 font-display text-reader">
                   {chapter.body.map((p, i) => (
@@ -94,7 +101,14 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
               </article>
             ) : (
               <div className="flex justify-center pt-6">
-                <Cover design={bookDesign(book)} title={title} subtitle={book.subtitle} author={book.author} size="none" className="w-72" />
+                <Cover
+                  design={bookDesign(book)}
+                  title={title}
+                  subtitle={book.subtitle}
+                  author={book.author}
+                  size="none"
+                  className="w-72"
+                />
               </div>
             )}
           </main>

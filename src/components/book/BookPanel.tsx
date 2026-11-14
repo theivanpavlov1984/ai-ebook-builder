@@ -3,7 +3,13 @@ import type { Book } from "@/lib/book/types";
 import { Cover } from "./Cover";
 import { getCoverDesign } from "./cover-design";
 
-const moodLabel = { practical: "Practical", inspiring: "Inspiring", calm: "Calm", bold: "Bold", playful: "Playful" } as const;
+const moodLabel = {
+  practical: "Practical",
+  inspiring: "Inspiring",
+  calm: "Calm",
+  bold: "Bold",
+  playful: "Playful",
+} as const;
 
 export function bookDesign(book: Pick<Book, "title" | "topic" | "mood" | "cover">) {
   return getCoverDesign({
@@ -28,7 +34,9 @@ export function BookPanel({ book }: { book: Book }) {
       <Cover design={bookDesign(book)} title={title} subtitle={book.subtitle} author={book.author} size="lg" />
       <div className="flex flex-col gap-1 text-sm">
         <p className="font-display text-lg leading-snug font-medium">{title}</p>
-        {book.audience && <p className="text-secondary">For {book.audience.charAt(0).toLowerCase() + book.audience.slice(1)}</p>}
+        {book.audience && (
+          <p className="text-secondary">For {book.audience.charAt(0).toLowerCase() + book.audience.slice(1)}</p>
+        )}
         <p className="text-secondary">
           {moodLabel[book.mood]} · {chapters} chapters · ~{pages} pages{minutes ? ` · ${minutes}-minute read` : ""}
         </p>

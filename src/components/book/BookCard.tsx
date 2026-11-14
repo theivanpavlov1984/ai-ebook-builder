@@ -21,7 +21,12 @@ export function BookCard({
 }) {
   return (
     <Card className="flex w-56 flex-col gap-3 p-4">
-      <button type="button" aria-label={`Open ${title}`} onClick={onOpen} className={cn("rounded-sm self-center", focusRing)}>
+      <button
+        type="button"
+        aria-label={`Open ${title}`}
+        onClick={onOpen}
+        className={cn("self-center rounded-sm", focusRing)}
+      >
         <Cover design={design} title={title} author={author} size="md" />
       </button>
       <div className="flex items-start justify-between gap-2">

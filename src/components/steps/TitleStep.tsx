@@ -37,7 +37,9 @@ function TitleForm({ id }: { id: string }) {
   const [round, setRound] = useState(0);
   const [options, setOptions] = useState<Option[]>(() => suggestTitles(book, 0));
   const [selected, setSelected] = useState(() => book.title || options[0].title);
-  const [custom, setCustom] = useState(() => (book.title && !options.some((o) => o.title === book.title) ? book.title : ""));
+  const [custom, setCustom] = useState(() =>
+    book.title && !options.some((o) => o.title === book.title) ? book.title : "",
+  );
   const [subtitle, setSubtitle] = useState(book.subtitle);
   const [author, setAuthor] = useState(book.author);
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -53,7 +55,8 @@ function TitleForm({ id }: { id: string }) {
   }
 
   function onKey(e: KeyboardEvent<HTMLButtonElement>, i: number) {
-    const delta = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
+    const delta =
+      e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0;
     if (!delta) return;
     e.preventDefault();
     const next = (i + delta + options.length) % options.length;
@@ -122,10 +125,20 @@ function TitleForm({ id }: { id: string }) {
           </div>
         </div>
 
-        <Input label="Or write your own" placeholder="Your title" value={custom} onChange={(e) => setCustom(e.target.value)} />
+        <Input
+          label="Or write your own"
+          placeholder="Your title"
+          value={custom}
+          onChange={(e) => setCustom(e.target.value)}
+        />
 
         <div className="grid grid-cols-2 gap-6">
-          <Input label="Subtitle (optional)" placeholder="e.g. A practical guide for small teams" value={subtitle} onChange={(e) => setSubtitle(e.target.value)} />
+          <Input
+            label="Subtitle (optional)"
+            placeholder="e.g. A practical guide for small teams"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+          />
           <Input label="Author name" value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
 

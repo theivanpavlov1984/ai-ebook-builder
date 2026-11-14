@@ -34,7 +34,9 @@ describe("PDF export", () => {
 
   it("works for every cover style", async () => {
     for (const direction of ["editorial", "geometric", "organic", "typographic"] as const) {
-      const buf = await renderToBuffer(<BookPdf book={{ ...book, cover: { ...book.cover, direction } }} fonts="standard" />);
+      const buf = await renderToBuffer(
+        <BookPdf book={{ ...book, cover: { ...book.cover, direction } }} fonts="standard" />,
+      );
       expect(buf.subarray(0, 4).toString()).toBe("%PDF");
     }
   });

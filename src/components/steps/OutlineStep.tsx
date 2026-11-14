@@ -73,8 +73,15 @@ function OutlineEditor({ id }: { id: string }) {
   }
 
   function remove(i: number) {
-    setChapters(chapters.filter((_, j) => j !== i), true);
-    show({ tone: "info", message: `“${chapters[i].title}” removed`, action: { label: "Undo", onClick: () => undo(id) } });
+    setChapters(
+      chapters.filter((_, j) => j !== i),
+      true,
+    );
+    show({
+      tone: "info",
+      message: `“${chapters[i].title}” removed`,
+      action: { label: "Undo", onClick: () => undo(id) },
+    });
   }
 
   function suggest(i: number) {
@@ -82,7 +89,10 @@ function OutlineEditor({ id }: { id: string }) {
     const round = (rounds[c.id] ?? 0) + 1;
     setRounds({ ...rounds, [c.id]: round });
     const alt = alternativeChapter(book, i, round);
-    setChapters(chapters.map((x, j) => (j === i ? { ...x, ...alt } : x)), true);
+    setChapters(
+      chapters.map((x, j) => (j === i ? { ...x, ...alt } : x)),
+      true,
+    );
   }
 
   function add() {
@@ -119,7 +129,10 @@ function OutlineEditor({ id }: { id: string }) {
       )}
 
       {status === "error" && (
-        <div role="alert" className="flex items-center justify-between gap-4 rounded-md border border-danger bg-danger-subtle p-4">
+        <div
+          role="alert"
+          className="flex items-center justify-between gap-4 rounded-md border border-danger bg-danger-subtle p-4"
+        >
           <p className="text-base text-primary">We couldn’t draft the outline this time. Your answers are saved.</p>
           <Button variant="secondary" size="sm" onClick={() => void draft()}>
             Try again
@@ -137,8 +150,13 @@ function OutlineEditor({ id }: { id: string }) {
                   <input
                     aria-label={`Chapter ${i + 1} title`}
                     value={c.title}
-                    onChange={(e) => setChapters(chapters.map((x) => (x.id === c.id ? { ...x, title: e.target.value } : x)))}
-                    className={cn("w-full rounded-sm bg-transparent px-1 py-1 font-display text-lg font-medium", focusRing)}
+                    onChange={(e) =>
+                      setChapters(chapters.map((x) => (x.id === c.id ? { ...x, title: e.target.value } : x)))
+                    }
+                    className={cn(
+                      "w-full rounded-sm bg-transparent px-1 py-1 font-display text-lg font-medium",
+                      focusRing,
+                    )}
                   />
                   <p className="px-1 text-sm text-secondary">{c.summary}</p>
                 </div>
@@ -146,7 +164,11 @@ function OutlineEditor({ id }: { id: string }) {
                   <IconButton label={`Move chapter ${i + 1} up`} disabled={i === 0} onClick={() => move(i, -1)}>
                     <ArrowUp aria-hidden className="size-4" />
                   </IconButton>
-                  <IconButton label={`Move chapter ${i + 1} down`} disabled={i === chapters.length - 1} onClick={() => move(i, 1)}>
+                  <IconButton
+                    label={`Move chapter ${i + 1} down`}
+                    disabled={i === chapters.length - 1}
+                    onClick={() => move(i, 1)}
+                  >
                     <ArrowDown aria-hidden className="size-4" />
                   </IconButton>
                   <IconButton label={`Suggest another idea for chapter ${i + 1}`} onClick={() => suggest(i)}>
@@ -165,7 +187,8 @@ function OutlineEditor({ id }: { id: string }) {
               Add chapter
             </Button>
             <p className="text-sm text-secondary">
-              {chapters.length} chapters · ~{pages} pages{minutes ? ` · ${minutes}-minute read` : ""} · ready in about a minute
+              {chapters.length} chapters · ~{pages} pages{minutes ? ` · ${minutes}-minute read` : ""} · ready in about a
+              minute
             </p>
           </div>
 
@@ -203,7 +226,10 @@ function IconButton({
       title={label}
       disabled={disabled}
       onClick={onClick}
-      className={cn("rounded-sm p-1.5 text-secondary hover:bg-subtle hover:text-primary disabled:opacity-30", focusRing)}
+      className={cn(
+        "rounded-sm p-1.5 text-secondary hover:bg-subtle hover:text-primary disabled:opacity-30",
+        focusRing,
+      )}
     >
       {children}
     </button>

@@ -11,7 +11,12 @@ import type { ChapterStatus } from "@/lib/book/types";
 export type Timing = { chapterMs: number; coverMs: number; cps: number };
 export const defaultTiming: Timing = { chapterMs: 1800, coverMs: 1500, cps: 1400 };
 
-const toStep: Record<ChapterStatus, StepStatus> = { idle: "waiting", writing: "working", done: "done", failed: "failed" };
+const toStep: Record<ChapterStatus, StepStatus> = {
+  idle: "waiting",
+  writing: "working",
+  done: "done",
+  failed: "failed",
+};
 const SECONDS_PER_CHAPTER = 6;
 
 type Token = { cancelled: boolean };
@@ -112,7 +117,13 @@ export function useGeneration(bookId: string, timing: Timing = defaultTiming) {
     {
       id: "cover",
       label: "Cover",
-      status: book ? (book.cover.status === "idle" ? "waiting" : book.cover.status === "working" ? "working" : book.cover.status) : "waiting",
+      status: book
+        ? book.cover.status === "idle"
+          ? "waiting"
+          : book.cover.status === "working"
+            ? "working"
+            : book.cover.status
+        : "waiting",
     },
   ];
 

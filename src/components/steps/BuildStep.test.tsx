@@ -17,11 +17,25 @@ const wrap = (ui: ReactNode) => render(<ToastProvider>{ui}</ToastProvider>);
 const st = () => useBooks.getState();
 
 const chapters = (n: number): Chapter[] =>
-  Array.from({ length: n }, (_, i) => ({ id: `c${i + 1}`, title: `Chapter title ${i + 1}`, summary: "s", body: [], status: "idle", versions: [] }));
+  Array.from({ length: n }, (_, i) => ({
+    id: `c${i + 1}`,
+    title: `Chapter title ${i + 1}`,
+    summary: "s",
+    body: [],
+    status: "idle",
+    versions: [],
+  }));
 
 function newBook(patch = {}) {
   const id = st().createBook("Sourdough baking for busy parents");
-  st().updateBook(id, { audience: "Parents", title: "Bread", stage: "build", chapters: chapters(3), mood: "calm", ...patch });
+  st().updateBook(id, {
+    audience: "Parents",
+    title: "Bread",
+    stage: "build",
+    chapters: chapters(3),
+    mood: "calm",
+    ...patch,
+  });
   return id;
 }
 

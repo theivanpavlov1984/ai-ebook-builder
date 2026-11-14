@@ -40,9 +40,16 @@ export function SharedPage({ subscribeMs = 700, download = downloadPdf }: Props)
         <Wordmark />
         <h1 className="mt-6 font-display text-2xl font-medium">This link looks incomplete</h1>
         <p className="text-md text-secondary">
-          Shared books live entirely inside the link. If it was cut off when it was copied or pasted, ask the author to send it again.
+          Shared books live entirely inside the link. If it was cut off when it was copied or pasted, ask the author to
+          send it again.
         </p>
-        <Link href="/" className={cn("inline-flex h-10 items-center rounded-md bg-inverse px-4 font-medium text-on-inverse", focusRing)}>
+        <Link
+          href="/"
+          className={cn(
+            "inline-flex h-10 items-center rounded-md bg-inverse px-4 font-medium text-on-inverse",
+            focusRing,
+          )}
+        >
           Make your own book
         </Link>
       </main>
@@ -90,7 +97,14 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
   return (
     <main className="mx-auto max-w-[1040px] px-8 py-14">
       <section className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-14">
-        <Cover design={bookDesign(book)} title={book.title} subtitle={book.subtitle} author={book.author} size="none" className="w-72" />
+        <Cover
+          design={bookDesign(book)}
+          title={book.title}
+          subtitle={book.subtitle}
+          author={book.author}
+          size="none"
+          className="w-72"
+        />
         <div>
           <p className="text-xs font-medium tracking-wider text-accent-strong uppercase">Free eBook</p>
           <h1 className="mt-2 font-display text-3xl font-medium">{book.title}</h1>
@@ -98,11 +112,19 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
           <p className="mt-2 text-sm text-secondary">by {book.author}</p>
 
           {status === "unlocked" ? (
-            <div role="status" className="mt-8 flex flex-col items-start gap-4 rounded-lg border border-default bg-surface p-5">
+            <div
+              role="status"
+              className="mt-8 flex flex-col items-start gap-4 rounded-lg border border-default bg-surface p-5"
+            >
               <p className="flex items-center gap-2 font-medium">
-                <Check aria-hidden className="size-4 text-success" /> It&apos;s yours – start reading below, or take the PDF with you.
+                <Check aria-hidden className="size-4 text-success" /> It&apos;s yours – start reading below, or take the
+                PDF with you.
               </p>
-              <Button onClick={() => void onDownload()} loading={downloading} icon={<Download aria-hidden className="size-4" />}>
+              <Button
+                onClick={() => void onDownload()}
+                loading={downloading}
+                icon={<Download aria-hidden className="size-4" />}
+              >
                 Download PDF
               </Button>
             </div>
@@ -127,7 +149,9 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
                   Get the eBook
                 </Button>
               </div>
-              <p className="text-xs text-secondary">Free, instant access. Prototype: your email isn’t sent or stored anywhere.</p>
+              <p className="text-xs text-secondary">
+                Free, instant access. Prototype: your email isn’t sent or stored anywhere.
+              </p>
             </form>
           )}
         </div>

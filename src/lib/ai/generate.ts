@@ -43,7 +43,11 @@ export function shapeIdea(roughIdea: string): string[] {
   const t = roughIdea.trim().replace(/[.!?]+$/, "");
   if (!t) return [...exampleTopics];
   const lower = lowerFirst(t);
-  return [`${upperFirst(t)} for complete beginners`, `${upperFirst(t)}: a 30-day plan for busy people`, `Common ${lower} mistakes and how to fix them`];
+  return [
+    `${upperFirst(t)} for complete beginners`,
+    `${upperFirst(t)}: a 30-day plan for busy people`,
+    `Common ${lower} mistakes and how to fix them`,
+  ];
 }
 
 export function suggestAudiences(topic: string): string[] {
@@ -77,7 +81,10 @@ export function suggestTitles(b: Brief, round = 0): { style: TitleStyle; title: 
 export function draftOutline(b: Brief): { title: string; summary: string }[] {
   if (isDemoTopic(b.topic) && demoOutline.length) return demoOutline.map((c) => ({ ...c }));
   const seed = hashSeed(b.topic.toLowerCase());
-  return slots.map((slot, i) => ({ title: upperFirst(fill(pick(slot.titles, seed, i), b)), summary: fill(slot.summary, b) }));
+  return slots.map((slot, i) => ({
+    title: upperFirst(fill(pick(slot.titles, seed, i), b)),
+    summary: fill(slot.summary, b),
+  }));
 }
 
 /** An alternative idea for one chapter slot ("Suggest another idea"). */
@@ -115,7 +122,11 @@ export function writeChapter(
 
   switch (opts?.direction) {
     case "shorter":
-      out = [sentences(base[0]).slice(0, 2).join(" "), sentences(base[Math.floor(base.length / 2)])[0], sentences(base[base.length - 1])[0]];
+      out = [
+        sentences(base[0]).slice(0, 2).join(" "),
+        sentences(base[Math.floor(base.length / 2)])[0],
+        sentences(base[base.length - 1])[0],
+      ];
       break;
     case "simpler":
       out = base.map((p, i) => (i === 0 ? "In short: " : "") + sentences(p).slice(0, 2).join(" "));
@@ -127,13 +138,19 @@ export function writeChapter(
       out = [...base, "Try this:", slot.steps.map((s, i) => `${i + 1}. ${fill(s, b)}`).join("\n")];
       break;
     case "warmer":
-      out = [`If this feels like a lot, that's completely normal – most ${lowerFirst(b.audience || "readers")} feel the same at first. Go one step at a time.`, ...base];
+      out = [
+        `If this feels like a lot, that's completely normal – most ${lowerFirst(b.audience || "readers")} feel the same at first. Go one step at a time.`,
+        ...base,
+      ];
       break;
   }
 
   if (opts?.instruction?.trim()) {
     const ask = opts.instruction.trim().replace(/[.!?]+$/, "");
-    out = [...out, `${upperFirst(ask)}: here's how that looks in practice. Start small, keep the same steps, and adjust the amount to fit your situation – the method doesn't change, only the scale does.`];
+    out = [
+      ...out,
+      `${upperFirst(ask)}: here's how that looks in practice. Start small, keep the same steps, and adjust the amount to fit your situation – the method doesn't change, only the scale does.`,
+    ];
   }
   return out;
 }

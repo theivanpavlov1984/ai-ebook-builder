@@ -37,7 +37,7 @@ export function Cover({
       role="img"
       aria-label={label}
       data-direction={design.direction}
-      className={cn("block h-auto rounded-r-sm rounded-l-[3px] shadow-book", sizes[size], className)}
+      className={cn("block h-auto rounded-l-[3px] rounded-r-sm shadow-book", sizes[size], className)}
     >
       <rect width={scene.width} height={scene.height} fill={scene.bg} />
       {scene.shapes.map((s, i) => createElement(s.kind, { key: i, ...s.attrs }))}

@@ -78,7 +78,10 @@ describe("Studio", () => {
     const id = newBook();
     wrap(<Studio id={id} rewriteMs={0} />);
     const panel = screen.getByRole("region", { name: /adjust/i });
-    await userEvent.type(within(panel).getByLabelText(/or tell us what to change/i), "Add an example for a family of four");
+    await userEvent.type(
+      within(panel).getByLabelText(/or tell us what to change/i),
+      "Add an example for a family of four",
+    );
     await userEvent.click(within(panel).getByRole("button", { name: /^rewrite/i }));
     await waitFor(() => expect(st().books[id].chapters[0].body.join(" ")).toMatch(/family of four/i));
   });

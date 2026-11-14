@@ -31,7 +31,9 @@ export function FinalStep({ id, download = downloadPdf }: { id: string; download
 function PagePreview({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <figure className="flex flex-col gap-2">
-      <div className="aspect-[5/7] w-56 overflow-hidden rounded-r-sm rounded-l-[3px] bg-surface p-5 shadow-book">{children}</div>
+      <div className="aspect-[5/7] w-56 overflow-hidden rounded-l-[3px] rounded-r-sm bg-surface p-5 shadow-book">
+        {children}
+      </div>
       <figcaption className="text-xs text-secondary">{label}</figcaption>
     </figure>
   );
@@ -90,7 +92,13 @@ function Final({ id, download }: { id: string; download: Download }) {
             </p>
             <div className="mt-8 flex flex-wrap gap-6">
               <figure className="flex flex-col gap-2">
-                <Cover design={bookDesign(book)} title={title} subtitle={book.subtitle} author={book.author} size="lg" />
+                <Cover
+                  design={bookDesign(book)}
+                  title={title}
+                  subtitle={book.subtitle}
+                  author={book.author}
+                  size="lg"
+                />
                 <figcaption className="text-xs text-secondary">Cover</figcaption>
               </figure>
               <PagePreview label="Contents">
@@ -112,7 +120,9 @@ function Final({ id, download }: { id: string; download: Download }) {
               )}
               <PagePreview label="Last page">
                 <p className="text-[8px] tracking-wider text-secondary uppercase">{cta.heading}</p>
-                <p className="mt-2 border-l-2 border-accent pl-2 font-display text-[10px] leading-snug whitespace-pre-line">{cta.body}</p>
+                <p className="mt-2 border-l-2 border-accent pl-2 font-display text-[10px] leading-snug whitespace-pre-line">
+                  {cta.body}
+                </p>
               </PagePreview>
             </div>
           </section>
@@ -125,14 +135,22 @@ function Final({ id, download }: { id: string; download: Download }) {
                   <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" />
                   <span>
                     Author: {book.author}{" "}
-                    <Link href={`/book/${id}/review`} className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}>
+                    <Link
+                      href={`/book/${id}/review`}
+                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
+                    >
                       change
                     </Link>
                   </span>
                 </li>
                 <li>
                   <label className="flex cursor-pointer items-start gap-2">
-                    <input type="checkbox" checked={skimmed} onChange={(e) => setSkimmed(e.target.checked)} className="mt-0.5 size-4 accent-accent" />
+                    <input
+                      type="checkbox"
+                      checked={skimmed}
+                      onChange={(e) => setSkimmed(e.target.checked)}
+                      className="mt-0.5 size-4 accent-accent"
+                    />
                     <span>I’ve skimmed the chapters – AI can make mistakes, especially with facts and numbers.</span>
                   </label>
                 </li>
@@ -153,15 +171,35 @@ function Final({ id, download }: { id: string; download: Download }) {
               <label className="sr-only" htmlFor="share-link">
                 Share link
               </label>
-              <input id="share-link" readOnly value={link} onFocus={(e) => e.currentTarget.select()} className={cn("h-9 w-full truncate rounded-md border border-default bg-canvas px-3 text-xs text-secondary", focusRing)} />
+              <input
+                id="share-link"
+                readOnly
+                value={link}
+                onFocus={(e) => e.currentTarget.select()}
+                className={cn(
+                  "h-9 w-full truncate rounded-md border border-default bg-canvas px-3 text-xs text-secondary",
+                  focusRing,
+                )}
+              />
               {link && (
-                <a href={link} target="_blank" rel="noreferrer" className={cn("inline-flex items-center gap-1.5 self-start rounded-sm text-sm text-accent-strong", focusRing)}>
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(
+                    "inline-flex items-center gap-1.5 self-start rounded-sm text-sm text-accent-strong",
+                    focusRing,
+                  )}
+                >
                   Open the landing page <ExternalLink aria-hidden className="size-3.5" />
                 </a>
               )}
             </div>
 
-            <Link href={`/book/${id}/review`} className={cn("self-start rounded-sm text-sm text-secondary hover:text-primary", focusRing)}>
+            <Link
+              href={`/book/${id}/review`}
+              className={cn("self-start rounded-sm text-sm text-secondary hover:text-primary", focusRing)}
+            >
               ← Keep editing
             </Link>
           </aside>

@@ -23,9 +23,16 @@ export function NotFound() {
       <div className="mx-auto flex max-w-xl flex-col items-start gap-4 px-10 py-24">
         <h1 className="font-display text-2xl font-medium">We couldn’t find this book</h1>
         <p className="text-md text-secondary">
-          Books are saved in this browser. If you started it on another device or cleared your browser data, it won’t be here.
+          Books are saved in this browser. If you started it on another device or cleared your browser data, it won’t be
+          here.
         </p>
-        <Link href="/" className={cn("inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse", focusRing)}>
+        <Link
+          href="/"
+          className={cn(
+            "inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse",
+            focusRing,
+          )}
+        >
           Start a new book
         </Link>
       </div>
@@ -33,11 +40,25 @@ export function NotFound() {
   );
 }
 
-export function StepHeader({ title, intro, back }: { title: string; intro?: ReactNode; back?: { href: string; label: string } }) {
+export function StepHeader({
+  title,
+  intro,
+  back,
+}: {
+  title: string;
+  intro?: ReactNode;
+  back?: { href: string; label: string };
+}) {
   return (
     <header className="mb-8">
       {back && (
-        <Link href={back.href} className={cn("mb-4 inline-flex items-center gap-1.5 rounded-sm text-sm text-secondary hover:text-primary", focusRing)}>
+        <Link
+          href={back.href}
+          className={cn(
+            "mb-4 inline-flex items-center gap-1.5 rounded-sm text-sm text-secondary hover:text-primary",
+            focusRing,
+          )}
+        >
           <ArrowLeft aria-hidden className="size-3.5" /> {back.label}
         </Link>
       )}

@@ -7,11 +7,25 @@ const css = readFileSync(join(process.cwd(), "src/styles/tokens.css"), "utf8");
 // Semantic roles from docs/design-system.md §4.2. CSS variables use the --primer- prefix
 // so they never collide with Tailwind's --color-* theme namespace.
 const semantic = [
-  "bg-canvas", "bg-surface", "bg-subtle", "bg-inverse",
-  "text-primary", "text-secondary", "text-inverse", "text-accent",
-  "border-default", "border-strong",
-  "accent", "accent-subtle", "focus-ring",
-  "danger", "danger-subtle", "success", "success-subtle", "warning", "warning-subtle",
+  "bg-canvas",
+  "bg-surface",
+  "bg-subtle",
+  "bg-inverse",
+  "text-primary",
+  "text-secondary",
+  "text-inverse",
+  "text-accent",
+  "border-default",
+  "border-strong",
+  "accent",
+  "accent-subtle",
+  "focus-ring",
+  "danger",
+  "danger-subtle",
+  "success",
+  "success-subtle",
+  "warning",
+  "warning-subtle",
 ];
 
 describe("tokens.css", () => {

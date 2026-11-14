@@ -38,7 +38,9 @@ export function CoverPanel({ book }: { book: Book }) {
               role="radio"
               aria-checked={checked}
               aria-label={`${styleName[direction]} style`}
-              onClick={() => updateBook(book.id, { cover: { ...book.cover, direction, variant: 0 } }, { snapshot: true })}
+              onClick={() =>
+                updateBook(book.id, { cover: { ...book.cover, direction, variant: 0 } }, { snapshot: true })
+              }
               className={cn(
                 "flex flex-col items-center gap-1.5 rounded-md border p-2",
                 checked ? "border-inverse bg-surface" : "border-transparent hover:border-default",
@@ -46,7 +48,12 @@ export function CoverPanel({ book }: { book: Book }) {
               )}
             >
               <Cover
-                design={getCoverDesign({ title, mood: book.mood, direction, variant: checked ? book.cover.variant : 0 })}
+                design={getCoverDesign({
+                  title,
+                  mood: book.mood,
+                  direction,
+                  variant: checked ? book.cover.variant : 0,
+                })}
                 title={title}
                 size="none"
                 className="w-full"
@@ -61,15 +68,25 @@ export function CoverPanel({ book }: { book: Book }) {
         variant="secondary"
         size="sm"
         icon={<Shuffle aria-hidden className="size-3.5" />}
-        onClick={() => updateBook(book.id, { cover: { ...book.cover, variant: book.cover.variant + 1 } }, { snapshot: true })}
+        onClick={() =>
+          updateBook(book.id, { cover: { ...book.cover, variant: book.cover.variant + 1 } }, { snapshot: true })
+        }
       >
         Shuffle this style
       </Button>
 
       <div className="flex flex-col gap-4 border-t border-default pt-4">
         <Input label="Title" value={book.title} onChange={(e) => updateBook(book.id, { title: e.target.value })} />
-        <Input label="Subtitle" value={book.subtitle} onChange={(e) => updateBook(book.id, { subtitle: e.target.value })} />
-        <Input label="Author name" value={book.author} onChange={(e) => updateBook(book.id, { author: e.target.value })} />
+        <Input
+          label="Subtitle"
+          value={book.subtitle}
+          onChange={(e) => updateBook(book.id, { subtitle: e.target.value })}
+        />
+        <Input
+          label="Author name"
+          value={book.author}
+          onChange={(e) => updateBook(book.id, { author: e.target.value })}
+        />
       </div>
     </div>
   );

@@ -1,15 +1,33 @@
 import { shapeIdea } from "./generate";
 
 export type TopicCheck =
-  | { ok: true }
-  | { ok: false; kind: "empty" | "short" | "gibberish" | "broad"; message: string; suggestions: string[] };
+  { ok: true } | { ok: false; kind: "empty" | "short" | "gibberish" | "broad"; message: string; suggestions: string[] };
 
-const BROAD = ["business", "marketing", "health", "design", "money", "life", "fitness", "productivity", "sales", "cooking"];
+const BROAD = [
+  "business",
+  "marketing",
+  "health",
+  "design",
+  "money",
+  "life",
+  "fitness",
+  "productivity",
+  "sales",
+  "cooking",
+];
 const NARROWER: Record<string, string[]> = {
   design: ["Design systems for small teams", "Designing your first landing page", "Design feedback for non-designers"],
   marketing: ["Email marketing for solo founders", "LinkedIn marketing for consultants", "Marketing a local bakery"],
-  business: ["Starting a side business while employed", "Pricing your freelance services", "Hiring your first employee"],
-  health: ["Healthy lunches for busy office workers", "Better sleep for new parents", "Desk stretches for remote workers"],
+  business: [
+    "Starting a side business while employed",
+    "Pricing your freelance services",
+    "Hiring your first employee",
+  ],
+  health: [
+    "Healthy lunches for busy office workers",
+    "Better sleep for new parents",
+    "Desk stretches for remote workers",
+  ],
   money: ["Budgeting for freelancers with irregular income", "Saving for your first home", "Money talks for couples"],
   fitness: ["Strength training for beginners over 40", "A 20-minute home workout plan", "Running your first 5K"],
 };
@@ -29,7 +47,12 @@ export function validateTopic(topic: string): TopicCheck {
   const words = text.split(/\s+/).filter(Boolean);
 
   if (words.length === 0) {
-    return { ok: false, kind: "empty", message: "What's your book about? One sentence is enough.", suggestions: shapeIdea("") };
+    return {
+      ok: false,
+      kind: "empty",
+      message: "What's your book about? One sentence is enough.",
+      suggestions: shapeIdea(""),
+    };
   }
 
   const mashed = words.filter(looksLikeKeyboardMash).length;

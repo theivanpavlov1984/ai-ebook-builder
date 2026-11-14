@@ -22,7 +22,17 @@ function ShapeEl({ shape }: { shape: Shape }) {
   }
 }
 
-export function PdfCover({ scene, width, height, fonts }: { scene: CoverScene; width: number; height: number; fonts: PdfFonts }) {
+export function PdfCover({
+  scene,
+  width,
+  height,
+  fonts,
+}: {
+  scene: CoverScene;
+  width: number;
+  height: number;
+  fonts: PdfFonts;
+}) {
   const t = scene.title;
   return (
     <Svg width={width} height={height} viewBox={`0 0 ${scene.width} ${scene.height}`}>
@@ -31,11 +41,21 @@ export function PdfCover({ scene, width, height, fonts }: { scene: CoverScene; w
         <ShapeEl key={i} shape={s} />
       ))}
       {scene.author && (
-        <Text x={scene.author.x} y={scene.author.y} fill={scene.author.color} style={{ fontFamily: family("ui", fonts), fontSize: scene.author.size, letterSpacing: 1.2 }}>
+        <Text
+          x={scene.author.x}
+          y={scene.author.y}
+          fill={scene.author.color}
+          style={{ fontFamily: family("ui", fonts), fontSize: scene.author.size, letterSpacing: 1.2 }}
+        >
           {scene.author.text.toUpperCase()}
         </Text>
       )}
-      <Text x={t.x} y={t.y} fill={t.color} style={{ fontFamily: family(t.font, fonts), fontSize: t.size, fontWeight: t.weight }}>
+      <Text
+        x={t.x}
+        y={t.y}
+        fill={t.color}
+        style={{ fontFamily: family(t.font, fonts), fontSize: t.size, fontWeight: t.weight }}
+      >
         {titleTspans(scene).map((s, i) => (
           <Tspan key={i} x={s.x} y={s.y}>
             {s.text}

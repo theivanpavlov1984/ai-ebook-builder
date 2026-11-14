@@ -38,7 +38,11 @@ const type = [
   { name: "text-2xl · display", cls: "font-display text-2xl font-medium", sample: "What's your book about?" },
   { name: "text-xl · display", cls: "font-display text-xl font-medium", sample: "Your outline" },
   { name: "text-lg · display", cls: "font-display text-lg font-medium", sample: "Chapter 1 — Start with an audit" },
-  { name: "reader · display", cls: "font-display text-reader", sample: "A design system is a shared language. Start small." },
+  {
+    name: "reader · display",
+    cls: "font-display text-reader",
+    sample: "A design system is a shared language. Start small.",
+  },
   { name: "text-md · ui", cls: "text-md", sample: "Founders and product teams of 3–10 people" },
   { name: "text-base · ui", cls: "text-base", sample: "Three quick questions. You can change everything later." },
   { name: "text-sm · ui", cls: "text-sm", sample: "~6 chapters · ~16 pages · 20-minute read" },
@@ -77,7 +81,10 @@ export function Showcase() {
         </p>
       </header>
 
-      <Section title="Color" note="Semantic tokens and the primitive each one maps to. Components never use primitives directly.">
+      <Section
+        title="Color"
+        note="Semantic tokens and the primitive each one maps to. Components never use primitives directly."
+      >
         <div className="grid grid-cols-3 gap-4">
           {colors.map((c) => (
             <div key={c.name} className="flex items-center gap-3">
@@ -93,7 +100,10 @@ export function Showcase() {
         </div>
       </Section>
 
-      <Section title="Typography" note="Newsreader for the book voice, Geist for the interface, Bricolage Grotesque for the wordmark only.">
+      <Section
+        title="Typography"
+        note="Newsreader for the book voice, Geist for the interface, Bricolage Grotesque for the wordmark only."
+      >
         <div className="flex flex-col gap-4">
           {type.map((t) => (
             <div key={t.name} className="grid grid-cols-[180px_1fr] items-baseline gap-6">
@@ -104,7 +114,10 @@ export function Showcase() {
         </div>
       </Section>
 
-      <Section title="Spacing, radius, shadows" note="4 px base. Radius 6 / 10 / 16 / full. Two UI shadows plus a book shadow for covers.">
+      <Section
+        title="Spacing, radius, shadows"
+        note="4 px base. Radius 6 / 10 / 16 / full. Two UI shadows plus a book shadow for covers."
+      >
         <div className="flex items-end gap-3">
           {spacing.map((s) => (
             <div key={s} className="flex flex-col items-center gap-2">
@@ -115,12 +128,18 @@ export function Showcase() {
         </div>
         <div className="mt-8 flex gap-6">
           {["rounded-sm", "rounded-md", "rounded-lg", "rounded-full"].map((r) => (
-            <div key={r} className={`flex size-20 items-center justify-center border border-default bg-surface text-xs text-secondary ${r}`}>
+            <div
+              key={r}
+              className={`flex size-20 items-center justify-center border border-default bg-surface text-xs text-secondary ${r}`}
+            >
               {r.replace("rounded-", "")}
             </div>
           ))}
           {["shadow-sm", "shadow-md", "shadow-book"].map((s) => (
-            <div key={s} className={`flex size-20 items-center justify-center rounded-md bg-surface text-xs text-secondary ${s}`}>
+            <div
+              key={s}
+              className={`flex size-20 items-center justify-center rounded-md bg-surface text-xs text-secondary ${s}`}
+            >
               {s.replace("shadow-", "")}
             </div>
           ))}
@@ -149,7 +168,12 @@ export function Showcase() {
 
       <Section title="Fields" note="Errors always come with an icon and text — never color alone.">
         <div className="grid max-w-3xl grid-cols-2 gap-6">
-          <Input label="Topic" placeholder="e.g. Design systems for small teams" value={topic} onChange={(e) => setTopic(e.target.value)} />
+          <Input
+            label="Topic"
+            placeholder="e.g. Design systems for small teams"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+          />
           <Input label="Who is it for?" hint="One sentence is enough" defaultValue="Founders and product teams" />
           <Input label="Topic" error="Tell us a bit more — what should the reader learn?" defaultValue="asdf" />
           <Textarea label="What should readers do after reading?" hint="Becomes the last page of your book" autoGrow />
@@ -187,7 +211,12 @@ export function Showcase() {
             items={[
               { id: "outline", label: "Outline · 6 chapters", status: "done" },
               { id: "ch1", label: "Chapter 1 — Start with an audit", status: "done" },
-              { id: "ch2", label: "Chapter 2 — Tokens before components", status: "working", detail: "About 10 seconds left" },
+              {
+                id: "ch2",
+                label: "Chapter 2 — Tokens before components",
+                status: "working",
+                detail: "About 10 seconds left",
+              },
               { id: "ch3", label: "Chapter 3 — Your first five components", status: "failed" },
               { id: "cover", label: "Cover", status: "waiting" },
             ]}
@@ -203,11 +232,16 @@ export function Showcase() {
           </Button>
           <Button
             variant="secondary"
-            onClick={() => show({ tone: "info", message: "Chapter rewritten", action: { label: "Undo", onClick: () => {} } })}
+            onClick={() =>
+              show({ tone: "info", message: "Chapter rewritten", action: { label: "Undo", onClick: () => {} } })
+            }
           >
             Toast with undo
           </Button>
-          <Button variant="secondary" onClick={() => show({ tone: "error", message: "Couldn't create the PDF. Try again." })}>
+          <Button
+            variant="secondary"
+            onClick={() => show({ tone: "error", message: "Couldn't create the PDF. Try again." })}
+          >
             Error toast
           </Button>
           <Button variant="secondary" onClick={() => setDialog(true)}>
@@ -230,25 +264,43 @@ export function Showcase() {
         />
       </Section>
 
-      <Section title="Covers" note="Four art directions. Composition comes from the title, palette from the mood; the title always fits — even 83 characters.">
+      <Section
+        title="Covers"
+        note="Four art directions. Composition comes from the title, palette from the mood; the title always fits — even 83 characters."
+      >
         <div className="flex flex-wrap gap-6">
           {directions.map((d) => (
             <div key={d} className="flex flex-col gap-2">
-              <Cover design={getCoverDesign({ title: TITLE, mood: "practical", direction: d })} title={TITLE} author="Ivan Pavlov" />
+              <Cover
+                design={getCoverDesign({ title: TITLE, mood: "practical", direction: d })}
+                title={TITLE}
+                author="Ivan Pavlov"
+              />
               <span className="text-xs text-secondary">{d}</span>
             </div>
           ))}
         </div>
         <div className="mt-6 flex flex-wrap gap-6">
           {directions.map((d) => (
-            <Cover key={d} design={getCoverDesign({ title: LONG, mood: "calm", direction: d, variant: 1 })} title={LONG} author="Ivan Pavlov" size="sm" />
+            <Cover
+              key={d}
+              design={getCoverDesign({ title: LONG, mood: "calm", direction: d, variant: 1 })}
+              title={LONG}
+              author="Ivan Pavlov"
+              size="sm"
+            />
           ))}
         </div>
       </Section>
 
       <Section title="Book cards">
         <div className="flex gap-4">
-          <BookCard title={TITLE} status="draft" design={getCoverDesign({ title: TITLE, mood: "practical" })} author="Ivan Pavlov" />
+          <BookCard
+            title={TITLE}
+            status="draft"
+            design={getCoverDesign({ title: TITLE, mood: "practical" })}
+            author="Ivan Pavlov"
+          />
           <BookCard
             title="Calm Mornings for Busy Founders"
             status="finalized"

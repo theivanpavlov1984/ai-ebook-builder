@@ -22,7 +22,12 @@ export function Chip({
   children: ReactNode;
 }) {
   return (
-    <button type="button" aria-pressed={selected} onClick={onToggle} className={cn(chipBase, selected ? chipOn : chipOff)}>
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onToggle}
+      className={cn(chipBase, selected ? chipOn : chipOff)}
+    >
       {children}
     </button>
   );

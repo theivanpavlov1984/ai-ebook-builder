@@ -3,7 +3,14 @@ import { estimate } from "./estimate";
 import type { Chapter } from "./types";
 
 const outlined = (n: number): Chapter[] =>
-  Array.from({ length: n }, (_, i) => ({ id: `c${i}`, title: "t", summary: "", body: [], status: "idle", versions: [] }));
+  Array.from({ length: n }, (_, i) => ({
+    id: `c${i}`,
+    title: "t",
+    summary: "",
+    body: [],
+    status: "idle",
+    versions: [],
+  }));
 
 const words = (n: number) => Array.from({ length: n }, () => "word").join(" ");
 

@@ -23,7 +23,8 @@ const gets = [
 function MiniInput() {
   return (
     <div aria-hidden className="rounded-md border border-default bg-surface px-3 py-2.5 font-display text-md">
-      Calm mornings for busy founders<span className="ml-0.5 inline-block h-4 w-px animate-pulse bg-accent align-middle" />
+      Calm mornings for busy founders
+      <span className="ml-0.5 inline-block h-4 w-px animate-pulse bg-accent align-middle" />
     </div>
   );
 }
@@ -46,7 +47,9 @@ function MiniProgress() {
 function MiniSignup() {
   return (
     <div aria-hidden className="flex gap-2 rounded-md border border-default bg-surface p-3">
-      <span className="flex-1 rounded-sm border border-default px-2.5 py-2 text-sm text-secondary">reader@email.com</span>
+      <span className="flex-1 rounded-sm border border-default px-2.5 py-2 text-sm text-secondary">
+        reader@email.com
+      </span>
       <span className="rounded-sm bg-inverse px-3 py-2 text-sm font-medium text-on-inverse">Get the eBook</span>
     </div>
   );
@@ -54,8 +57,16 @@ function MiniSignup() {
 
 const steps = [
   { title: "Tell us your idea", text: "One sentence about what you know and who it’s for.", Visual: MiniInput },
-  { title: "We write and design it", text: "Chapters, cover and layout in about a minute. Read along as it’s written.", Visual: MiniProgress },
-  { title: "Share it, get subscribers", text: "Send the PDF, or share a page where readers sign up to get it.", Visual: MiniSignup },
+  {
+    title: "We write and design it",
+    text: "Chapters, cover and layout in about a minute. Read along as it’s written.",
+    Visual: MiniProgress,
+  },
+  {
+    title: "Share it, get subscribers",
+    text: "Send the PDF, or share a page where readers sign up to get it.",
+    Visual: MiniSignup,
+  },
 ];
 
 export function Landing() {
@@ -67,20 +78,30 @@ export function Landing() {
         <Link href="/" aria-label="Primer home" className={cn("rounded-sm", focusRing)}>
           <Wordmark />
         </Link>
-        <Link href="/books" className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-base text-secondary hover:text-primary", focusRing)}>
+        <Link
+          href="/books"
+          className={cn(
+            "flex items-center gap-2 rounded-md px-3 py-2 text-base text-secondary hover:text-primary",
+            focusRing,
+          )}
+        >
           <Library aria-hidden className="size-4" /> My books
         </Link>
       </header>
 
       <main>
-        <section id="start" className="mx-auto grid max-w-[1160px] grid-cols-[minmax(0,1fr)_420px] items-center gap-20 px-8 pt-10 pb-24">
+        <section
+          id="start"
+          className="mx-auto grid max-w-[1160px] grid-cols-[minmax(0,1fr)_420px] items-center gap-20 px-8 pt-10 pb-24"
+        >
           <div className="flex max-w-[600px] flex-col gap-7">
             <h1 className="font-display text-[64px] leading-[1.02] font-medium tracking-[-0.01em]">
               Turn what you know into a free eBook
             </h1>
             <p className="text-md text-secondary">
-              For coaches, experts and creators who want more subscribers. Write one sentence – Primer writes the chapters,
-              designs the cover and gives you a PDF and a sign-up page. About five minutes, no writing skills needed.
+              For coaches, experts and creators who want more subscribers. Write one sentence – Primer writes the
+              chapters, designs the cover and gives you a PDF and a sign-up page. About five minutes, no writing skills
+              needed.
             </p>
             <StartForm value={topic} onValueChange={setTopic} />
             <p className="text-sm text-secondary">Free, no sign-up.</p>
@@ -109,7 +130,10 @@ export function Landing() {
           </div>
         </section>
 
-        <section aria-labelledby="gets" className="mx-auto grid max-w-[1160px] grid-cols-[320px_minmax(0,1fr)] gap-16 px-8 py-20">
+        <section
+          aria-labelledby="gets"
+          className="mx-auto grid max-w-[1160px] grid-cols-[320px_minmax(0,1fr)] gap-16 px-8 py-20"
+        >
           <h2 id="gets" className="font-display text-2xl font-medium">
             What you get
           </h2>
@@ -129,7 +153,9 @@ export function Landing() {
               <h2 id="examples" className="font-display text-2xl font-medium">
                 See real examples
               </h2>
-              <p className="mt-3 text-base text-secondary">Each one opens the page its readers would see – email form and all.</p>
+              <p className="mt-3 text-base text-secondary">
+                Each one opens the page its readers would see – email form and all.
+              </p>
             </div>
             <ExampleShelf />
           </div>
@@ -141,8 +167,13 @@ export function Landing() {
           </p>
           <a
             href="#start"
-            onClick={() => setTimeout(() => document.querySelector<HTMLTextAreaElement>("#start textarea")?.focus(), 300)}
-            className={cn("inline-flex h-12 items-center rounded-md bg-inverse px-6 text-md font-medium text-on-inverse hover:opacity-90", focusRing)}
+            onClick={() =>
+              setTimeout(() => document.querySelector<HTMLTextAreaElement>("#start textarea")?.focus(), 300)
+            }
+            className={cn(
+              "inline-flex h-12 items-center rounded-md bg-inverse px-6 text-md font-medium text-on-inverse hover:opacity-90",
+              focusRing,
+            )}
           >
             Start my book
           </a>

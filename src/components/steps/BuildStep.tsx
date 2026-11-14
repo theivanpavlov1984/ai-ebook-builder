@@ -40,7 +40,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
   const shown = book.chapters.find((c) => c.id === shownId);
   const shownIndex = book.chapters.findIndex((c) => c.id === shownId);
   const isStreaming = streaming && streaming.id === shownId && !viewing;
-  const paragraphs = isStreaming ? streaming.text.split("\n\n") : shown?.body ?? [];
+  const paragraphs = isStreaming ? streaming.text.split("\n\n") : (shown?.body ?? []);
 
   const aside = (
     <aside aria-label="Progress" className="sticky top-8 flex flex-col gap-6">
@@ -50,7 +50,10 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
         subtitle={book.subtitle}
         author={book.author}
         size="md"
-        className={cn("transition-[opacity,filter] duration-500", book.cover.status === "done" ? "opacity-100" : "opacity-40 grayscale")}
+        className={cn(
+          "transition-[opacity,filter] duration-500",
+          book.cover.status === "done" ? "opacity-100" : "opacity-40 grayscale",
+        )}
       />
       <ProgressList items={items} onRetry={retry} />
     </aside>
@@ -60,7 +63,11 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
     <CreationLayout book={book} stage="build" aside={aside}>
       <StepHeader
         title={done ? "Your book is ready" : "Writing your book"}
-        intro={resumed && !done ? "Picking up where you left off – finished chapters are kept." : "You can start reading as soon as the first chapter appears."}
+        intro={
+          resumed && !done
+            ? "Picking up where you left off – finished chapters are kept."
+            : "You can start reading as soon as the first chapter appears."
+        }
       />
 
       <div className="mb-6 flex min-h-10 items-center justify-between gap-4">
@@ -90,7 +97,9 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
                 onClick={() => setViewing(c.id)}
                 className={cn(
                   "rounded-full border px-3 py-1 text-sm",
-                  c.id === shownId ? "border-inverse bg-inverse text-on-inverse" : "border-default bg-surface text-secondary hover:text-primary",
+                  c.id === shownId
+                    ? "border-inverse bg-inverse text-on-inverse"
+                    : "border-default bg-surface text-secondary hover:text-primary",
                   focusRing,
                 )}
               >
@@ -110,7 +119,9 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
               {paragraphs.map((p, i) => (
                 <p key={i} className="whitespace-pre-line">
                   {p}
-                  {isStreaming && i === paragraphs.length - 1 && <span aria-hidden className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-accent align-middle" />}
+                  {isStreaming && i === paragraphs.length - 1 && (
+                    <span aria-hidden className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-accent align-middle" />
+                  )}
                 </p>
               ))}
             </div>

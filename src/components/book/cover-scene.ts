@@ -106,7 +106,10 @@ function art(design: CoverDesign): Shape[] {
       return [
         { kind: "line", attrs: { x1: PAD, x2: W - PAD, y1: 34, y2: 34, stroke: p.ink, strokeOpacity: 0.35 } },
         { kind: "circle", attrs: { cx: W - 40 - r() * 30, cy: 95 + r() * 20, r: 70 + r() * 30, fill: p.accent } },
-        { kind: "circle", attrs: { cx: 40 + r() * 40, cy: 130 + r() * 20, r: 28 + r() * 14, fill: p.accent2, fillOpacity: 0.85 } },
+        {
+          kind: "circle",
+          attrs: { cx: 40 + r() * 40, cy: 130 + r() * 20, r: 28 + r() * 14, fill: p.accent2, fillOpacity: 0.85 },
+        },
       ];
     case "geometric": {
       const shapes: Shape[] = [];
@@ -133,8 +136,29 @@ function art(design: CoverDesign): Shape[] {
     }
     case "organic":
       return [
-        { kind: "ellipse", attrs: { cx: 70 + r() * 30, cy: 90 + r() * 20, rx: 70, ry: 52, fill: p.accent2, transform: `rotate(${(r() * 40 - 20).toFixed(2)} 100 100)` } },
-        { kind: "ellipse", attrs: { cx: 120 + r() * 30, cy: 110 + r() * 20, rx: 50, ry: 40, fill: p.accent, fillOpacity: 0.75, transform: `rotate(${(r() * 60 - 30).toFixed(2)} 130 120)` } },
+        {
+          kind: "ellipse",
+          attrs: {
+            cx: 70 + r() * 30,
+            cy: 90 + r() * 20,
+            rx: 70,
+            ry: 52,
+            fill: p.accent2,
+            transform: `rotate(${(r() * 40 - 20).toFixed(2)} 100 100)`,
+          },
+        },
+        {
+          kind: "ellipse",
+          attrs: {
+            cx: 120 + r() * 30,
+            cy: 110 + r() * 20,
+            rx: 50,
+            ry: 40,
+            fill: p.accent,
+            fillOpacity: 0.75,
+            transform: `rotate(${(r() * 60 - 30).toFixed(2)} 130 120)`,
+          },
+        },
         { kind: "circle", attrs: { cx: 50 + r() * 100, cy: 50 + r() * 20, r: 10, fill: p.ink, fillOpacity: 0.15 } },
       ];
     case "typographic":

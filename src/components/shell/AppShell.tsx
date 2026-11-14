@@ -37,7 +37,9 @@ export function AppShell({ active, children }: { active: "new" | "books"; childr
                 className={cn(
                   "flex items-center gap-2.5 rounded-md px-3 py-2 text-base",
                   "transition-colors duration-150 ease-standard",
-                  on ? "bg-accent-subtle font-semibold text-accent-strong" : "text-secondary hover:bg-surface hover:text-primary",
+                  on
+                    ? "bg-accent-subtle font-semibold text-accent-strong"
+                    : "text-secondary hover:bg-surface hover:text-primary",
                   focusRing,
                 )}
               >

@@ -56,7 +56,9 @@ describe("share links", () => {
       cta: book.cta,
       cover: { direction: "organic", variant: 2 },
     });
-    expect(back.chapters.map((c) => [c.title, c.summary, c.body])).toEqual(chapters.map((c) => [c.title, c.summary, c.body]));
+    expect(back.chapters.map((c) => [c.title, c.summary, c.body])).toEqual(
+      chapters.map((c) => [c.title, c.summary, c.body]),
+    );
   });
 
   it("rejects cut, edited or empty links", () => {

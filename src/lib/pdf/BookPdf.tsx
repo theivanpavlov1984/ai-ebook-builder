@@ -26,7 +26,17 @@ function makeStyles(fonts: PdfFonts) {
     tocNum: { width: 24, fontFamily: ui, fontSize: 9, color: ACCENT, paddingTop: 2 },
     tocTitle: { fontSize: 12.5, lineHeight: 1.3 },
     tocSummary: { fontFamily: ui, fontSize: 8.5, color: MUTED, marginTop: 3, lineHeight: 1.4 },
-    footer: { position: "absolute", bottom: 30, left: 52, right: 52, flexDirection: "row", justifyContent: "space-between", fontFamily: ui, fontSize: 8, color: MUTED },
+    footer: {
+      position: "absolute",
+      bottom: 30,
+      left: 52,
+      right: 52,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      fontFamily: ui,
+      fontSize: 8,
+      color: MUTED,
+    },
     ctaBox: { marginTop: 8, padding: 20, borderLeftWidth: 2, borderLeftColor: ACCENT },
     made: { position: "absolute", bottom: 40, left: 52, fontFamily: ui, fontSize: 8, color: MUTED },
   });

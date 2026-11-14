@@ -49,7 +49,11 @@ function DescribeForm({ id }: { id: string }) {
   function goNext(clearOutline: boolean) {
     if (clearOutline) {
       updateBook(id, { chapters: [] }, { snapshot: true });
-      show({ tone: "info", message: "Outline cleared – it will be redrafted.", action: { label: "Undo", onClick: () => undo(id) } });
+      show({
+        tone: "info",
+        message: "Outline cleared – it will be redrafted.",
+        action: { label: "Undo", onClick: () => undo(id) },
+      });
     }
     updateBook(id, { stage: forwardStage(useBooks.getState().books[id], "title") });
     router.push(`/book/${id}/title`);
@@ -163,7 +167,9 @@ function DescribeForm({ id }: { id: string }) {
               updateBook(id, { mood, cover: { ...book.cover, direction: directionsForMood(mood)[0], variant: 0 } })
             }
           />
-          <p className="mt-2 text-sm text-secondary">Sets the voice of the writing and the style of your cover – watch it change on the right.</p>
+          <p className="mt-2 text-sm text-secondary">
+            Sets the voice of the writing and the style of your cover – watch it change on the right.
+          </p>
         </div>
 
         <Textarea

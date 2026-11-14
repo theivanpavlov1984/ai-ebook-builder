@@ -80,8 +80,7 @@ export function Input({ label, hint, error, id, className, ...rest }: InputProps
   );
 }
 
-export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
-  FieldMeta & { autoGrow?: boolean };
+export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & FieldMeta & { autoGrow?: boolean };
 
 export function Textarea({ label, hint, error, id, autoGrow, className, onInput, ...rest }: TextareaProps) {
   const ids = useFieldIds(id);
@@ -114,7 +113,7 @@ export function Textarea({ label, hint, error, id, autoGrow, className, onInput,
           fit();
           onInput?.(e);
         }}
-        className={cn(control, "py-2.5 resize-none", error ? "border-danger" : "border-default", className)}
+        className={cn(control, "resize-none py-2.5", error ? "border-danger" : "border-default", className)}
         {...rest}
       />
     </FieldFrame>
