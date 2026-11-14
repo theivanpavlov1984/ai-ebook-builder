@@ -9,6 +9,7 @@ import { cn } from "@/shared/lib";
 const toggles = [
   { key: "ch2", label: "Fail chapter 2" },
   { key: "cover", label: "Fail the cover" },
+  { key: "photos", label: "Fail the photo suggestions" },
   { key: "outline", label: "Fail the outline" },
   { key: "rewrite", label: "Fail the next rewrite" },
   { key: "all", label: "Fail everything once" },

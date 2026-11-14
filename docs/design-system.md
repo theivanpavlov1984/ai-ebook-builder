@@ -164,6 +164,8 @@ Each has default, hover, focus, active, disabled and – where relevant – load
 
 **Covers have their own palettes** per art direction – they are content, not UI, so they don't use the
 app's semantic tokens. They do follow the same typography rules: the title always fits, no fake micro-text.
+Photo covers use three fixed colors (`photoColors` in `cover-design.ts`): paper, ink and light text. On a full-bleed
+photo an ink gradient sits under the text (88 % at the bottom), so light text reads on any photo.
 
 ## 6. The `/system` page
 

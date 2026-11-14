@@ -2,7 +2,8 @@
  * Cover geometry computed once and rendered twice: as SVG on screen (Cover.tsx) and in the PDF (PdfCover.tsx).
  * Coordinate system 200 × 280 (5:7), safe area 16 px from each edge.
  */
-import { titleFontSize, type ArtDirection, type CoverDesign } from "./cover-design";
+import { photoColors, titleFontSize, type ArtDirection, type CoverDesign } from "./cover-design";
+import type { PhotoLayout } from "./cover-photos";
 
 export const W = 200;
 export const H = 280;
@@ -13,6 +14,9 @@ const MAX_LINES = 5;
 export type FontRole = "display" | "ui" | "brand";
 export type Shape = { kind: "rect" | "circle" | "ellipse" | "line"; attrs: Record<string, number | string> };
 export type TextBlock = { text: string; x: number; y: number; size: number; color: string; opacity?: number };
+export type Box = { x: number; y: number; width: number; height: number };
+/** A vertical ink gradient over the photo that keeps text readable: opacity `from` at the top, `to` at the bottom. */
+export type Scrim = Box & { color: string; from: number; to: number };
 export type CoverScene = {
   width: typeof W;
   height: typeof H;
@@ -31,6 +35,9 @@ export type CoverScene = {
   };
   author?: TextBlock;
   subtitle?: { lines: string[]; x: number; y: number; lineGap: number; size: number; color: string; opacity: number };
+  /** Photo covers only: where the photo goes (cropped to fill the box) and the scrims drawn over it. */
+  photo?: Box & { src: string };
+  scrims: Scrim[];
 };
 
 const SUBTITLE_SIZE = 8;
@@ -77,12 +84,12 @@ function wrap(title: string, maxChars: number): string[] {
   return lines;
 }
 
-/** Starts from the length-based size and shrinks further until the title fits in MAX_LINES. */
-function fitTitle(title: string, style: TitleStyle) {
+/** Starts from the length-based size and shrinks further until the title fits in `maxLines`. */
+function fitTitle(title: string, style: TitleStyle, maxLines = MAX_LINES) {
   let size = titleFontSize(title, style.base, style.min);
   for (;;) {
     const lines = wrap(title, Math.max(4, Math.floor(SAFE_W / (size * style.charWidth))));
-    if (lines.length <= MAX_LINES || size <= 8) return { size, lines };
+    if (lines.length <= maxLines || size <= 8) return { size, lines };
     size -= 1;
   }
 }
@@ -169,28 +176,82 @@ function art(design: CoverDesign): Shape[] {
   }
 }
 
+/* Photo covers: one serif title style and fixed paper / ink colors, whatever the photo. */
+const PHOTO_TITLE: TitleStyle = { font: "display", base: 24, min: 10, weight: 500, charWidth: 0.5, lineHeight: 1.08 };
+const { paper: PAPER, ink: INK, light: LIGHT } = photoColors;
+
+type PhotoFrame = {
+  bg: string;
+  photo: Box;
+  scrims: Omit<Scrim, "color">[];
+  author: string;
+  text: string;
+  maxLines: number;
+};
+
+/**
+ * Full bleed: the photo fills the cover, darkened at the top and bottom so light text always reads.
+ * Band: the photo fills the top, the title sits on paper below. Framed: a photo inset on paper.
+ * Band and framed titles get at most three lines, so they never run into the photo.
+ */
+const photoFrames: Record<PhotoLayout, PhotoFrame> = {
+  full: {
+    bg: INK,
+    photo: { x: 0, y: 0, width: W, height: H },
+    scrims: [
+      { x: 0, y: 0, width: W, height: 70, from: 0.45, to: 0 },
+      { x: 0, y: H * 0.4, width: W, height: H * 0.6, from: 0, to: 0.88 },
+    ],
+    author: LIGHT,
+    text: LIGHT,
+    maxLines: MAX_LINES,
+  },
+  band: {
+    bg: PAPER,
+    photo: { x: 0, y: 0, width: W, height: 150 },
+    scrims: [{ x: 0, y: 0, width: W, height: 50, from: 0.4, to: 0 }],
+    author: LIGHT,
+    text: INK,
+    maxLines: 3,
+  },
+  framed: {
+    bg: PAPER,
+    photo: { x: PAD, y: 32, width: SAFE_W, height: 118 },
+    scrims: [],
+    author: INK,
+    text: INK,
+    maxLines: 3,
+  },
+};
+
 export function coverScene(
   design: CoverDesign,
   title: string,
   opts?: { author?: string; subtitle?: string },
 ): CoverScene {
-  const style = titleStyles[design.direction];
-  const { size, lines } = fitTitle(title || "Untitled book", style);
+  const frame = design.photo ? photoFrames[design.photo.layout] : undefined;
+  const style = frame ? PHOTO_TITLE : titleStyles[design.direction];
+  const { size, lines } = fitTitle(title || "Untitled book", style, frame?.maxLines);
   const lineGap = size * style.lineHeight;
-  const typographic = design.direction === "typographic";
+  const typographic = !frame && design.direction === "typographic";
   const subtitle = opts?.subtitle?.trim();
   const subLines = subtitle ? wrapSubtitle(subtitle) : [];
   const subtitleSpace = subLines.length ? 16 + subLines.length * SUBTITLE_GAP : 0;
   const y = typographic ? PAD + 30 + size : H - PAD - subtitleSpace - (lines.length - 1) * lineGap;
-  const ink = design.palette.ink;
+  const ink = frame ? frame.text : design.palette.ink;
+  const authorInk = frame ? frame.author : ink;
 
   return {
     width: W,
     height: H,
-    bg: design.palette.bg,
-    shapes: art(design),
+    bg: frame ? frame.bg : design.palette.bg,
+    shapes: frame ? [] : art(design),
+    photo: frame && design.photo ? { ...frame.photo, src: design.photo.src } : undefined,
+    scrims: frame ? frame.scrims.map((s) => ({ ...s, color: INK })) : [],
     title: { lines, x: PAD, y, size, lineGap, font: style.font, weight: style.weight, color: ink, tight: typographic },
-    author: opts?.author?.trim() ? { text: opts.author.trim(), x: PAD, y: PAD + 8, size: 7, color: ink } : undefined,
+    author: opts?.author?.trim()
+      ? { text: opts.author.trim(), x: PAD, y: PAD + 8, size: 7, color: authorInk }
+      : undefined,
     subtitle: subLines.length
       ? {
           lines: subLines,

@@ -17,7 +17,25 @@ export {
   type CoverPalette,
   type Mood,
 } from "./model/cover-design";
-export { coverScene, type CoverScene, type FontRole, type Shape, type TextBlock } from "./model/cover-scene";
+export {
+  coverScene,
+  type Box,
+  type CoverScene,
+  type FontRole,
+  type Scrim,
+  type Shape,
+  type TextBlock,
+} from "./model/cover-scene";
+export {
+  coverPhoto,
+  coverPhotos,
+  photoLayouts,
+  photoSrc,
+  photosFor,
+  type CoverPhoto,
+  type PhotoChoice,
+  type PhotoLayout,
+} from "./model/cover-photos";
 
 // api – simulated AI writer
 export {
@@ -42,4 +60,4 @@ export { decodeBook, encodeBook, shareUrl } from "./lib/share";
 export { BookCard } from "./ui/BookCard";
 export { BookPanel, bookDesign } from "./ui/BookPanel";
 export { ContinueCard } from "./ui/ContinueCard";
-export { Cover } from "./ui/Cover";
+export { Cover, scrimId } from "./ui/Cover";

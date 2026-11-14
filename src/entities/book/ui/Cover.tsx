@@ -1,13 +1,16 @@
 import { createElement } from "react";
 import { cn } from "@/shared/lib";
 import type { CoverDesign } from "../model/cover-design";
-import { coverScene, type FontRole } from "../model/cover-scene";
+import { coverScene, type FontRole, type Scrim } from "../model/cover-scene";
 
 const fontFamily: Record<FontRole, string> = {
   display: "var(--font-newsreader), Georgia, serif",
   ui: "var(--font-geist), system-ui, sans-serif",
   brand: "var(--font-bricolage), system-ui, sans-serif",
 };
+
+/** Same scrim, same gradient – so an id built from its values can be shared safely by covers on one page. */
+export const scrimId = (s: Scrim) => `scrim-${s.from}-${s.to}`;
 
 /** `none` leaves the width to `className` (no conflicting width utilities). */
 const sizes = { sm: "w-24", md: "w-40", lg: "w-56", none: "" } as const;
@@ -37,9 +40,33 @@ export function Cover({
       role="img"
       aria-label={label}
       data-direction={design.direction}
+      data-artwork={scene.photo ? "photo" : "shapes"}
       className={cn("block h-auto rounded-l-[3px] rounded-r-sm shadow-book", sizes[size], className)}
     >
       <rect width={scene.width} height={scene.height} fill={scene.bg} />
+      {scene.photo && (
+        <>
+          <defs>
+            {scene.scrims.map((s) => (
+              <linearGradient key={scrimId(s)} id={scrimId(s)} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor={s.color} stopOpacity={s.from} />
+                <stop offset="1" stopColor={s.color} stopOpacity={s.to} />
+              </linearGradient>
+            ))}
+          </defs>
+          <image
+            href={scene.photo.src}
+            x={scene.photo.x}
+            y={scene.photo.y}
+            width={scene.photo.width}
+            height={scene.photo.height}
+            preserveAspectRatio="xMidYMid slice"
+          />
+          {scene.scrims.map((s) => (
+            <rect key={scrimId(s)} x={s.x} y={s.y} width={s.width} height={s.height} fill={`url(#${scrimId(s)})`} />
+          ))}
+        </>
+      )}
       {scene.shapes.map((s, i) => createElement(s.kind, { key: i, ...s.attrs }))}
       {scene.author && (
         <text

@@ -1,5 +1,5 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { getCoverDesign, coverScene, ctaText, type Book } from "@/entities/book";
+import { bookDesign, coverScene, ctaText, type Book } from "@/entities/book";
 import { family, type PdfFonts } from "../lib/fonts";
 import { PdfCover } from "./PdfCover";
 
@@ -39,14 +39,12 @@ function makeStyles(fonts: PdfFonts) {
   });
 }
 
-export function BookPdf({ book, fonts }: { book: Book; fonts: PdfFonts }) {
+/** `origin` turns the site-relative path of a library photo into a URL react-pdf can fetch. */
+export function BookPdf({ book, fonts, origin = "" }: { book: Book; fonts: PdfFonts; origin?: string }) {
   const s = makeStyles(fonts);
   const title = book.title || book.topic;
-  const scene = coverScene(
-    getCoverDesign({ title, mood: book.mood, direction: book.cover.direction, variant: book.cover.variant }),
-    title,
-    { author: book.author, subtitle: book.subtitle },
-  );
+  const scene = coverScene(bookDesign(book), title, { author: book.author, subtitle: book.subtitle });
+  if (scene.photo?.src.startsWith("/")) scene.photo = { ...scene.photo, src: origin + scene.photo.src };
   const cta = ctaText(book);
 
   const footer = (

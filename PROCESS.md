@@ -146,6 +146,15 @@ true ("Works wherever a PDF and a link do": Gumroad, Mailchimp, Substack, Linked
 with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". The "2,000+ experts" line is
 placeholder copy. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
 
+**Photo covers, after Designrr.** Contrast's Designrr has a new lifetime-offer video; I asked AI to break it down
+frame by frame. My assumption was that its images were AI-generated – the video shows an Unsplash/Pixabay search
+plus uploads, so that was wrong. What we took: photos suggested for the topic and your own upload. What we left:
+free stock search and the layout editor – the complexity Primer avoids. AI drew the panel and its states in Doop,
+I approved it as is. 33 Pexels photos ship with the app and are matched to the topic by keywords; three fixed
+layouts keep the title readable. AI's first PDF cover had hard bands where the shading should fade: react-pdf
+ignores gradient stop opacity. Thin strips with stepped opacity left visible lines where they overlapped; the fix
+was nested strips whose opacities add up exactly, with a test for the math.
+
 ---
 
 ## Template for the next entries

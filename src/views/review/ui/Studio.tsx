@@ -3,7 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { bookDesign, Cover, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
+import { bookDesign, Cover, coverPhoto, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
 import { AppShell, NotFound } from "@/widgets/layout";
 import { Button, focusRing, Stepper } from "@/shared/ui";
 import { cn } from "@/shared/lib";
@@ -92,7 +92,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                 <ChapterReader key={chapter.id} bookId={id} chapter={chapter} />
               </article>
             ) : (
-              <div className="flex justify-center pt-6">
+              <div className="flex flex-col items-center gap-4 pt-6">
                 <Cover
                   design={bookDesign(book)}
                   title={title}
@@ -101,6 +101,9 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                   size="none"
                   className="w-72"
                 />
+                {coverPhoto(book.cover)?.credit && (
+                  <p className="text-xs text-secondary">{coverPhoto(book.cover)?.credit}</p>
+                )}
               </div>
             )}
           </main>

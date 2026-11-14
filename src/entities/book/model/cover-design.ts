@@ -2,11 +2,18 @@
  * Cover design logic (docs/design-system.md §5, FLOW.md §5).
  * Covers are content, not UI: they have their own palettes — the only place raw colors are allowed.
  */
+import type { PhotoLayout } from "./cover-photos";
 
 export type Mood = "practical" | "inspiring" | "calm" | "bold" | "playful";
 export type ArtDirection = "editorial" | "geometric" | "organic" | "typographic";
 export type CoverPalette = { bg: string; ink: string; accent: string; accent2: string };
-export type CoverDesign = { direction: ArtDirection; palette: CoverPalette; seed: number };
+/** A photo cover keeps its shape style underneath, so switching back to shapes restores it. */
+export type CoverDesign = {
+  direction: ArtDirection;
+  palette: CoverPalette;
+  seed: number;
+  photo?: { src: string; layout: PhotoLayout };
+};
 
 const moodDirections: Record<Mood, [ArtDirection, ArtDirection, ArtDirection]> = {
   practical: ["editorial", "geometric", "typographic"],
@@ -44,6 +51,9 @@ export const palettes: Record<ArtDirection, CoverPalette[]> = {
   ],
 };
 
+/** Photo covers: paper under band and framed photos, ink for scrims and dark text, light text on a photo. */
+export const photoColors = { paper: "#F5F0E8", ink: "#1F1B16", light: "#FBF8F3" } as const;
+
 /** FNV-1a 32-bit — deterministic, non-negative. */
 export function hashSeed(text: string): number {
   let h = 0x811c9dc5;
@@ -66,12 +76,14 @@ export function getCoverDesign(input: {
   mood: Mood;
   direction?: ArtDirection;
   variant?: number;
+  photo?: { src: string; layout: PhotoLayout };
 }): CoverDesign {
   const variant = input.variant ?? 0;
   const direction = input.direction ?? directionsForMood(input.mood)[0];
   const set = palettes[direction];
   const palette = set[(hashSeed(input.title) + variant) % set.length];
-  return { direction, palette, seed: hashSeed(`${input.title}:${variant}`) };
+  const design: CoverDesign = { direction, palette, seed: hashSeed(`${input.title}:${variant}`) };
+  return input.photo ? { ...design, photo: input.photo } : design;
 }
 
 function luminance(hex: string): number {

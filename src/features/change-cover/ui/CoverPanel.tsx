@@ -1,9 +1,17 @@
 "use client";
 
 import { Shuffle } from "lucide-react";
+import { useState } from "react";
 import { Cover, directionsForMood, getCoverDesign, type ArtDirection, useBooks, type Book } from "@/entities/book";
-import { Button, focusRing, Input } from "@/shared/ui";
+import { Button, ChipGroup, focusRing, Input } from "@/shared/ui";
 import { cn } from "@/shared/lib";
+import { PhotoPicker } from "./PhotoPicker";
+
+type Artwork = "shapes" | "photo";
+const artworkOptions: { value: Artwork; label: string }[] = [
+  { value: "shapes", label: "Shapes" },
+  { value: "photo", label: "Photo" },
+];
 
 const styleName: Record<ArtDirection, string> = {
   editorial: "Editorial",
@@ -14,15 +22,56 @@ const styleName: Record<ArtDirection, string> = {
 
 export function CoverPanel({ book }: { book: Book }) {
   const updateBook = useBooks((s) => s.updateBook);
+  // The tab can show Photo before a photo is on the cover: the picker puts the first one there once it loads.
+  const [artwork, setArtwork] = useState<Artwork>(book.cover.artwork ?? "shapes");
+
+  function chooseArtwork(next: Artwork) {
+    setArtwork(next);
+    if (next === "shapes" || book.cover.photo)
+      updateBook(book.id, { cover: { ...book.cover, artwork: next } }, { snapshot: true });
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-3">
+        <p className="text-xs font-medium tracking-wider text-secondary uppercase">Adjust cover</p>
+        <ChipGroup
+          label="Artwork"
+          options={artworkOptions}
+          mode="single"
+          value={artwork}
+          onChange={chooseArtwork}
+          appearance="segmented"
+        />
+      </div>
+
+      {artwork === "photo" ? <PhotoPicker book={book} /> : <ShapeStyles book={book} />}
+
+      <div className="flex flex-col gap-4 border-t border-default pt-4">
+        <Input label="Title" value={book.title} onChange={(e) => updateBook(book.id, { title: e.target.value })} />
+        <Input
+          label="Subtitle"
+          value={book.subtitle}
+          onChange={(e) => updateBook(book.id, { subtitle: e.target.value })}
+        />
+        <Input
+          label="Author name"
+          value={book.author}
+          onChange={(e) => updateBook(book.id, { author: e.target.value })}
+        />
+      </div>
+    </div>
+  );
+}
+
+function ShapeStyles({ book }: { book: Book }) {
+  const updateBook = useBooks((s) => s.updateBook);
   const options = directionsForMood(book.mood);
   const title = book.title || book.topic;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <p className="text-xs font-medium tracking-wider text-secondary uppercase">Adjust cover</p>
-        <p className="mt-1 text-sm text-secondary">Three styles that fit a {book.mood} book.</p>
-      </div>
+    <div className="flex flex-col gap-4">
+      <p className="text-sm text-secondary">Three styles that fit a {book.mood} book.</p>
 
       <div role="radiogroup" aria-label="Cover style" className="grid grid-cols-3 gap-3">
         {options.map((direction) => {
@@ -70,20 +119,6 @@ export function CoverPanel({ book }: { book: Book }) {
       >
         Shuffle this style
       </Button>
-
-      <div className="flex flex-col gap-4 border-t border-default pt-4">
-        <Input label="Title" value={book.title} onChange={(e) => updateBook(book.id, { title: e.target.value })} />
-        <Input
-          label="Subtitle"
-          value={book.subtitle}
-          onChange={(e) => updateBook(book.id, { subtitle: e.target.value })}
-        />
-        <Input
-          label="Author name"
-          value={book.author}
-          onChange={(e) => updateBook(book.id, { author: e.target.value })}
-        />
-      </div>
     </div>
   );
 }

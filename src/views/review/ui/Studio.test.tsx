@@ -149,7 +149,7 @@ describe("Studio", () => {
     wrap(<Studio id={id} rewriteMs={0} />);
     await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
     const panel = screen.getByRole("region", { name: /adjust/i });
-    const options = within(panel).getAllByRole("radio");
+    const options = within(within(panel).getByRole("radiogroup", { name: /cover style/i })).getAllByRole("radio");
     expect(options).toHaveLength(3);
     await userEvent.click(options[1]);
     expect(st().books[id].cover.direction).toBe(directionsForMood("calm")[1]);
@@ -159,6 +159,47 @@ describe("Studio", () => {
     await userEvent.clear(title);
     await userEvent.type(title, "Rise and Bake");
     expect(st().books[id].title).toBe("Rise and Bake");
+  });
+
+  it("puts a photo that fits the topic on the cover, with its credit, and switches back to shapes", async () => {
+    const id = newBook();
+    wrap(<Studio id={id} rewriteMs={0} />);
+    await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
+    const panel = screen.getByRole("region", { name: /adjust/i });
+    await userEvent.click(within(panel).getByRole("radio", { name: "Photo" }));
+    expect(within(panel).getByText(/finding photos for/i)).toBeInTheDocument();
+
+    const grid = await within(panel).findByRole("radiogroup", { name: /cover photo/i }, { timeout: 2000 });
+    // The topic is about baking, so the best match – a loaf – goes on the cover by itself.
+    expect(within(panel).getByText(/photos for “sourdough baking/i)).toBeInTheDocument();
+    expect(st().books[id].cover).toMatchObject({ artwork: "photo", photo: { kind: "library" } });
+    expect(within(grid).getAllByRole("radio")[0]).toHaveAttribute("aria-checked", "true");
+    expect(within(grid).getAllByRole("radio")[0]).toHaveAccessibleName(/loaf|bread/i);
+    expect(screen.getByText(/photo by .* · pexels/i)).toBeInTheDocument();
+
+    await userEvent.click(within(grid).getAllByRole("radio")[2]);
+    expect(within(grid).getAllByRole("radio")[2]).toHaveAttribute("aria-checked", "true");
+    await userEvent.click(within(panel).getByRole("radio", { name: /band/i }));
+    expect(st().books[id].cover.layout).toBe("band");
+
+    await userEvent.click(within(panel).getByRole("radio", { name: "Shapes" }));
+    expect(st().books[id].cover.artwork).toBe("shapes");
+    expect(screen.queryByText(/· pexels/i)).not.toBeInTheDocument();
+  });
+
+  it("keeps the cover and offers a retry when photos fail to load", async () => {
+    setFailures(["photos"]);
+    const id = newBook();
+    wrap(<Studio id={id} rewriteMs={0} />);
+    await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
+    const panel = screen.getByRole("region", { name: /adjust/i });
+    await userEvent.click(within(panel).getByRole("radio", { name: "Photo" }));
+    const alert = await within(panel).findByRole("alert", {}, { timeout: 2000 });
+    expect(alert).toHaveTextContent(/photos didn.t load/i);
+    expect(st().books[id].cover.artwork).toBeUndefined();
+    await userEvent.click(within(alert).getByRole("button", { name: /try again/i }));
+    await within(panel).findByRole("radiogroup", { name: /cover photo/i }, { timeout: 2000 });
+    expect(st().books[id].cover.artwork).toBe("photo");
   });
 
   it("finalize moves on to the final step", async () => {

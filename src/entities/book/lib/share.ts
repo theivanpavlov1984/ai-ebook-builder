@@ -4,6 +4,7 @@
  */
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 import type { ArtDirection, Mood } from "../model/cover-design";
+import { coverPhotos, photoLayouts, type PhotoLayout } from "../model/cover-photos";
 import type { Book } from "../model/types";
 
 type Packed = {
@@ -15,6 +16,8 @@ type Packed = {
   cta: string;
   topic: string;
   c: [ArtDirection, number];
+  /** A photo from the library and its layout. An uploaded photo is too big for a link, so it isn't shared. */
+  p?: [string, PhotoLayout];
   ch: [string, string, string[]][];
 };
 
@@ -31,6 +34,9 @@ export function encodeBook(book: Book): string {
     cta: book.cta,
     topic: book.topic,
     c: [book.cover.direction, book.cover.variant],
+    ...(book.cover.artwork === "photo" && book.cover.photo?.kind === "library"
+      ? { p: [book.cover.photo.id, book.cover.layout ?? "full"] as [string, PhotoLayout] }
+      : {}),
     ch: book.chapters.map((c) => [c.title, c.summary, c.body]),
   };
   return compressToEncodedURIComponent(JSON.stringify(packed));
@@ -52,6 +58,10 @@ function isPacked(x: unknown): x is Packed {
     Array.isArray(p.c) &&
     DIRECTIONS.includes(p.c[0] as ArtDirection) &&
     Number.isInteger(p.c[1]) &&
+    (p.p === undefined ||
+      (Array.isArray(p.p) &&
+        coverPhotos.some((photo) => photo.id === (p.p as unknown[])[0]) &&
+        photoLayouts.includes((p.p as unknown[])[1] as PhotoLayout))) &&
     Array.isArray(p.ch) &&
     p.ch.length > 0 &&
     p.ch.every((c) => Array.isArray(c) && isStr(c[0]) && isStr(c[1]) && Array.isArray(c[2]) && c[2].every(isStr))
@@ -91,7 +101,12 @@ export function decodeBook(hash: string): Book | null {
       status: "done",
       versions: [],
     })),
-    cover: { direction: p.c[0], variant: p.c[1], status: "done" },
+    cover: {
+      direction: p.c[0],
+      variant: p.c[1],
+      status: "done",
+      ...(p.p ? { artwork: "photo" as const, photo: { kind: "library" as const, id: p.p[0] }, layout: p.p[1] } : {}),
+    },
   };
 }
 

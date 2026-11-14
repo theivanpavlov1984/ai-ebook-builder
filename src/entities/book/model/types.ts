@@ -1,4 +1,5 @@
 import type { ArtDirection, Mood } from "./cover-design";
+import type { PhotoChoice, PhotoLayout } from "./cover-photos";
 
 export type Stage = "describe" | "title" | "outline" | "build" | "review" | "final";
 export type ChapterStatus = "idle" | "writing" | "done" | "failed";
@@ -30,7 +31,15 @@ export type Book = {
   subtitle: string;
   author: string;
   chapters: Chapter[];
-  cover: { direction: ArtDirection; variant: number; status: "idle" | "working" | "done" | "failed" };
+  cover: {
+    direction: ArtDirection;
+    variant: number;
+    status: "idle" | "working" | "done" | "failed";
+    /** Shapes (the default) or a photo. The shape style is kept, so switching back restores it. */
+    artwork?: "shapes" | "photo";
+    photo?: PhotoChoice;
+    layout?: PhotoLayout;
+  };
   finalizedAt?: number;
 };
 

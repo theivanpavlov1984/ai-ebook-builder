@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { getCoverDesign, coverScene, sampleBooks } from "@/entities/book";
 import { BookPdf } from "./BookPdf";
 import { slugify } from "@/shared/lib";
-import { titleTspans } from "./PdfCover";
+import { scrimStrips, titleTspans } from "./PdfCover";
 
 // The demo book from the landing page: long chapters and real cover data.
 const book = sampleBooks()[0];
@@ -22,6 +22,39 @@ describe("PDF export", () => {
         <BookPdf book={{ ...book, cover: { ...book.cover, direction } }} fonts="standard" />,
       );
       expect(buf.subarray(0, 4).toString()).toBe("%PDF");
+    }
+  });
+
+  it("puts a photo on the cover in every layout", async () => {
+    // A 10 × 14 px JPEG, as an uploaded photo is stored.
+    const src =
+      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD//gAPTGF2YzYzLjEuMTAyAP/bAEMACBAQExATFhYWFhYWGhgaGxsbGhoaGhsbGx0dHSIiIh0dHRsbHR0gICIiJSYlIyMiIyYmKCgoMDAuLjg4OkVFU//EAEwAAQEAAAAAAAAAAAAAAAAAAAAEAQEBAAAAAAAAAAAAAAAAAAAEBRABAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/AABEIAA4ACgMBIgACEQADEQD/2gAMAwEAAhEDEQA/AIgE89//2Q==";
+    for (const layout of ["full", "band", "framed"] as const) {
+      const cover = {
+        ...book.cover,
+        artwork: "photo" as const,
+        photo: { kind: "upload" as const, src, name: "tiny.jpg" },
+        layout,
+      };
+      const buf = await renderToBuffer(<BookPdf book={{ ...book, cover }} fonts="standard" />);
+      expect(buf.subarray(0, 4).toString()).toBe("%PDF");
+      expect(buf.includes("/Subtype /Image")).toBe(true);
+    }
+  });
+
+  it("layers scrim strips so each band gets the gradient's opacity", () => {
+    for (const scrim of [
+      { x: 0, y: 100, width: 200, height: 180, color: "#000", from: 0, to: 0.88 },
+      { x: 0, y: 0, width: 200, height: 70, color: "#000", from: 0.45, to: 0 },
+    ]) {
+      const strips = scrimStrips(scrim);
+      // Opacity over a band = 1 − Π(1 − a) of the strips covering it.
+      const at = (y: number) =>
+        1 - strips.filter((r) => r.y <= y && y < r.y + r.height).reduce((p, r) => p * (1 - r.fillOpacity), 1);
+      const top = scrim.y + 0.5;
+      const bottom = scrim.y + scrim.height - 0.5;
+      expect(at(top)).toBeCloseTo(scrim.from, 1);
+      expect(at(bottom)).toBeCloseTo(scrim.to, 1);
     }
   });
 

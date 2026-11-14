@@ -132,8 +132,10 @@ Three columns:
 
 **Adjust the cover:**
 
-- 3 options in **different art directions** (see section 5).
-- "Shuffle" varies the composition inside the chosen direction.
+- **Artwork: Shapes / Photo.** Shapes: 3 options in **different art directions** (see section 5),
+  "Shuffle" varies the composition inside the chosen direction.
+- **Photo:** six photos picked for the book's topic, "More photos", or upload your own;
+  three layouts – full bleed, band, framed. The best match goes on the cover by itself.
 - Edit title, subtitle, author name – the cover re-fits automatically.
 
 Global **undo** for every change.
@@ -165,6 +167,9 @@ Every step has loading, empty, error and success states. Specific cases:
 | **One chapter fails to generate**     | That chapter is marked, with "Try again"; the rest of the book continues           |
 | **The whole generation fails**        | Inputs and finished parts are kept; "Resume" continues from the last finished step |
 | Cover fails                           | Falls back to another art direction automatically                                  |
+| Photo suggestions fail                | "Photos didn't load" + "Try again"; the current cover stays as it is               |
+| No photos match the topic             | Says so and leads with calm, general photos; upload stays available                |
+| Own photo too small or not a photo    | Says what's wrong and what to pick instead (at least 1200 px tall, JPG/PNG/WebP)   |
 | Tab closed or refreshed               | State is saved locally; "Continue your book" banner on return                      |
 | Download fails                        | "Try again" + open a printable version as a fallback                               |
 | Offline                               | Banner; actions that need "AI" wait and resume                                     |
@@ -182,6 +187,12 @@ The brief's bar: the cover must feel designed and reflect the theme, not a templ
   so two books never share the same cover. "Shuffle" changes the variation.
 - **Typography rules:** the title always fits (auto-sized), contrast is checked, no fake micro-text.
 - Rendered as SVG, so the same cover is used on screen and in the PDF.
+- **Photo covers** (added Nov 14, after Designrr's image panel): a curated set of 33 Pexels photos ships with
+  the app and is matched to the topic by keywords – nothing is generated, and the panel never says it is.
+  The photographer is credited under the cover. Three fixed layouts instead of free placement; the title keeps
+  its serif and stays readable on any photo – the full-bleed layout darkens the photo under the text, band and
+  framed put the text on paper. Your own photo is shrunk and kept with the book on this device; share links
+  carry library photos only, so a cover with an uploaded photo is shared with its shapes.
 
 ## 6. How "AI" is simulated
 

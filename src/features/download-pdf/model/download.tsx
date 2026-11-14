@@ -11,7 +11,7 @@ export async function downloadPdf(book: Book): Promise<void> {
     import("../lib/fonts"),
   ]);
   registerPdfFonts(window.location.origin);
-  const blob = await pdf(<BookPdf book={book} fonts="embedded" />).toBlob();
+  const blob = await pdf(<BookPdf book={book} fonts="embedded" origin={window.location.origin} />).toBlob();
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

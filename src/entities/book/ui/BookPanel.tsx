@@ -2,6 +2,7 @@ import { estimate } from "../model/estimate";
 import type { Book } from "../model/types";
 import { Cover } from "./Cover";
 import { getCoverDesign } from "../model/cover-design";
+import { coverPhoto } from "../model/cover-photos";
 
 const moodLabel = {
   practical: "Practical",
@@ -12,11 +13,13 @@ const moodLabel = {
 } as const;
 
 export function bookDesign(book: Pick<Book, "title" | "topic" | "mood" | "cover">) {
+  const photo = coverPhoto(book.cover);
   return getCoverDesign({
     title: book.title || book.topic,
     mood: book.mood,
     direction: book.cover.direction,
     variant: book.cover.variant,
+    photo: photo && { src: photo.src, layout: photo.layout },
   });
 }
 
