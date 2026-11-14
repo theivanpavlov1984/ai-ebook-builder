@@ -11,12 +11,14 @@ import { directionsForMood, exampleTopics, shapeIdea, validateTopic, useBooks, t
  * The landing's prompt card: one field, a hint, and a round "start" button.
  * Works on its own, or controlled (`value` + `onValueChange`) when a parent previews the topic live.
  * `mood` – the tone picked on the landing – is saved on the new book, so the Describe step starts from it.
+ * `examples={false}` hides the example topics (the closing call to action repeats the field without them).
  */
 export function StartForm({
   value,
   onValueChange,
   mood = "practical",
-}: { value?: string; onValueChange?: (v: string) => void; mood?: Mood } = {}) {
+  examples = true,
+}: { value?: string; onValueChange?: (v: string) => void; mood?: Mood; examples?: boolean } = {}) {
   const router = useRouter();
   const createBook = useBooks((s) => s.createBook);
   const updateBook = useBooks((s) => s.updateBook);
@@ -130,6 +132,7 @@ export function StartForm({
           ))}
         </div>
       ) : (
+        examples &&
         !topic.trim() && (
           <div role="group" aria-label="Try an example" className="flex flex-wrap items-center justify-center gap-2">
             <span className="text-sm text-secondary">Try:</span>

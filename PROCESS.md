@@ -136,6 +136,16 @@ valid for this font in `next/font`, the dev server kept serving stale CSS, and t
 a production build showed the classes were fine and a dev-server restart fixed it.
 Then the same headings across the app: screen, dialog and empty-state titles moved to Bricolage, while everything the book's reader sees – book and chapter titles, chapter text, the shared page – stays in the Newsreader serif.
 
+**The rest of the landing.** Designed in Doop first as one long page, commented by me, then built. Every section shows
+the real product: Build in a browser frame, crops of real screens in "How it works" and the bento. I generated
+30 book covers with ChatGPT; 14 that read like practical guides now drift in two rows under "What will yours be about?"
+– as range, not as output, because Primer draws its own vector covers. Social proof was the hard part. I wanted logos
+and reviews; AI pushed back on real company logos and "As seen in WIRED", since on a public page that is a false claim
+about real brands. We settled on: fictional brands drawn as type for "Used by…", real logos only where the claim is
+true ("Works wherever a PDF and a link do": Gumroad, Mailchimp, Substack, LinkedIn, Notion), and six generated reviews
+with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". The "2,000+ experts" line is
+placeholder copy. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
+
 ---
 
 ## Template for the next entries

@@ -8,12 +8,26 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }), usePat
 
 beforeEach(() => useBooks.setState({ books: {}, history: {} }));
 
+/** The hero field – the closing call to action repeats it lower on the page. */
+const field = () => screen.getAllByLabelText(/what's your book about/i)[0];
+
 describe("Landing", () => {
   it("says what the service is in one line and starts right there", () => {
     render(<Landing />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/free ebook/i);
-    expect(screen.getByLabelText(/what's your book about/i)).toBeInTheDocument();
+    expect(field()).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /start my book/i }).length).toBeGreaterThan(0);
+  });
+
+  it("repeats the start field at the end, without the example topics", () => {
+    render(<Landing />);
+    expect(screen.getAllByLabelText(/what's your book about/i)).toHaveLength(2);
+    expect(screen.getAllByRole("group", { name: /try an example/i })).toHaveLength(1);
+  });
+
+  it("marks the reviews as samples", () => {
+    render(<Landing />);
+    expect(screen.getByText(/sample reviews/i)).toBeInTheDocument();
   });
 
   it("explains how it works in three steps", () => {
@@ -25,8 +39,9 @@ describe("Landing", () => {
   it("lists what you get", () => {
     render(<Landing />);
     const section = screen.getByRole("region", { name: /what you get/i });
-    expect(within(section).getByText(/pdf/i)).toBeInTheDocument();
+    expect(within(section).getByText(/a pdf ready to send/i)).toBeInTheDocument();
     expect(within(section).getByText(/collects emails/i)).toBeInTheDocument();
+    expect(within(section).getByText(/works wherever a pdf and a link do/i)).toBeInTheDocument();
   });
 
   it("example topics fill the field in one click", async () => {
@@ -34,14 +49,14 @@ describe("Landing", () => {
     const examples = screen.getByRole("group", { name: /try an example/i });
     const first = within(examples).getAllByRole("button")[0];
     await userEvent.click(first);
-    expect(screen.getByLabelText(/what's your book about/i)).toHaveValue(first.textContent);
+    expect(field()).toHaveValue(first.textContent);
   });
 
   it("shows the visitor's own book as they type", async () => {
     render(<Landing />);
     const preview = screen.getByRole("region", { name: /preview/i });
     expect(within(preview).getByText(/example/i)).toBeInTheDocument();
-    await userEvent.type(screen.getByLabelText(/what's your book about/i), "Sourdough baking for busy parents");
+    await userEvent.type(field(), "Sourdough baking for busy parents");
     expect(await within(preview).findByRole("img", { name: /Sourdough Baking for Busy Parents/ })).toBeInTheDocument();
   });
 
@@ -55,7 +70,7 @@ describe("Landing", () => {
     await userEvent.click(screen.getByRole("radio", { name: "Bold" }));
     expect(yours()).toBe("typographic");
 
-    await userEvent.type(screen.getByLabelText(/what's your book about/i), "Sourdough baking for busy parents");
+    await userEvent.type(field(), "Sourdough baking for busy parents");
     await userEvent.click(screen.getAllByRole("button", { name: /start my book/i })[0]);
     const [book] = Object.values(useBooks.getState().books);
     expect(book.mood).toBe("bold");

@@ -84,6 +84,21 @@
   }
 }
 
+/* Landing shelf: two rows of covers drifting opposite ways. Each row holds its covers twice, so −50% loops. */
+@keyframes shelf-left {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes shelf-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: none;
+  }
+}
+
 body {
   background: var(--primer-bg-canvas);
   color: var(--primer-text-primary);
