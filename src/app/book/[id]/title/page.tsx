@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { TitleStep } from "@/components/steps/TitleStep";
+import { TitleStep } from "@/views/create-book";
 
 export default function Page() {
   const { id } = useParams<{ id: string }>();

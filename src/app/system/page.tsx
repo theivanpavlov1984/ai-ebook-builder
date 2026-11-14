@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AppShell } from "@/components/shell/AppShell";
-import { Showcase } from "./Showcase";
+import { AppShell } from "@/widgets/layout";
+import { Showcase } from "@/views/design-system";
 
 export const metadata: Metadata = {
   title: "Design system – Primer",

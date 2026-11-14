@@ -52,7 +52,7 @@ ink-900       text-primary  input-border-focus
 - **Primitives** – raw values. Never used directly in components.
 - **Semantic** – meaning: background, text, border, accent, status. Components use these.
 - **Component** – only where a component needs its own decision (buttons, inputs, chips, cover).
-- All tokens are CSS custom properties in one file (`src/styles/tokens.css`).
+- All tokens are CSS custom properties in one file (`src/shared/styles/tokens.css`).
   Tailwind's theme maps to the semantic tokens, so utilities like `bg-canvas` or `text-secondary` exist
   and raw hex values never appear in components.
 
@@ -169,8 +169,8 @@ Reviewers can check consistency without opening Figma.
 ## 7. Builder's calls (made during review)
 
 - **Icons:** one outline icon set with a consistent stroke (Lucide), 16 / 20 px, `currentColor`.
-- **Where things live:** tokens in `src/styles/tokens.css`; UI components in `src/components/ui/`;
-  product components (Cover, Book card, Progress list) in `src/components/book/`.
+- **Where things live:** tokens in `src/shared/styles/tokens.css`; UI components (incl. Progress list) in
+  `src/shared/ui/`; product components (Cover, Book card) in `src/entities/book/ui/`. See README → Architecture.
 
 ## 8. Left to the builder
 

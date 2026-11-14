@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ToastProvider } from "@/components/ui/Toast";
-import { bricolage, geist, newsreader } from "./fonts";
-import "./globals.css";
+import { ToastProvider } from "@/shared/ui";
+import { bricolage, geist, newsreader } from "@/app/fonts";
+import "@/app/globals.css";
 
 export const metadata: Metadata = {
   title: "Primer – turn what you know into a book",

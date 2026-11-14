@@ -14,6 +14,7 @@ Prototype only: no backend, no real AI. Generation is simulated on the client.
 
 ## Rules
 
+- Code follows Feature-Sliced Design (README → Architecture); `npm run lint` enforces the layer boundaries.
 - Design tokens live in one place (CSS variables) and every component uses them. No hard-coded colors or sizes.
 - Every async step has loading, success, empty and error states.
 - Log meaningful AI moments in `PROCESS.md`: what we asked, what worked, what was thrown away, where the model was wrong.

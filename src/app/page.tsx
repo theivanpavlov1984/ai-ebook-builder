@@ -1,4 +1,4 @@
-import { Landing } from "@/components/home/Landing";
+import { Landing } from "@/views/landing";
 
 export default function Home() {
   return <Landing />;

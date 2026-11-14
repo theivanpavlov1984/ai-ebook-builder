@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { MyBooks } from "@/components/home/MyBooks";
-import { AppShell } from "@/components/shell/AppShell";
+import { MyBooks } from "@/views/books";
+import { AppShell } from "@/widgets/layout";
 
 export const metadata: Metadata = { title: "My books – Primer" };
 

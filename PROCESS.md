@@ -90,6 +90,12 @@ the single big prompt on the start screen (we'd made the same call) and a book l
 Our share page was only a reader, so I turned it into a lead-magnet landing page – it's what the user
 actually needs the book for.
 
+**Code quality pass.** To make the code easy to review, I added Prettier (with Tailwind class sorting)
+and restructured `src/` into Feature-Sliced Design layers, with ESLint rules that fail the build when a layer
+imports from above or a slice is reached by a deep path. AI proposed the layer for each file and did the moving.
+The first run of AI's import-merging script used stale text offsets and corrupted twelve files – Prettier
+refused to parse them, we reset to the last commit and reran the fixed script. Same tests before and after (148).
+
 ---
 
 ## Template for the next entries
