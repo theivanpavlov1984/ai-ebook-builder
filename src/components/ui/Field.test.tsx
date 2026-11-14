@@ -32,4 +32,12 @@ describe("Textarea", () => {
     await userEvent.type(area, "line 1{enter}line 2{enter}line 3{enter}line 4{enter}line 5");
     expect(area.style.height).toBe("120px");
   });
+
+  it("leaves an empty field at its natural height (no measurement before styles load)", () => {
+    render(<Textarea label="Topic" autoGrow />);
+    const area = screen.getByLabelText("Topic") as HTMLTextAreaElement;
+    Object.defineProperty(area, "scrollHeight", { configurable: true, get: () => 600 });
+    area.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(area.style.height).toBe("");
+  });
 });

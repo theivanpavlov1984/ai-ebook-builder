@@ -90,6 +90,12 @@ export function Textarea({ label, hint, error, id, autoGrow, className, onInput,
   const fit = useCallback(() => {
     const el = ref.current;
     if (!el || !autoGrow) return;
+    // Empty field: keep the natural `rows` height. Measuring here can happen before styles
+    // load (narrow unstyled box → huge scrollHeight) and would stick.
+    if (!el.value) {
+      el.style.height = "";
+      return;
+    }
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   }, [autoGrow]);
