@@ -116,8 +116,7 @@ export function Landing() {
               ))}
             </div>
             <p className="text-sm text-secondary">
-              <strong className="font-semibold text-primary">2,000+ experts</strong> are turning what they know into
-              books
+              Built for <strong className="font-semibold text-primary">experts with no time to write</strong>
             </p>
           </div>
           <div className="mt-7">

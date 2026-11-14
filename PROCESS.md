@@ -143,8 +143,9 @@ the real product: Build in a browser frame, crops of real screens in "How it wor
 and reviews; AI pushed back on real company logos and "As seen in WIRED", since on a public page that is a false claim
 about real brands. We settled on: fictional brands drawn as type for "Used by…", real logos only where the claim is
 true ("Works wherever a PDF and a link do": Gumroad, Mailchimp, Substack, LinkedIn, Notion), and six generated reviews
-with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". The "2,000+ experts" line is
-placeholder copy. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
+with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". A "2,000+ experts" line under
+the prompt was placeholder copy; before review it became "Built for experts with no time to write" – who the
+product is for and their problem, with no number we can't back. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
 
 **Photo covers, after Designrr.** Contrast's Designrr has a new lifetime-offer video; I asked AI to break it down
 frame by frame. My assumption was that its images were AI-generated – the video shows an Unsplash/Pixabay search
