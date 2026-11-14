@@ -184,7 +184,7 @@ export function Showcase() {
 
       <Section title="Chips" note="Single choice is a radio group (arrow keys); multi choice uses toggle buttons.">
         <div className="flex flex-col gap-5">
-          <ChipGroup label="How should it feel?" options={moods} mode="single" value={mood} onChange={setMood} />
+          <ChipGroup label="Theme and tone" options={moods} mode="single" value={mood} onChange={setMood} />
           <ChipGroup label="Tags" options={moods} mode="multi" value={tags} onChange={setTags} />
           <div className="flex gap-2">
             <Chip>for startups</Chip>

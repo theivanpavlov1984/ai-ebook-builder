@@ -157,9 +157,9 @@ function DescribeForm({ id }: { id: string }) {
         </div>
 
         <div>
-          <SectionLabel>How should it feel?</SectionLabel>
+          <SectionLabel>Theme &amp; tone</SectionLabel>
           <ChipGroup
-            label="How should it feel?"
+            label="Theme and tone"
             options={moods}
             mode="single"
             value={book.mood}
@@ -168,7 +168,8 @@ function DescribeForm({ id }: { id: string }) {
             }
           />
           <p className="mt-2 text-sm text-secondary">
-            Sets the voice of the writing and the style of your cover – watch it change on the right.
+            How your book should feel. It sets the voice of the writing and the style of your cover – watch it change on
+            the right.
           </p>
         </div>
 

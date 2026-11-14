@@ -67,11 +67,11 @@ The covers are the hero of the screen, not numbers.
 
 Three short questions on one screen:
 
-| Question                               | Input                                                 | Help                                                                 |
-| -------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- |
-| **What's your book about?** (topic)    | Short text                                            | Example chips; "Help me shape this idea"                             |
-| **Who is it for?** (audience)          | Short text                                            | Suggested audiences based on the topic                               |
-| **How should it feel?** (theme / mood) | Choice: practical · inspiring · calm · bold · playful | Each option shows a mini cover preview – mood drives the cover style |
+| Question                            | Input                                                 | Help                                                                 |
+| ----------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- |
+| **What's your book about?** (topic) | Short text                                            | Example chips; "Help me shape this idea"                             |
+| **Who is it for?** (audience)       | Short text                                            | Suggested audiences based on the topic                               |
+| **Theme & tone** (mood)             | Choice: practical · inspiring · calm · bold · playful | Each option shows a mini cover preview – mood drives the cover style |
 
 - _Interpretation:_ the brief asks for "topic, theme and audience". I read **theme** as the book's
   mood and voice, because that's what a non-writer can answer, and it's what both the writing tone

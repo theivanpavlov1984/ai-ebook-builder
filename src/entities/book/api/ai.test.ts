@@ -1,5 +1,14 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { ctaText, draftOutline, shapeIdea, suggestAudiences, suggestTitles, writeChapter } from "./generate";
+import {
+  ctaText,
+  draftOutline,
+  parseTopic,
+  shapeIdea,
+  suggestAudiences,
+  suggestTitles,
+  titleCase,
+  writeChapter,
+} from "./generate";
 import { failuresFromUrl, setFailures, simulate, streamParagraphs, SimulatedFailure } from "@/shared/api";
 import { validateTopic } from "../model/validate";
 
@@ -45,6 +54,39 @@ describe("generation", () => {
     const text = JSON.stringify([outline, chapter, suggestTitles(custom), suggestAudiences(custom.topic)]);
     expect(text).not.toMatch(/design system|token|component/i);
     expect(text).toMatch(/sourdough/i);
+  });
+
+  it("splits a topic into what it's about and who it's for", () => {
+    expect(parseTopic("Sourdough baking for busy parents")).toEqual({
+      subject: "Sourdough baking",
+      forWhom: "busy parents",
+    });
+    expect(parseTopic("Brewing great coffee at home")).toEqual({
+      subject: "Brewing great coffee at home",
+      forWhom: "",
+    });
+  });
+
+  it("reads naturally: the subject goes into titles and text without the 'for whom' part", () => {
+    const outline = draftOutline(custom);
+    const text = JSON.stringify([outline, suggestTitles(custom).slice(1)]);
+    expect(text).toMatch(/sourdough baking/i);
+    expect(text).not.toMatch(/sourdough baking for busy parents.*sourdough baking for busy parents/i);
+    // The topic's own audience is used when none was picked.
+    const noAudience = { ...custom, audience: "" };
+    expect(
+      draftOutline(noAudience)
+        .map((c) => c.summary)
+        .join(" "),
+    ).toMatch(/busy parents/);
+  });
+
+  it("writes chapters long enough to read like a real draft", () => {
+    for (const ch of draftOutline(custom)) expect(words(writeChapter(custom, ch))).toBeGreaterThan(180);
+  });
+
+  it("title-cases hyphenated words", () => {
+    expect(titleCase("a 20-minute home workout plan")).toBe("A 20-Minute Home Workout Plan");
   });
 
   it("drafts six chapters with titles and summaries", () => {

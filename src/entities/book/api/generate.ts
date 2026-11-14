@@ -17,7 +17,11 @@ export function titleCase(text: string): string {
   return text
     .trim()
     .split(/\s+/)
-    .map((w, i) => (i > 0 && SMALL.has(w.toLowerCase()) ? w.toLowerCase() : w[0].toUpperCase() + w.slice(1)))
+    .map((w, i) =>
+      i > 0 && SMALL.has(w.toLowerCase())
+        ? w.toLowerCase()
+        : w.replace(/(^|-)(\p{Ll})/gu, (_, dash: string, ch: string) => dash + ch.toUpperCase()),
+    )
     .join(" ");
 }
 
@@ -25,12 +29,25 @@ const lowerFirst = (s: string) => (s ? s[0].toLowerCase() + s.slice(1) : s);
 const upperFirst = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 const sentences = (p: string) => p.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) ?? [p];
 
+/**
+ * Splits a topic into what it's about and who it's for:
+ * "Sourdough baking for busy parents" → { subject: "sourdough baking", forWhom: "busy parents" }.
+ */
+export function parseTopic(topic: string): { subject: string; forWhom: string } {
+  const t = topic.trim().replace(/[.!?]+$/, "");
+  const m = t.match(/^(.+?)\s+for\s+(.+)$/i);
+  const [subject, forWhom] = m && m[1].split(/\s+/).length >= 2 ? [m[1], m[2]] : [t, ""];
+  return { subject, forWhom };
+}
+
 function fill(text: string, b: Pick<Brief, "topic" | "audience">): string {
-  const topic = lowerFirst(b.topic.trim().replace(/[.!?]+$/, ""));
-  const audience = lowerFirst(b.audience.trim() || "readers like you");
+  const topic = b.topic.trim().replace(/[.!?]+$/, "");
+  const { subject, forWhom } = parseTopic(topic);
+  const audience = lowerFirst(b.audience.trim() || forWhom || "readers like you");
   return text
-    .replace(/\{T\}/g, titleCase(b.topic.replace(/[.!?]+$/, "")))
-    .replace(/\{topic\}/g, topic)
+    .replace(/\{T\}/g, titleCase(topic))
+    .replace(/\{S\}/g, titleCase(subject))
+    .replace(/\{subject\}/g, lowerFirst(subject))
     .replace(/\{audience\}/g, audience)
     .replace(/(^|[.!?]\s+)([a-z])/g, (_, pre, ch) => pre + ch.toUpperCase());
 }

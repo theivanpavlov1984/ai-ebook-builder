@@ -59,6 +59,18 @@ describe("BuildStep", () => {
     expect(push).toHaveBeenCalledWith(`/book/${id}/review`);
   });
 
+  it("is honest that the AI is simulated, except for the hand-written demo topic", async () => {
+    const custom = newBook();
+    const { unmount } = wrap(<BuildStep id={custom} timing={fast} />);
+    expect(screen.getByText(/the ai is simulated/i)).toBeInTheDocument();
+    await waitFor(() => expect(allDone(custom)).toBe(true));
+    unmount();
+    const demo = newBook({ topic: "Design systems for small teams" });
+    wrap(<BuildStep id={demo} timing={fast} />);
+    expect(screen.queryByText(/the ai is simulated/i)).not.toBeInTheDocument();
+    await waitFor(() => expect(allDone(demo)).toBe(true));
+  });
+
   it("marks a failed chapter, keeps going, and retries only that chapter", async () => {
     setFailures(["ch2"]);
     const id = newBook();

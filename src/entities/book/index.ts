@@ -33,6 +33,7 @@ export {
   type TitleStyle,
 } from "./api/generate";
 export { exampleTopics } from "./api/content/templates";
+export { isDemoTopic } from "./api/content/demo";
 
 // lib
 export { decodeBook, encodeBook, shareUrl } from "./lib/share";

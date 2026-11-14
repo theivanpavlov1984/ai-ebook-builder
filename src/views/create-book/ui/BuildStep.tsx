@@ -1,8 +1,9 @@
 "use client";
 
+import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { bookDesign, Cover, useBooks, useBook, forwardStage } from "@/entities/book";
+import { bookDesign, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { ProgressList, Button, focusRing, StepHeader } from "@/shared/ui";
 import { failuresFromUrl, setFailures } from "@/shared/api";
@@ -64,6 +65,16 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
             : "You can start reading as soon as the first chapter appears."
         }
       />
+
+      {!isDemoTopic(book.topic) && (
+        <p className="-mt-4 mb-6 flex items-start gap-2 text-sm text-secondary">
+          <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
+          <span>
+            Prototype note: the AI is simulated, so chapters for your own topic follow a template. For a fully written
+            sample, start a book about “Design systems for small teams”.
+          </span>
+        </p>
+      )}
 
       <div className="mb-6 flex min-h-10 items-center justify-between gap-4">
         <p aria-live="polite" className="text-sm font-medium text-secondary">

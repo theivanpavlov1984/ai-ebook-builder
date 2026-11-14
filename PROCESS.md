@@ -96,6 +96,12 @@ imports from above or a slice is reached by a deep path. AI proposed the layer f
 The first run of AI's import-merging script used stale text offsets and corrupted twelve files – Prettier
 refused to parse them, we reset to the last commit and reran the fixed script. Same tests before and after (148).
 
+**Self-review against the brief.** Running the generator on a reviewer-style topic ("Brewing great coffee at home")
+showed the weak spot: the whole topic was pasted into every template ("Stop Overthinking Brewing Great Coffee at Home"),
+and chapters were ~110 words. Templates now split the topic into a subject and an audience, use the subject only where
+both a noun and a verb phrase read correctly, and chapters are about twice as long. The Build step says plainly that the
+AI is simulated and points to the hand-written demo topic. The mood field is now labelled "Theme & tone" to match the brief.
+
 ---
 
 ## Template for the next entries
