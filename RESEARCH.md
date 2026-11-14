@@ -159,12 +159,29 @@ It shows motivations and pains, not how people would behave in our product.
 5. **Honest promises:** real time estimates, no fake urgency, the download just works.
 6. **One problem, one audience:** the Describe step pushes toward a specific, actionable topic.
 
-## 8. Next steps
+## 8. Flow references (Nov 14)
+
+With the prototype live, I checked its five key moments against AI creation tools: Gamma (whose help center
+now has an "ebook" guide, so it is a direct reference), Notion AI, Canva and Beautiful.ai, plus my own getebook.ai test.
+Sources are the products' help centers and sites, not hands-on use – they describe intended behaviour.
+
+| Moment                              | Pattern and who does it                                                                                                                                                                                                      | Primer today                                                                                                   | Proposal                                                                                                                                                                                                   |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Getting started**                 | **Guided by default, skippable.** Gamma: a few questions with tappable answers and "Decide for me", then a plan; "Express" skips both. getebook.ai: smart default with "Not this? Change it".                                | One field, then three guided screens (Describe, Title, Outline). Topic and audience are required.              | **Change:** add "Decide for me" for audience and tone, and a "Write it now" path that accepts the suggested title and outline. Both stay editable.                                                         |
+| **The wait**                        | **Watchable, and safe to leave.** Gamma: pages appear in a live grid, finished ones open while the rest build; the tab icon shows progress and a check when done. getebook.ai: a checklist, nothing readable for ~8 minutes. | Chapters are readable as they are written, with a step list and an honest time estimate.                       | **Keep**, plus a small add: progress in the tab title ("Writing 3 of 6") and "Your book is ready" when done.                                                                                               |
+| **Editing the structure**           | **The outline is the lever.** Gamma calls the plan review "the highest-leverage moment"; Beautiful.ai shows a text-first outline before any design. getebook.ai only regenerates the whole outline.                          | Rename, reorder, remove, add, "suggest another idea" per chapter, live page estimate.                          | **Keep** – already more granular than the references.                                                                                                                                                      |
+| **Adjusting without starting over** | **A rewrite is a suggestion, not an overwrite.** Gamma: Original / Suggestion toggle with accept; revisions are targeted and show what changed. Notion AI: accept, discard or try again. Canva: tone presets on a selection. | Presets or a free instruction; the new text replaces the old, with "Undo rewrite". Nothing shows what changed. | **Change:** mark the chapter while it is rewritten, highlight changed paragraphs, offer Keep · Discard with an Original / Suggestion toggle. Delivers the "compare" promised in `FLOW.md`. _Built Nov 14._ |
+| **Export and share**                | **Share, then measure.** Gamma: live link, PDF with a preview step, views and time per page on paid plans. getebook.ai: download only, behind a paywall.                                                                     | Preview, fact-check nudge, PDF, and a share link that opens a lead-capture landing page.                       | **Keep.** Sign-up stats per book are the natural next step but need a backend – out of scope for the prototype.                                                                                            |
+
+**What this changes for us:** two changes worth building (rewrite as a suggestion; a fast path through the wizard),
+one quick win (progress in the tab title). The outline and the share flow hold up against the references.
+
+## 9. Next steps
 
 - [x] Hands-on: getebook.ai (above)
 - [ ] Hands-on: one more tool (e.g. Inkfluence AI) – optional if time is short.
 - [x] Voice of users from reviews and forums (above) – instead of interviews, given the deadline.
-- [ ] UI patterns: onboarding, multi-step creation, long-running progress, AI regeneration controls.
+- [x] UI patterns: onboarding, long-running progress, outline editing, AI regeneration controls, sharing (section 8).
 
 ## Sources
 
@@ -183,3 +200,8 @@ It shows motivations and pains, not how people would behave in our product.
 - Reddit: "Long or short PDFs as lead magnets" (r/DigitalMarketing), "Client wants an ebook"
   (r/Emailmarketing), "Are eBooks and checklists still effective as lead magnets?" (r/GrowthHacking)
 - Designrr blog, "How long should your lead magnet ebook be" – designrr.io _(vendor content)_
+- Gamma Help Center: "How do I create with Agent", "How do I create an ebook", "Create a new presentation,
+  document, or webpage", "Track performance using analytics" – help.gamma.app
+- Notion Help, "Use Notion AI to write better notes and docs" – notion.com/help/guides/notion-ai-for-docs
+- Canva Help, "Use Magic Write to generate text" – canva.com/help/use-magic-write
+- Beautiful.ai, "Create with AI" – beautiful.ai
