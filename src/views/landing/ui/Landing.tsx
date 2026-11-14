@@ -15,6 +15,7 @@ import {
   Footer,
   HowItWorks,
   IdeasShelf,
+  Questions,
   Reviews,
   WatchSection,
   WhatYouGet,
@@ -131,6 +132,7 @@ export function Landing() {
         <WhatYouGet />
         <Examples />
         <Reviews />
+        <Questions />
         <FinalCta>
           <StartForm mood={mood} examples={false} />
         </FinalCta>

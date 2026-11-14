@@ -146,6 +146,10 @@ true ("Works wherever a PDF and a link do": Gumroad, Mailchimp, Substack, Linked
 with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". A "2,000+ experts" line under
 the prompt was placeholder copy; before review it became "Built for experts with no time to write" – who the
 product is for and their problem, with no number we can't back. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
+Late in review I compared the page with Inkfluence AI's home and pointed at two of its blocks. We took the FAQ ("Before
+you ask"): six questions answering the doubts from our research – will it sound like me, who owns it, why PDF, where it
+is stored – each answer checked against what the prototype actually does. We left the pricing table: with no payments,
+every price would be invented, so "How much does it cost?" is answered in the FAQ instead – free, it's a prototype.
 
 **Photo covers, after Designrr.** Contrast's Designrr has a new lifetime-offer video; I asked AI to break it down
 frame by frame. My assumption was that its images were AI-generated – the video shows an Unsplash/Pixabay search

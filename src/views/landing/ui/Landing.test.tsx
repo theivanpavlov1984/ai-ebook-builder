@@ -30,6 +30,16 @@ describe("Landing", () => {
     expect(screen.getByText(/sample reviews/i)).toBeInTheDocument();
   });
 
+  it("answers common doubts, including that it costs nothing", async () => {
+    render(<Landing />);
+    const section = screen.getByRole("region", { name: /before you ask/i });
+    const cost = within(section).getByText(/how much does it cost/i);
+    expect(within(section).getAllByRole("group")).toHaveLength(6);
+    await userEvent.click(cost);
+    expect(cost.closest("details")).toHaveAttribute("open");
+    expect(within(section).getByText(/primer is a prototype/i)).toBeVisible();
+  });
+
   it("explains how it works in three steps", () => {
     render(<Landing />);
     const section = screen.getByRole("region", { name: /how it works/i });

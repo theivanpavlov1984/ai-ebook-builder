@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -442,6 +443,70 @@ export function Reviews() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ── Questions ───────────────────────────────────────────────────────────────
+ * The doubts people raise about AI book tools (RESEARCH.md), answered with what the prototype really does. */
+const questions: { q: string; a: string }[] = [
+  {
+    q: "Do I need to be a writer?",
+    a: "No. You describe what you know in a sentence. Primer suggests the title, the outline and every chapter – you choose, reorder and approve.",
+  },
+  {
+    q: "Will it sound like me?",
+    a: "You pick the tone before anything is written. Any chapter can be rewritten simpler, shorter, warmer or in your own words, and each rewrite arrives as a suggestion you keep or discard. Earlier versions stay one click away.",
+  },
+  {
+    q: "Who owns the book?",
+    a: "You do. Your name goes on the cover, and it's yours to give away as a lead magnet or to send to clients.",
+  },
+  {
+    q: "Why a PDF and not EPUB?",
+    a: "A lead magnet travels by email and download links, and a PDF opens everywhere: inbox, phone, Gumroad, Notion. You also get a share page that asks for an email before the download.",
+  },
+  {
+    q: "Where is my book stored?",
+    a: "In your browser, on this device. Nothing is uploaded. A share link carries the book inside the link itself, so there's no server holding your words.",
+  },
+  {
+    q: "How much does it cost?",
+    a: "Nothing. Primer is a prototype: the AI is simulated, and there's no account or payment.",
+  },
+];
+
+export function Questions() {
+  return (
+    <section aria-labelledby="questions" className="border-t border-default py-28">
+      <div className={cn(box, "grid grid-cols-[1fr_1.5fr] gap-16")}>
+        <div>
+          <Eyebrow>Questions</Eyebrow>
+          <SectionTitle id="questions">Before you ask</SectionTitle>
+          <p className="mt-4.5 max-w-[340px] text-md text-secondary">
+            The doubts we heard most from people who tried AI book tools.
+          </p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {questions.map(({ q, a }) => (
+            <details key={q} className="group rounded-[20px] border border-default bg-surface">
+              <summary
+                className={cn(
+                  "flex cursor-pointer list-none items-center justify-between gap-6 rounded-[20px] px-6 py-5 text-md font-semibold [&::-webkit-details-marker]:hidden",
+                  focusRing,
+                )}
+              >
+                {q}
+                <Plus
+                  aria-hidden
+                  className="size-4.5 shrink-0 text-secondary transition-transform group-open:rotate-45"
+                />
+              </summary>
+              <p className="-mt-1 px-6 pb-5 text-md leading-relaxed text-secondary">{a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
   );
