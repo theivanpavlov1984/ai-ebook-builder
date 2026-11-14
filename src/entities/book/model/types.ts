@@ -12,6 +12,8 @@ export type Chapter = {
   status: ChapterStatus;
   /** Previous bodies, oldest first (for undo). */
   versions: string[][];
+  /** A rewrite waiting for the user to keep or discard it. The body stays unchanged until then. */
+  draft?: string[];
 };
 
 export type Book = {

@@ -7,7 +7,7 @@ import { bookDesign, Cover, forwardStage, estimate, useBooks, useBook } from "@/
 import { AppShell, NotFound } from "@/widgets/layout";
 import { Button, focusRing, Stepper } from "@/shared/ui";
 import { cn } from "@/shared/lib";
-import { ChapterPanel } from "@/features/rewrite-chapter";
+import { ChapterPanel, ChapterReader } from "@/features/rewrite-chapter";
 import { CoverPanel } from "@/features/change-cover";
 
 export function Studio({ id, rewriteMs = 1200 }: { id: string; rewriteMs?: number }) {
@@ -73,7 +73,11 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
               <button key={c.id} type="button" onClick={() => setSelected(c.id)} className={navItem(c.id === selected)}>
                 <span className="w-4 shrink-0 text-secondary">{i + 1}</span>
                 <span className="flex-1">{c.title}</span>
-                {c.versions.length > 0 && <span className="text-xs font-normal text-accent-strong">edited</span>}
+                {c.draft ? (
+                  <span className="text-xs font-normal text-accent-strong">to review</span>
+                ) : (
+                  c.versions.length > 0 && <span className="text-xs font-normal text-accent-strong">edited</span>
+                )}
               </button>
             ))}
           </nav>
@@ -85,13 +89,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                   Chapter {chapterIndex + 1}
                 </p>
                 <h2 className="mt-1 font-display text-2xl font-medium">{chapter.title}</h2>
-                <div className="mt-6 flex flex-col gap-4 font-display text-reader">
-                  {chapter.body.map((p, i) => (
-                    <p key={i} className="whitespace-pre-line">
-                      {p}
-                    </p>
-                  ))}
-                </div>
+                <ChapterReader key={chapter.id} bookId={id} chapter={chapter} />
               </article>
             ) : (
               <div className="flex justify-center pt-6">

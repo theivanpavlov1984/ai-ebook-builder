@@ -16,7 +16,8 @@ const directions: { value: RewriteDirection; label: string }[] = [
 
 export function ChapterPanel({ book, chapter, rewriteMs }: { book: Book; chapter: Chapter; rewriteMs: number }) {
   const { show } = useToast();
-  const rewriteChapter = useBooks((s) => s.rewriteChapter);
+  const proposeRewrite = useBooks((s) => s.proposeRewrite);
+  const setRewriting = useBooks((s) => s.setRewriting);
   const undoChapter = useBooks((s) => s.undoChapter);
   const [direction, setDirection] = useState<RewriteDirection | "">("");
   const [instruction, setInstruction] = useState("");
@@ -24,22 +25,20 @@ export function ChapterPanel({ book, chapter, rewriteMs }: { book: Book; chapter
 
   async function rewrite() {
     setBusy(true);
+    setRewriting(chapter.id, true);
     try {
-      const body = await simulate(
+      const draft = await simulate(
         "rewrite",
         () => writeChapter(book, chapter, { direction: direction || undefined, instruction }),
         { ms: rewriteMs },
       );
-      rewriteChapter(book.id, chapter.id, body);
+      // A suggestion, not an overwrite: the chapter keeps its text until the user keeps the rewrite.
+      proposeRewrite(book.id, chapter.id, draft);
       setInstruction("");
-      show({
-        tone: "info",
-        message: "Chapter rewritten",
-        action: { label: "Undo", onClick: () => undoChapter(book.id, chapter.id) },
-      });
     } catch {
       show({ tone: "error", message: "Couldn’t rewrite this chapter – your text is unchanged. Try again." });
     } finally {
+      setRewriting(chapter.id, false);
       setBusy(false);
     }
   }
@@ -79,8 +78,14 @@ export function ChapterPanel({ book, chapter, rewriteMs }: { book: Book; chapter
         disabled={!direction && !instruction.trim()}
         icon={<Wand2 aria-hidden className="size-4" />}
       >
-        Rewrite chapter
+        {chapter.draft ? "Rewrite again" : "Rewrite chapter"}
       </Button>
+
+      {chapter.draft && (
+        <p className="-mt-3 text-sm text-secondary">
+          A suggested rewrite is open in the chapter. Keep it, discard it, or rewrite again with another direction.
+        </p>
+      )}
 
       <div className="flex items-center justify-between border-t border-default pt-4">
         <p className="text-sm text-secondary">

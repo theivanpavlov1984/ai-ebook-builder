@@ -102,6 +102,18 @@ and chapters were ~110 words. Templates now split the topic into a subject and a
 both a noun and a verb phrase read correctly, and chapters are about twice as long. The Build step says plainly that the
 AI is simulated and points to the hand-written demo topic. The mood field is now labelled "Theme & tone" to match the brief.
 
+**Flow references.** I asked AI to check the five key moments of the live prototype against AI creation tools
+(Gamma, Notion AI, Canva, Beautiful.ai, plus my getebook.ai test) and put each Primer screen next to them on a board.
+Mobbin needed a paid plan, so the sources are the products' help centers – the summary is in `RESEARCH.md` §8.
+The verdict: outline and sharing hold up, but a rewrite silently replaced the chapter, while Gamma and Notion
+treat it as a suggestion you accept or discard. `FLOW.md` had promised "compare with the previous one" and we hadn't built it.
+
+**Rewrite as a suggestion.** Now the chapter dims with "Rewriting this chapter…" while it works, then the result
+arrives as a suggestion: changed paragraphs are highlighted, an Original / Suggestion toggle compares them, and
+Keep or Discard decides. The text only changes on Keep, so Undo and versions work as before.
+AI proposed a "Try again" button too; I dropped it – the simulated rewrite is deterministic, so it would return the same
+text and look broken. "Rewrite again" with another direction does the honest version of it.
+
 ---
 
 ## Template for the next entries

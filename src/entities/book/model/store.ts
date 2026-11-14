@@ -13,7 +13,15 @@ type BooksState = {
   createBook: (topic: string) => string;
   updateBook: (id: string, patch: Partial<Book>, opts?: { snapshot?: boolean }) => void;
   updateChapter: (id: string, chapterId: string, patch: Partial<Chapter>) => void;
+  /** Chapters being rewritten right now. Session-only, never persisted. */
+  rewriting: Record<string, boolean>;
   rewriteChapter: (id: string, chapterId: string, body: string[]) => void;
+  setRewriting: (chapterId: string, on: boolean) => void;
+  /** Store a rewrite as a suggestion; the chapter body stays as it is. */
+  proposeRewrite: (id: string, chapterId: string, draft: string[]) => void;
+  /** Make the suggestion the chapter body; the old body becomes a version. */
+  acceptRewrite: (id: string, chapterId: string) => void;
+  discardRewrite: (id: string, chapterId: string) => void;
   undoChapter: (id: string, chapterId: string) => boolean;
   undo: (id: string) => boolean;
   deleteBook: (id: string) => void;
@@ -34,6 +42,7 @@ export const useBooks = create<BooksState>()(
       return {
         books: {},
         history: {},
+        rewriting: {},
 
         createBook: (topic) => {
           const id = newId();
@@ -78,8 +87,35 @@ export const useBooks = create<BooksState>()(
           patchBook(id, (b) => ({
             ...b,
             chapters: b.chapters.map((c) =>
-              c.id === chapterId ? { ...c, versions: [...c.versions, c.body], body, status: "done" } : c,
+              c.id === chapterId
+                ? { ...c, versions: [...c.versions, c.body], body, draft: undefined, status: "done" }
+                : c,
             ),
+          })),
+
+        setRewriting: (chapterId, on) =>
+          set((s) => {
+            const rewriting = { ...s.rewriting };
+            if (on) rewriting[chapterId] = true;
+            else delete rewriting[chapterId];
+            return { rewriting };
+          }),
+
+        proposeRewrite: (id, chapterId, draft) =>
+          patchBook(id, (b) => ({
+            ...b,
+            chapters: b.chapters.map((c) => (c.id === chapterId ? { ...c, draft } : c)),
+          })),
+
+        acceptRewrite: (id, chapterId) => {
+          const draft = get().books[id]?.chapters.find((c) => c.id === chapterId)?.draft;
+          if (draft) get().rewriteChapter(id, chapterId, draft);
+        },
+
+        discardRewrite: (id, chapterId) =>
+          patchBook(id, (b) => ({
+            ...b,
+            chapters: b.chapters.map((c) => (c.id === chapterId ? { ...c, draft: undefined } : c)),
           })),
 
         undoChapter: (id, chapterId) => {
@@ -89,7 +125,7 @@ export const useBooks = create<BooksState>()(
           patchBook(id, (b) => ({
             ...b,
             chapters: b.chapters.map((c) =>
-              c.id === chapterId ? { ...c, body: previous, versions: c.versions.slice(0, -1) } : c,
+              c.id === chapterId ? { ...c, body: previous, versions: c.versions.slice(0, -1), draft: undefined } : c,
             ),
           }));
           return true;

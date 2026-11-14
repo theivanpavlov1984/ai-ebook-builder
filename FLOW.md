@@ -122,7 +122,8 @@ Three columns:
 
 - One-click directions: _simpler · more detailed · shorter · more practical (add steps) · warmer tone_.
 - Or a free instruction: "Add an example for a 3-person startup".
-- Every rewrite creates a **version** – compare with the previous one, keep or restore.
+- A rewrite arrives as a **suggestion**: changed paragraphs are highlighted, Original / Suggestion compares them,
+  Keep or Discard decides. Kept rewrites become **versions** – undo restores the previous one.
 
 **Adjust the cover:**
 
