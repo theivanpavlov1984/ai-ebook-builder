@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, Plus, Sparkles, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, Info, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CreationLayout, NotFound } from "@/widgets/layout";
@@ -13,6 +13,7 @@ import {
   type Chapter,
   useBook,
   forwardStage,
+  stageOrder,
 } from "@/entities/book";
 import { toChapter } from "../model/fastTrack";
 import { simulate } from "@/shared/api";
@@ -109,8 +110,10 @@ function OutlineEditor({ id }: { id: string }) {
     const round = (rounds[c.id] ?? 0) + 1;
     setRounds({ ...rounds, [c.id]: round });
     const alt = alternativeChapter(book, i, round);
+    // A written chapter swapped for another idea no longer matches its text: it is written again on continue.
+    const swapped = c.status === "done" ? { body: [], draft: undefined, status: "idle" as const } : {};
     setChapters(
-      chapters.map((x, j) => (j === i ? { ...x, ...alt } : x)),
+      chapters.map((x, j) => (j === i ? { ...x, ...alt, ...swapped } : x)),
       true,
     );
     setAnnouncement(`Chapter ${i + 1} is now “${alt.title}”.`);
@@ -124,7 +127,15 @@ function OutlineEditor({ id }: { id: string }) {
     focusAfterRender([`Chapter ${chapters.length + 1} title`]);
   }
 
+  // Back here once writing has started (the browser's Back during Build, or the stepper from Review): say what
+  // happens to the chapters already written, and let the button continue instead of starting over.
+  const writingStarted = stageOrder.indexOf(book.stage) >= stageOrder.indexOf("build");
+  const written = chapters.filter((c) => c.status === "done").length;
+  const pending = chapters.length - written;
+  const reviewed = stageOrder.indexOf(book.stage) >= stageOrder.indexOf("review");
+
   function writeBook() {
+    if (pending === 0 && reviewed) return router.push(`/book/${id}/review`);
     updateBook(id, {
       stage: forwardStage(book, "build"),
       chapters: chapters.map((c) => (c.status === "done" ? c : { ...c, status: "idle" })),
@@ -163,6 +174,18 @@ function OutlineEditor({ id }: { id: string }) {
             Try again
           </Button>
         </div>
+      )}
+
+      {writingStarted && status === "ready" && (
+        <p className="-mt-4 mb-6 flex items-start gap-2 rounded-md bg-subtle p-3 text-sm text-primary">
+          <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-secondary" />
+          <span>
+            {pending > 0
+              ? `Your book is being written – ${written} of ${chapters.length} chapters are done. Writing pauses while you’re here and picks up when you continue.`
+              : "Your book is written."}{" "}
+            Renamed or moved chapters keep their text; new or swapped ones get written when you continue.
+          </span>
+        </p>
       )}
 
       <p aria-live="polite" className="sr-only">
@@ -229,7 +252,15 @@ function OutlineEditor({ id }: { id: string }) {
           )}
 
           <div>
-            <Button onClick={writeBook}>Write my book</Button>
+            <Button onClick={writeBook}>
+              {!writingStarted
+                ? "Write my book"
+                : pending > 0
+                  ? "Continue writing"
+                  : reviewed
+                    ? "Back to review"
+                    : "Continue"}
+            </Button>
           </div>
         </div>
       )}

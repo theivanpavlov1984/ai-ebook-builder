@@ -4,8 +4,8 @@ import { ArrowRight, PenLine } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { bookDesign, Cover, coverPhoto, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
-import { AppShell, NotFound } from "@/widgets/layout";
-import { Button, Dialog, focusRing, Stepper } from "@/shared/ui";
+import { AppShell, BookStepper, NotFound } from "@/widgets/layout";
+import { Button, Dialog, focusRing } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { ChapterPanel, ChapterReader } from "@/features/rewrite-chapter";
 import { ChapterEditor } from "@/features/edit-chapter";
@@ -39,12 +39,16 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
     router.push(`/book/${id}/final`);
   }
 
-  /** Go to a chapter, the cover ("cover") or the final step ("final"), closing the editor on the way. */
+  /**
+   * Go to a chapter, the cover ("cover"), the final step ("final") or another step of the flow (a path from the
+   * stepper), closing the editor on the way.
+   */
   function leaveTo(target: string) {
     setLeaving(undefined);
     setEditing(undefined);
     setDirty(false);
     if (target === "final") finalize();
+    else if (target.startsWith("/")) router.push(target);
     else setSelected(target);
   }
 
@@ -67,7 +71,18 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
     <AppShell active="new">
       <div className="flex min-h-screen flex-col">
         <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-default px-5 py-4 lg:px-8">
-          <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={4} />
+          {/* The stepper's links leave Review too, so they pass the same unsaved-edit check as the chapter list. */}
+          <div
+            onClickCapture={(e) => {
+              const href = (e.target as Element).closest("a")?.getAttribute("href");
+              if (href && editing && dirty) {
+                e.preventDefault();
+                setLeaving(href);
+              }
+            }}
+          >
+            <BookStepper book={book} stage="review" />
+          </div>
           <div className="flex items-center gap-4">
             <p className="hidden text-sm text-secondary sm:block">
               ~{pages} pages · {minutes}-minute read

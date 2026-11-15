@@ -7,6 +7,7 @@ import { CreationLayout, NotFound } from "@/widgets/layout";
 import { Button, focusRing, Input, SectionLabel, StepHeader } from "@/shared/ui";
 import { suggestTitles, type TitleStyle, useBooks, useBook, forwardStage } from "@/entities/book";
 import { cn } from "@/shared/lib";
+import { PrototypeNote } from "./PrototypeNote";
 
 const styleLabel: Record<TitleStyle, string> = {
   yours: "Your words",
@@ -81,6 +82,8 @@ function TitleForm({ id }: { id: string }) {
         back={{ href: `/book/${id}/describe`, label: "Back to description" }}
       />
 
+      <PrototypeNote topic={book.topic} what="title ideas, the outline and chapters" />
+
       <div className="flex flex-col gap-8">
         <div>
           <div className="mb-2 flex items-center justify-between">
@@ -128,7 +131,7 @@ function TitleForm({ id }: { id: string }) {
           onChange={(e) => setCustom(e.target.value)}
         />
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <Input
             label="Subtitle (optional)"
             placeholder="e.g. A practical guide for small teams"

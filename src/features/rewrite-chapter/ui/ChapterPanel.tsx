@@ -76,10 +76,18 @@ export function ChapterPanel({ book, chapter, rewriteMs }: { book: Book; chapter
         onClick={() => void rewrite()}
         loading={busy}
         disabled={!direction && !instruction.trim()}
+        aria-describedby={!chapter.draft && !direction && !instruction.trim() ? "rewrite-hint" : undefined}
         icon={<Wand2 aria-hidden className="size-4" />}
       >
         {chapter.draft ? "Rewrite again" : "Rewrite chapter"}
       </Button>
+
+      {/* A disabled button says why: nothing to rewrite towards yet. */}
+      {!chapter.draft && !direction && !instruction.trim() && (
+        <p id="rewrite-hint" className="-mt-3 text-sm text-secondary">
+          Pick a direction above or describe the change to rewrite this chapter.
+        </p>
+      )}
 
       {chapter.draft && (
         <p className="-mt-3 text-sm text-secondary">

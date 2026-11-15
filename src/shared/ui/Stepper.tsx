@@ -1,21 +1,31 @@
 import { Check } from "lucide-react";
+import Link from "next/link";
+import { focusRing } from "./Button";
 import { cn } from "@/shared/lib";
 
-export function Stepper({ steps, current }: { steps: string[]; current: number }) {
+/**
+ * Progress through the creation flow. Steps already reached are links (`links[i]`), so the user can go back to
+ * any of them – a wizard should let people revisit what they've done. `reached` is the furthest step the book
+ * has been to: after going back to Describe, Title to Review stay done and reachable.
+ */
+export function Stepper({
+  steps,
+  current,
+  reached = current,
+  links,
+}: {
+  steps: string[];
+  current: number;
+  reached?: number;
+  links?: string[];
+}) {
   return (
     <ol aria-label="Progress" className="flex items-center gap-3 text-sm sm:gap-5">
       {steps.map((step, i) => {
-        const state = i < current ? "done" : i === current ? "current" : "upcoming";
-        return (
-          <li
-            key={step}
-            data-state={state}
-            aria-current={state === "current" ? "step" : undefined}
-            className={cn(
-              "flex items-center gap-1.5 border-b-2 pb-1",
-              state === "current" ? "border-accent font-semibold text-primary" : "border-transparent text-secondary",
-            )}
-          >
+        const state = i === current ? "current" : i < current || i <= reached ? "done" : "upcoming";
+        const href = state === "done" ? links?.[i] : undefined;
+        const content = (
+          <>
             {/* Same-size marker on every step: a check when done, the number otherwise – the row never shifts. */}
             <span data-marker aria-hidden className="flex size-3.5 items-center justify-center text-xs tabular-nums">
               {state === "done" ? <Check className="size-3.5 text-success" /> : i + 1}
@@ -32,6 +42,31 @@ export function Stepper({ steps, current }: { steps: string[]; current: number }
               {step}
             </span>
             {state === "done" && <span className="sr-only">(done)</span>}
+          </>
+        );
+        return (
+          <li
+            key={step}
+            data-state={state}
+            aria-current={state === "current" ? "step" : undefined}
+            className={cn(
+              "border-b-2 pb-1",
+              state === "current" ? "border-accent font-semibold text-primary" : "border-transparent text-secondary",
+            )}
+          >
+            {href ? (
+              <Link
+                href={href}
+                className={cn(
+                  "-mx-1 flex items-center gap-1.5 rounded-sm px-1 underline-offset-4 hover:text-primary hover:underline",
+                  focusRing,
+                )}
+              >
+                {content}
+              </Link>
+            ) : (
+              <span className="flex items-center gap-1.5">{content}</span>
+            )}
           </li>
         );
       })}

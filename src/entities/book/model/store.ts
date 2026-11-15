@@ -27,6 +27,8 @@ type BooksState = {
   undoChapter: (id: string, chapterId: string) => boolean;
   undo: (id: string) => boolean;
   deleteBook: (id: string) => void;
+  /** Put a deleted book back (the Undo after deleting from My books). */
+  restoreBook: (book: Book) => void;
 };
 
 function newId() {
@@ -166,6 +168,8 @@ export const useBooks = create<BooksState>()(
             delete history[id];
             return { books, history };
           }),
+
+        restoreBook: (book) => set((s) => ({ books: { ...s.books, [book.id]: book } })),
       };
     },
     {

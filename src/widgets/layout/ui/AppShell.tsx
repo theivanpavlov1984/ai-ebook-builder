@@ -10,7 +10,7 @@ const nav = [
   { key: "books", href: "/books", label: "My books", Icon: Library },
 ] as const;
 
-export function AppShell({ active, children }: { active: "new" | "books"; children: ReactNode }) {
+export function AppShell({ active, children }: { active?: "new" | "books"; children: ReactNode }) {
   return (
     // Below lg (1024 px) the sidebar becomes a bar across the top, so phones and tablets keep the full width.
     <div className="flex min-h-screen flex-col lg:flex-row">

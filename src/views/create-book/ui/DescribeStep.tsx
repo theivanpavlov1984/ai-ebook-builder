@@ -1,8 +1,8 @@
 "use client";
 
-import { Sparkles, Zap } from "lucide-react";
+import { Info, Sparkles, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import {
   directionsForMood,
@@ -47,7 +47,25 @@ function DescribeForm({ id }: { id: string }) {
   const [confirmRedraft, setConfirmRedraft] = useState(false);
   const [writing, setWriting] = useState(false);
 
+  // Next keeps a page the user left mounted but hidden, and Back shows it again with its old state. Leaving
+  // clears what belonged to that visit – a spinner from "Write it now", errors fixed since – so Back never
+  // lands on a form that looks busy or wrong.
+  useEffect(
+    () => () => {
+      setWriting(false);
+      setTopicError(undefined);
+      setAudienceError(undefined);
+    },
+    [],
+  );
+
   const audiences = suggestAudiences(book.topic);
+  const written = book.chapters.filter((c) => c.status === "done").length;
+
+  /** After a failed check the cursor goes to the first field to fix, so nobody hunts for the error. */
+  function focusField(fieldId: string) {
+    document.getElementById(fieldId)?.focus();
+  }
 
   function goNext(clearOutline: boolean) {
     if (clearOutline) {
@@ -66,7 +84,7 @@ function DescribeForm({ id }: { id: string }) {
     const check = validateTopic(book.topic);
     setTopicError(check.ok ? undefined : check.message);
     setTopicSuggestions(check.ok ? [] : check.suggestions);
-    if (!check.ok) return;
+    if (!check.ok) return focusField("describe-topic");
 
     const redraft = book.chapters.length > 0 && book.topic.trim() !== initialTopic.current.trim();
     setWriting(true);
@@ -87,7 +105,8 @@ function DescribeForm({ id }: { id: string }) {
     setTopicError(check.ok ? undefined : check.message);
     setTopicSuggestions(check.ok ? [] : check.suggestions);
     setAudienceError(audienceOk ? undefined : "Who is this book for? A few words is enough.");
-    if (!check.ok || !audienceOk) return;
+    if (!check.ok) return focusField("describe-topic");
+    if (!audienceOk) return focusField("describe-audience");
 
     const topicChanged = book.topic.trim() !== initialTopic.current.trim();
     if (book.chapters.length > 0 && topicChanged) {
@@ -101,6 +120,16 @@ function DescribeForm({ id }: { id: string }) {
     <CreationLayout book={book} stage="describe">
       <StepHeader title="Tell us about your book" intro="Three quick questions. You can change everything later." />
 
+      {written > 0 && (
+        <p className="-mt-4 mb-6 flex items-start gap-2 rounded-md bg-subtle p-3 text-sm text-primary">
+          <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-secondary" />
+          <span>
+            Your book is already written. A new audience or tone won’t rewrite the chapters – rewrite them one by one in
+            Review. A new topic starts a fresh outline.
+          </span>
+        </p>
+      )}
+
       <form
         className="flex flex-col gap-8"
         onSubmit={(e) => {
@@ -110,6 +139,7 @@ function DescribeForm({ id }: { id: string }) {
       >
         <div className="flex flex-col gap-3">
           <Textarea
+            id="describe-topic"
             label="What's your book about?"
             value={book.topic}
             onChange={(e) => {
@@ -143,7 +173,13 @@ function DescribeForm({ id }: { id: string }) {
                 variant="ghost"
                 size="sm"
                 icon={<Sparkles aria-hidden className="size-3.5 text-accent" />}
-                onClick={() => setTopicSuggestions(shapeIdea(book.topic))}
+                onClick={() => {
+                  if (!book.topic.trim()) {
+                    setTopicError("Write a rough idea first – a few words is enough.");
+                    return focusField("describe-topic");
+                  }
+                  setTopicSuggestions(shapeIdea(book.topic));
+                }}
               >
                 Help me shape this idea
               </Button>
@@ -153,6 +189,7 @@ function DescribeForm({ id }: { id: string }) {
 
         <div className="flex flex-col gap-3">
           <Input
+            id="describe-audience"
             label="Who is it for?"
             placeholder="e.g. Founders of early-stage startups"
             value={book.audience}
@@ -230,7 +267,11 @@ function DescribeForm({ id }: { id: string }) {
         open={confirmRedraft}
         onOpenChange={setConfirmRedraft}
         title="Redraft your outline?"
-        description="You changed the topic, so your current outline may no longer fit. We'll draft a new one – you can undo this."
+        description={
+          written > 0
+            ? `You changed the topic, so we’ll draft a new outline and write the book again – your ${written} written chapters will be replaced. You can undo this.`
+            : "You changed the topic, so your current outline may no longer fit. We'll draft a new one – you can undo this."
+        }
         footer={
           <>
             <Button variant="ghost" onClick={() => setConfirmRedraft(false)}>

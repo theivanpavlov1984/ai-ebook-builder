@@ -164,3 +164,20 @@ describe("FinalStep", () => {
     await waitFor(() => expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:preview"));
   });
 });
+
+describe("FinalStep – before you share", () => {
+  it("points to Review instead of a checkbox that gates nothing, and says why the share link is long", () => {
+    const id = newBook();
+    wrap(<FinalStep id={id} />);
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /read them in review/i })).toHaveAttribute("href", `/book/${id}/review`);
+    expect(screen.getByText(/the whole book rides inside the link/i)).toBeInTheDocument();
+  });
+
+  it("lets the author go back to any step from the stepper", () => {
+    const id = newBook();
+    wrap(<FinalStep id={id} />);
+    const progress = screen.getByRole("list", { name: /progress/i });
+    expect(within(progress).getAllByRole("link")).toHaveLength(5);
+  });
+});

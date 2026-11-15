@@ -1,13 +1,13 @@
 "use client";
 
-import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { bookDesign, ChapterText, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
+import { bookDesign, ChapterText, Cover, forwardStage, useBook, useBooks } from "@/entities/book";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { ProgressList, Button, focusRing, StepHeader } from "@/shared/ui";
 import { failuresFromUrl, setFailures } from "@/shared/api";
 import { cn, useTabTitle } from "@/shared/lib";
+import { PrototypeNote } from "./PrototypeNote";
 import { defaultTiming, useGeneration, type Timing } from "../model/useGeneration";
 
 export type { Timing };
@@ -80,15 +80,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
         }
       />
 
-      {!isDemoTopic(book.topic) && (
-        <p className="-mt-4 mb-6 flex items-start gap-2 text-sm text-secondary">
-          <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
-          <span>
-            Prototype note: the AI is simulated, so chapters for your own topic follow a template. For a fully written
-            sample, start a book about “Design systems for small teams”.
-          </span>
-        </p>
-      )}
+      <PrototypeNote topic={book.topic} what="chapters" />
 
       <div className="mb-6 flex min-h-10 items-center justify-between gap-4">
         <p aria-live="polite" className="text-sm font-medium text-secondary">

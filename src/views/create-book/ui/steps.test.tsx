@@ -46,6 +46,30 @@ describe("DescribeStep", () => {
     expect(push).not.toHaveBeenCalled();
   });
 
+  it("puts the cursor in the first field that needs fixing", async () => {
+    const id = newBook({ audience: "" });
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /continue/i }));
+    expect(screen.getByLabelText(/who is it for/i)).toHaveFocus();
+    await userEvent.clear(screen.getByLabelText(/what's your book about/i));
+    await userEvent.click(screen.getByRole("button", { name: /continue/i }));
+    expect(screen.getByLabelText(/what's your book about/i)).toHaveFocus();
+  });
+
+  it("'Help me shape this idea' on an empty topic asks for a rough idea first", async () => {
+    const id = newBook({ topic: "" });
+    wrap(<DescribeStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: /help me shape this idea/i }));
+    expect(screen.getByText(/write a rough idea first/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/what's your book about/i)).toHaveFocus();
+  });
+
+  it("tells the author of a written book what changing the answers will and won't do", () => {
+    const id = newBook({ chapters: chapters(6).map((c) => ({ ...c, body: ["Text"], status: "done" as const })) });
+    wrap(<DescribeStep id={id} />);
+    expect(screen.getByText(/won’t rewrite the chapters/i)).toBeInTheDocument();
+  });
+
   it("saves mood and call to action, then goes to Title", async () => {
     const id = newBook();
     wrap(<DescribeStep id={id} />);
@@ -231,6 +255,27 @@ describe("OutlineStep", () => {
     wrap(<OutlineStep id={id} />);
     await userEvent.click(screen.getByRole("button", { name: /write my book/i }));
     expect(st().books[id].stage).toBe("build");
+    expect(push).toHaveBeenCalledWith(`/book/${id}/build`);
+  });
+
+  it("back while the book is being written: says what is done, keeps the text, and continues instead of restarting", async () => {
+    const half = chapters(6).map((c, i) => (i < 2 ? { ...c, body: ["Text"], status: "done" as const } : c));
+    const id = newBook({ title: "Bread", chapters: half, stage: "build" });
+    wrap(<OutlineStep id={id} />);
+    expect(screen.getByText(/2 of 6 chapters are done/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /continue writing/i }));
+    expect(st().books[id].chapters[0]).toMatchObject({ status: "done", body: ["Text"] });
+    expect(push).toHaveBeenCalledWith(`/book/${id}/build`);
+  });
+
+  it("a written chapter swapped for another idea gets written again", async () => {
+    const all = chapters(6).map((c) => ({ ...c, body: ["Text"], status: "done" as const }));
+    const id = newBook({ title: "Bread", chapters: all, stage: "review" });
+    wrap(<OutlineStep id={id} />);
+    expect(screen.getByRole("button", { name: /back to review/i })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /suggest another idea for chapter 1/i }));
+    expect(st().books[id].chapters[0]).toMatchObject({ status: "idle", body: [] });
+    await userEvent.click(screen.getByRole("button", { name: /continue writing/i }));
     expect(push).toHaveBeenCalledWith(`/book/${id}/build`);
   });
 });

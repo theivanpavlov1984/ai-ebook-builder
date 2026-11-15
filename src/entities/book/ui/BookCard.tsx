@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cn } from "@/shared/lib";
 import { focusRing, Card } from "@/shared/ui";
 import { Cover } from "./Cover";
@@ -10,12 +11,18 @@ export function BookCard({
   status,
   design,
   author,
+  meta,
+  actions,
   onOpen,
 }: {
   title: string;
   status: "draft" | "finalized";
   design: CoverDesign;
   author?: string;
+  /** A line under the title: where the book stands, when it was last edited. */
+  meta?: string;
+  /** Buttons at the bottom of the card (rename, delete). */
+  actions?: ReactNode;
   onOpen?: () => void;
 }) {
   return (
@@ -39,6 +46,8 @@ export function BookCard({
           {statusLabel[status]}
         </span>
       </div>
+      {meta && <p className="-mt-2 text-xs text-secondary">{meta}</p>}
+      {actions && <div className="-mx-1.5 -mb-1 flex items-center gap-1 border-t border-default pt-2">{actions}</div>}
     </Card>
   );
 }

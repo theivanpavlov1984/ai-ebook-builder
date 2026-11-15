@@ -241,8 +241,21 @@ the reviews were labelled as samples, the logos were not, which is exactly the k
 distrusts. Fixed: the sidebar becomes a top bar below 1024 px and every step reflows to one column; Review keeps
 three columns only from 1280 px; a failed start puts the cursor back in the field, which stops the demo; "Help me
 shape this idea" on an empty field asks for a rough idea instead of repeating the examples; the brand strip is
-gone. The rest of the list – a checkbox that gates nothing, a stepper that looks clickable but isn't, Back during
-generation landing on an editable outline – is next.
+gone.
+
+**The rest of the audit list, the same day.** The checkbox "I've skimmed the chapters" gated nothing – Download and
+Share worked either way – so it became what it really was: a note that AI makes mistakes, with a link to read the
+chapters in Review. The stepper looked like navigation and wasn't; now every step the book has reached is a link, and
+leaving Review through it passes the same "Discard your changes?" check as the chapter list. Going back raised the
+real question – what does a change do to a book already written? So Describe and Outline say it: a new audience or tone
+doesn't rewrite chapters, renamed or moved chapters keep their text, a swapped chapter is written again. Back during
+generation now lands on an outline that says "2 of 6 chapters are done – writing pauses here", with Continue writing
+instead of Write my book. Smaller ones: the cursor goes to the first field to fix on Describe; a disabled Rewrite says
+what it's waiting for; My books shows where each book stands and can rename or delete (with Undo); a Primer 404 instead
+of the framework's; the "AI is simulated" note shows on Title, where the template titles first appear, not only on
+Build; the Final screen says why the share link is so long. Walking the fixes in the browser turned up one more, which
+the audit had missed: Back from Build to Describe showed the form still busy from "Write it now" – Next keeps the left
+page mounted, state and all – so the page now clears what belonged to the last visit when it is left.
 
 ---
 

@@ -1,11 +1,11 @@
 "use client";
 
-import { Check, CircleAlert, Download, ExternalLink, Link2 } from "lucide-react";
+import { Check, CircleAlert, Download, ExternalLink, Info, Link2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { bookDesign, Cover, ctaLink, ctaText, estimate, useBooks, type Book, useBook, shareUrl } from "@/entities/book";
-import { AppShell, NotFound } from "@/widgets/layout";
-import { Button, focusRing, Input, Stepper, useToast } from "@/shared/ui";
+import { AppShell, BookStepper, NotFound } from "@/widgets/layout";
+import { Button, focusRing, Input, useToast } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { buildPdf, downloadPdf, PdfPreview } from "@/features/download-pdf";
 import { BookPlan } from "./BookPlan";
@@ -44,7 +44,6 @@ function Final({ id, download, build }: { id: string; download: Download; build:
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
   const [busy, setBusy] = useState(false);
-  const [skimmed, setSkimmed] = useState(false);
   // Rendered only on the client (after hydration), so window is available here.
   const link = useMemo(() => shareUrl(book, window.location.origin), [book]);
 
@@ -83,7 +82,7 @@ function Final({ id, download, build }: { id: string; download: Download; build:
   return (
     <AppShell active="new">
       <div className="mx-auto flex max-w-[1080px] flex-col gap-6 px-5 py-5 lg:gap-10 lg:px-10 lg:py-8">
-        <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={5} />
+        <BookStepper book={book} stage="final" />
         <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
           <section aria-label="Preview">
             <h1 className="font-brand text-2xl font-bold tracking-tight">Your book is ready to share</h1>
@@ -150,16 +149,18 @@ function Final({ id, download, build }: { id: string; download: Download; build:
                     </Link>
                   </span>
                 </li>
-                <li>
-                  <label className="flex cursor-pointer items-start gap-2">
-                    <input
-                      type="checkbox"
-                      checked={skimmed}
-                      onChange={(e) => setSkimmed(e.target.checked)}
-                      className="mt-0.5 size-4 accent-accent"
-                    />
-                    <span>I’ve skimmed the chapters – AI can make mistakes, especially with facts and numbers.</span>
-                  </label>
+                {/* A note, not a checkbox: ticking a box that gates nothing would only pretend to be a check. */}
+                <li className="flex items-start gap-2">
+                  <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-secondary" />
+                  <span>
+                    AI can make mistakes, especially with facts and numbers – skim the chapters before you share.{" "}
+                    <Link
+                      href={`/book/${id}/review`}
+                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
+                    >
+                      Read them in Review
+                    </Link>
+                  </span>
                 </li>
               </ul>
             </div>
@@ -195,6 +196,12 @@ function Final({ id, download, build }: { id: string; download: Download; build:
               </Button>
               <p className="text-xs text-secondary">
                 The link opens a landing page for your book – readers leave their email to get it.
+              </p>
+              {/* No server in the prototype: the whole book travels inside the link, so say what that costs. */}
+              <p className="text-xs text-secondary">
+                Prototype limit: with no server, the whole book rides inside the link (
+                {link.length.toLocaleString("en-US")} characters). Some email and social apps cut links this long – if
+                one does, send the PDF instead.
               </p>
               <label className="sr-only" htmlFor="share-link">
                 Share link

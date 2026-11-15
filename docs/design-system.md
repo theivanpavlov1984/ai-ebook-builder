@@ -176,19 +176,19 @@ Scale (size / line height, px):
 
 Each has default, hover, focus, active, disabled and – where relevant – loading and error states.
 
-| Component         | Variants / notes                                                                             |
-| ----------------- | -------------------------------------------------------------------------------------------- |
-| **Button**        | primary (ink), secondary (surface + border), ghost; sizes md / sm; loading state             |
-| **Input**         | label, hint, error message; `border-input` (3:1), accent border and focus outline on focus   |
-| **Textarea**      | same as Input, auto-grow                                                                     |
-| **Chip**          | choice (single / multi), suggestion; selected = ink background                               |
-| **Card**          | surface + border; interactive variant with hover                                             |
-| **Stepper**       | the 5-step progress (Describe → Title → Outline → Build → Review); done / current / upcoming |
-| **Progress list** | generation steps with status: waiting / working / done / failed + retry                      |
-| **Toast**         | success / error / info; with optional action ("Undo")                                        |
-| **Dialog**        | built on Radix for focus and keyboard handling; our styling                                  |
-| **Cover**         | renders a book cover from title, author, mood and art direction (see `FLOW.md` §5)           |
-| **Book card**     | cover + title + status + actions (for _My books_ and the side panel)                         |
+| Component         | Variants / notes                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| **Button**        | primary (ink), secondary (surface + border), ghost; sizes md / sm; loading state           |
+| **Input**         | label, hint, error message; `border-input` (3:1), accent border and focus outline on focus |
+| **Textarea**      | same as Input, auto-grow                                                                   |
+| **Chip**          | choice (single / multi), suggestion; selected = ink background                             |
+| **Card**          | surface + border; interactive variant with hover                                           |
+| **Stepper**       | the 5-step progress (Describe → Title → Outline → Build → Review); reached steps are links |
+| **Progress list** | generation steps with status: waiting / working / done / failed + retry                    |
+| **Toast**         | success / error / info; with optional action ("Undo")                                      |
+| **Dialog**        | built on Radix for focus and keyboard handling; our styling                                |
+| **Cover**         | renders a book cover from title, author, mood and art direction (see `FLOW.md` §5)         |
+| **Book card**     | cover + title + status + actions (for _My books_ and the side panel)                       |
 
 **Covers have their own palettes** per art direction – they are content, not UI, so they don't use the
 app's semantic tokens. They do follow the same typography rules: the title always fits, no fake micro-text.

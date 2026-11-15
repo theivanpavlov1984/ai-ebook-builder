@@ -22,4 +22,15 @@ describe("Stepper", () => {
     render(<Stepper steps={["Describe", "Title"]} current={0} />);
     expect(screen.getByRole("list", { name: /progress/i })).toBeInTheDocument();
   });
+
+  it("links the steps already reached, including ones after the current step, but not upcoming ones", () => {
+    const links = ["/d", "/t", "/o", "/b", "/r"];
+    render(
+      <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={1} reached={3} links={links} />,
+    );
+    expect(screen.getByRole("link", { name: /describe/i })).toHaveAttribute("href", "/d");
+    expect(screen.getByRole("link", { name: /build/i })).toHaveAttribute("href", "/b");
+    expect(screen.queryByRole("link", { name: /title/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /review/i })).not.toBeInTheDocument();
+  });
 });

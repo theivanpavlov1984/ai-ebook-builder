@@ -48,7 +48,10 @@ Home → Describe → Title → Outline → Build → Review & adjust → Finali
 
 A persistent **book card** stays visible through steps 1–3: it fills in as the user answers
 (topic, audience, mood, title) – the book takes shape before anything is generated.
-Steps are shown in a simple progress bar; the user can go back to any completed step without losing data.
+Steps are shown in a simple progress bar; every step the book has reached is a link, so the user can go back to any of
+them without losing data. Back on Describe or Outline after the book is written, a note says what a change will and
+won't do: a new audience or tone doesn't rewrite chapters, a new topic redrafts the outline (with a warning and Undo),
+renamed or moved chapters keep their text, and a new or swapped chapter is written when the user continues.
 
 ### 0. Home (inside the app)
 
@@ -61,7 +64,8 @@ no stats, no achievements – they don't help someone who comes to make one lead
 - The first question right there: "What's your book about?" – typing it starts step 1.
 - A shelf of 3 example books in **different cover styles** – proof of quality before the first click.
 
-**Returning user** – _My books_: a shelf of covers with status (draft / finalized), share link and download.
+**Returning user** – _My books_: a shelf of covers with status (draft / finalized), where each book stands ("Planning
+chapters", "In review") and when it was edited. Each card can be renamed, or deleted with an Undo.
 The covers are the hero of the screen, not numbers.
 
 ### 1. Describe the book
@@ -151,11 +155,13 @@ Global **undo** for every change.
 - Preview of the cover, contents, chapter 1 and the last page, and **Flip through the PDF**: the exact file
   Download saves, in the browser's own PDF viewer, page by page (loading, failure + retry, and a new-tab link
   for a browser without a built-in viewer).
-- A short check before sharing: author name set · facts reviewed ("AI can make mistakes – skim the
-  chapters before you share") – a gentle checklist, not a blocker.
+- A short check before sharing: author name set · a note that AI can make mistakes, with a link to read the chapters
+  in Review – a reminder, not a blocker (an earlier checkbox gated nothing, so it was a note pretending to be a check).
 - **Last page**, next to its preview: the call to action, an optional link and an optional brand. The link is
   clickable in the PDF and on the shared page; an address that isn't one ("mysite") gets a plain hint, not a block.
 - **Download PDF** and **Share link** (copy). The book stays editable – finalize is not a dead end.
+- With no server, the whole book rides inside the share link, so it is thousands of characters long. The screen says
+  so next to Copy, with the length, and suggests sending the PDF where an app cuts long links.
 - In the PDF the contents link to their chapters and each chapter is a bookmark; every chapter's closing
   "Try this today" list is a box, as it is on screen.
 
@@ -186,6 +192,9 @@ Every step has loading, empty, error and success states. Specific cases:
 | No photos match the topic             | Says so and leads with calm, general photos; upload stays available                |
 | Own photo too small or not a photo    | Says what's wrong and what to pick instead (at least 1200 px tall, JPG/PNG/WebP)   |
 | Tab closed or refreshed               | State is saved locally; "Continue your book" banner on return                      |
+| Back to Outline while the book writes | "2 of 6 chapters are done – writing pauses here"; the button says Continue writing |
+| A form fails its check                | The error under the field, and the cursor goes to the first field to fix           |
+| A page that doesn't exist             | A Primer 404 with the app's navigation and a way to start a book                   |
 | Download fails                        | "Try again" + open a printable version as a fallback                               |
 | Offline                               | Banner; actions that need "AI" wait and resume                                     |
 
