@@ -2,7 +2,7 @@
 
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent } from "react";
 import { Button, Chip, focusRing } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { directionsForMood, exampleTopics, shapeIdea, validateTopic, useBooks, type Mood } from "@/entities/book";
@@ -13,7 +13,8 @@ import { directionsForMood, exampleTopics, shapeIdea, validateTopic, useBooks, t
  * `mood` – the tone picked on the landing – is saved on the new book, so the Describe step starts from it.
  * `examples={false}` hides the example topics (the closing call to action repeats the field without them).
  * `placeholder` and `onFieldFocus` let the landing play example topics in the empty field until the visitor
- * takes over.
+ * takes over. A failed start puts the cursor back in the field – which also stops that demo, so an error never
+ * sits under a field that looks filled.
  */
 export function StartForm({
   value,
@@ -38,6 +39,7 @@ export function StartForm({
   const setTopic = (v: string) => (onValueChange ? onValueChange(v) : setInner(v));
   const [error, setError] = useState<string>();
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const fieldRef = useRef<HTMLTextAreaElement>(null);
   const fieldId = useId();
   const hintId = `${fieldId}-hint`;
   const errorId = `${fieldId}-error`;
@@ -48,6 +50,7 @@ export function StartForm({
     if (!check.ok) {
       setError(check.message);
       setSuggestions(check.suggestions);
+      fieldRef.current?.focus();
       return;
     }
     const id = createBook(topic.trim());
@@ -78,6 +81,7 @@ export function StartForm({
           What&apos;s your book about?
         </label>
         <textarea
+          ref={fieldRef}
           id={fieldId}
           rows={2}
           value={topic}
@@ -105,6 +109,13 @@ export function StartForm({
             className="rounded-full"
             icon={<Sparkles aria-hidden className="size-3.5 text-accent" />}
             onClick={() => {
+              // Nothing to shape yet: say so and hand the field over, instead of repeating the examples below.
+              if (!topic.trim()) {
+                setError("Write a rough idea first – a few words is enough.");
+                setSuggestions([]);
+                fieldRef.current?.focus();
+                return;
+              }
               setError(undefined);
               setSuggestions(shapeIdea(topic));
             }}

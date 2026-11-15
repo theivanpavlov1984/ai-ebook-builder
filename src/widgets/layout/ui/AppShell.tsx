@@ -12,13 +12,14 @@ const nav = [
 
 export function AppShell({ active, children }: { active: "new" | "books"; children: ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    // Below lg (1024 px) the sidebar becomes a bar across the top, so phones and tablets keep the full width.
+    <div className="flex min-h-screen flex-col lg:flex-row">
       <SkipLink />
-      <aside className="sticky top-0 flex h-screen w-[220px] shrink-0 flex-col gap-8 border-r border-default bg-subtle px-4 py-6">
+      <aside className="flex shrink-0 items-center gap-3 border-b border-default bg-subtle px-3 py-2.5 lg:sticky lg:top-0 lg:h-screen lg:w-[220px] lg:flex-col lg:items-stretch lg:gap-8 lg:border-r lg:border-b-0 lg:px-4 lg:py-6">
         <Link href="/" aria-label="Primer" className={cn("self-start rounded-sm px-2", focusRing)}>
           <Wordmark />
         </Link>
-        <nav aria-label="Main" className="flex flex-col gap-1">
+        <nav aria-label="Main" className="flex gap-1 lg:flex-col">
           {nav.map(({ key, href, label, Icon }) => {
             const on = key === active;
             return (
@@ -27,7 +28,7 @@ export function AppShell({ active, children }: { active: "new" | "books"; childr
                 href={href}
                 aria-current={on ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-2.5 rounded-md px-3 py-2 text-base",
+                  "flex items-center gap-2 rounded-md px-2.5 py-2 text-sm whitespace-nowrap lg:gap-2.5 lg:px-3 lg:text-base",
                   "transition-colors duration-150 ease-standard",
                   on
                     ? "bg-accent-subtle font-semibold text-accent-strong"
@@ -35,13 +36,13 @@ export function AppShell({ active, children }: { active: "new" | "books"; childr
                   focusRing,
                 )}
               >
-                <Icon aria-hidden className="size-4" />
+                <Icon aria-hidden className="hidden size-4 sm:block" />
                 {label}
               </Link>
             );
           })}
         </nav>
-        <div className="mt-auto">
+        <div className="ml-auto lg:mt-auto lg:ml-0">
           <DemoControls />
         </div>
       </aside>

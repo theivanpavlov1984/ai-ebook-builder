@@ -230,6 +230,20 @@ Lovable's heading endings that light up as they scroll in. Ours runs once throug
 (terracotta → ember → amber, one token) and settles back into the heading's colour, so it stays an accent on
 arrival, not decoration that sits there.
 
+**A UX audit of the live build.** Before submitting I asked AI to walk the production site as a first-time user
+against Nielsen's heuristics, NN/g form and wizard guidance and WCAG, at 375, 768, 1024 and 1440 px, including
+empty and invalid input, the browser's Back button mid-generation and broken share links. It found what tests
+couldn't. The phone landing invited people to start a book, and then the creation flow broke: the 220 px sidebar
+stayed and squeezed the form into a column one word wide. The Review studio, documented as working from 1024 px,
+left the chapter about 110 px there. An empty start showed an error under a field still "typing" an example, so the
+field looked filled while the error said it was empty. And I had kept a strip of invented brands under "Used by…" –
+the reviews were labelled as samples, the logos were not, which is exactly the kind of claim a UX reviewer
+distrusts. Fixed: the sidebar becomes a top bar below 1024 px and every step reflows to one column; Review keeps
+three columns only from 1280 px; a failed start puts the cursor back in the field, which stops the demo; "Help me
+shape this idea" on an empty field asks for a rough idea instead of repeating the examples; the brand strip is
+gone. The rest of the list – a checkbox that gates nothing, a stepper that looks clickable but isn't, Back during
+generation landing on an editable outline – is next.
+
 ---
 
 ## Template for the next entries

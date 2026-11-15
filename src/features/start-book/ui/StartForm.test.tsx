@@ -32,6 +32,24 @@ describe("StartForm", () => {
     expect(screen.getByLabelText(/what's your book about/i)).toHaveValue("Email marketing for solo founders");
   });
 
+  it("an empty start puts the cursor back in the field, which also tells the landing to stop its demo", async () => {
+    const onFieldFocus = vi.fn();
+    render(<StartForm placeholder="Morning routines" onFieldFocus={onFieldFocus} />);
+    await userEvent.click(screen.getByRole("button", { name: /start my book/i }));
+    const field = screen.getByLabelText(/what's your book about/i);
+    expect(field).toHaveFocus();
+    expect(field).toHaveAttribute("aria-invalid", "true");
+    expect(onFieldFocus).toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("'Help me shape this idea' on an empty field asks for a rough idea first", async () => {
+    render(<StartForm />);
+    await userEvent.click(screen.getByRole("button", { name: /help me shape this idea/i }));
+    expect(screen.getByText(/write a rough idea first/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/what's your book about/i)).toHaveFocus();
+  });
+
   it("'Help me shape this idea' offers three topics", async () => {
     render(<StartForm />);
     await userEvent.type(screen.getByLabelText(/what's your book about/i), "pricing");

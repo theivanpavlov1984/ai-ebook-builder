@@ -13,62 +13,6 @@ import { Eyebrow, ScreenCrop, SectionTitle } from "./parts";
 /** Section container. Below lg (1024 px) sections stack into one column; from lg up they are the desktop design. */
 const box = "mx-auto w-full max-w-[1200px] px-5 lg:px-8";
 
-/* ── Brand strip ─────────────────────────────────────────────────────────────
- * Fictional brands drawn as type, not real companies: a real logo here would claim a customer we don't have. */
-export function BrandStrip() {
-  return (
-    <section aria-label="Who uses Primer" className="relative px-5 pt-2 pb-14 text-center">
-      <p className="text-sm text-secondary">Used by coaches, studios and creators</p>
-      <div
-        aria-hidden
-        className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-secondary lg:gap-x-13"
-      >
-        <span className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l7 9h-4l5 7H4l5-7H5z" />
-          </svg>
-          Cedarline
-        </span>
-        <span className="inline-flex items-center gap-2 font-brand text-lg font-bold tracking-tight">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2 18a10 10 0 0 1 20 0z" />
-            <rect x="2" y="20" width="20" height="2" rx="1" />
-          </svg>
-          brightpath
-        </span>
-        <span className="font-display text-xl font-medium italic">Fernhill &amp; Co</span>
-        <span className="font-[ui-monospace,Menlo,monospace] text-base font-semibold tracking-[0.32em]">
-          KILN·STUDIO
-        </span>
-        <span className="inline-flex items-center gap-2 text-lg font-medium">
-          <svg
-            width="26"
-            height="20"
-            viewBox="0 0 26 20"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.6"
-            strokeLinecap="round"
-          >
-            <path d="M2 8c3-4 6-4 9 0s6 4 9 0" />
-            <path d="M2 15c3-4 6-4 9 0s6 4 9 0" />
-          </svg>
-          tidewell
-        </span>
-        <span className="inline-flex items-center gap-2 text-md font-bold tracking-wide uppercase">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              fillRule="evenodd"
-              d="M3 0h14a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3zm3 5v10h8V5z"
-            />
-          </svg>
-          Marrow
-        </span>
-      </div>
-    </section>
-  );
-}
-
 /* ── Watch it write ──────────────────────────────────────────────────────── */
 function Dot() {
   return <span aria-hidden className="mt-2 size-2 shrink-0 rounded-full bg-accent" />;

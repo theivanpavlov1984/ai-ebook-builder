@@ -32,10 +32,20 @@ export function BookPanel({ book }: { book: Book }) {
     : { pages: estimate({ chapters: [] }).pages + chapters * 2, minutes: 0 };
 
   return (
-    <aside aria-label="Your book" className="sticky top-8 flex flex-col gap-4">
-      <p className="text-xs font-medium tracking-wider text-secondary uppercase">Your book</p>
-      <Cover design={bookDesign(book)} title={title} subtitle={book.subtitle} author={book.author} size="lg" />
-      <div className="flex flex-col gap-1 text-sm">
+    <aside
+      aria-label="Your book"
+      className="flex items-center gap-4 rounded-lg border border-default bg-surface p-3 lg:sticky lg:top-8 lg:flex-col lg:items-stretch lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0"
+    >
+      <p className="hidden text-xs font-medium tracking-wider text-secondary uppercase lg:block">Your book</p>
+      <Cover
+        design={bookDesign(book)}
+        title={title}
+        subtitle={book.subtitle}
+        author={book.author}
+        size="none"
+        className="w-20 shrink-0 lg:w-56"
+      />
+      <div className="flex min-w-0 flex-col gap-1 text-sm">
         <p className="font-display text-lg leading-snug font-medium">{title}</p>
         {book.audience && (
           <p className="text-secondary">For {book.audience.charAt(0).toLowerCase() + book.audience.slice(1)}</p>

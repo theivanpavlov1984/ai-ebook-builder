@@ -82,9 +82,9 @@ function Final({ id, download, build }: { id: string; download: Download; build:
 
   return (
     <AppShell active="new">
-      <div className="mx-auto flex max-w-[1080px] flex-col gap-10 px-10 py-8">
+      <div className="mx-auto flex max-w-[1080px] flex-col gap-6 px-5 py-5 lg:gap-10 lg:px-10 lg:py-8">
         <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={5} />
-        <div className="grid grid-cols-[minmax(0,1fr)_340px] gap-12">
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
           <section aria-label="Preview">
             <h1 className="font-brand text-2xl font-bold tracking-tight">Your book is ready to share</h1>
             <p className="mt-2 text-md text-secondary">

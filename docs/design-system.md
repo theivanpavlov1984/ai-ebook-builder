@@ -160,12 +160,17 @@ Scale (size / line height, px):
 
 ### 4.5 Layout
 
-- **App shell:** sidebar 220 px (wordmark, _New book_, _My books_) + content.
-- **Creation steps (1–3):** form column max 640 px + book card panel 280 px on the right.
-- **Studio (step 5):** three columns – structure 260 px · book (flexible) · adjust panel 320 px.
-- The creation flow targets desktop widths 1280–1600 px and works down to 1024 px.
-- The landing page and the reader's page are built phones-first: one column below 1024 px (`lg`), the desktop
-  layout from there up; checked at 375, 768 and 1280 px.
+- **App shell:** sidebar 220 px (wordmark, _New book_, _My books_) + content. Below 1024 px (`lg`) the sidebar is a
+  bar across the top; on phones the nav drops its icons and _Demo controls_ shows its icon only.
+- **Creation steps (1–3):** form column max 640 px + book card panel 280 px on the right. Below `lg` it is one
+  column and the book panel becomes a compact card above the form; a step's own panel (the build checklist) goes
+  under the content instead.
+- **Stepper:** on phones only the current step keeps its name on screen; the others show a number or a check.
+- **Studio (step 5):** three columns – structure 260 px · book (flexible) · adjust panel 320 px – from 1280 px (`xl`).
+  From 1024 px the structure becomes a scrolling row above the chapter and the adjust panel stays beside it; on
+  phones the adjust panel drops under the chapter.
+- Every page – landing, creation flow, reader's page – works from 375 px with no sideways scrolling; checked at
+  375, 768, 1024 and 1280 px.
 
 ## 5. Components (v1)
 

@@ -11,7 +11,6 @@ import { StartForm } from "@/features/start-book";
 import { heroExamples, heroFrame } from "../model/demos";
 import { Sweep } from "./demos";
 import {
-  BrandStrip,
   Examples,
   FinalCta,
   Footer,
@@ -168,8 +167,6 @@ export function Landing() {
             />
           </div>
         </section>
-
-        <BrandStrip />
         <WatchSection />
         <IdeasShelf />
         <HowItWorks />

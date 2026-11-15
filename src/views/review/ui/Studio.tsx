@@ -58,7 +58,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
 
   const navItem = (active: boolean) =>
     cn(
-      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-150",
+      "flex w-48 shrink-0 items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 sm:w-56 xl:w-full",
       active ? "bg-surface font-semibold text-primary shadow-sm" : "text-secondary hover:bg-surface hover:text-primary",
       focusRing,
     );
@@ -66,10 +66,10 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
   return (
     <AppShell active="new">
       <div className="flex min-h-screen flex-col">
-        <header className="flex items-center justify-between gap-6 border-b border-default px-8 py-4">
+        <header className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-default px-5 py-4 lg:px-8">
           <Stepper steps={["Describe", "Title", "Outline", "Build", "Review"]} current={4} />
           <div className="flex items-center gap-4">
-            <p className="text-sm text-secondary">
+            <p className="hidden text-sm text-secondary sm:block">
               ~{pages} pages · {minutes}-minute read
             </p>
             <Button
@@ -82,8 +82,13 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
           </div>
         </header>
 
-        <div className="grid flex-1 grid-cols-[260px_minmax(0,1fr)_320px]">
-          <nav aria-label="Book structure" className="flex flex-col gap-1 border-r border-default bg-subtle p-4">
+        {/* Three columns from xl (1280 px). Below that the structure becomes a scrolling row on top; the adjust
+            panel stays beside the chapter from lg and drops under it on phones. */}
+        <div className="grid flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[260px_minmax(0,1fr)_320px]">
+          <nav
+            aria-label="Book structure"
+            className="flex gap-1 overflow-x-auto border-b border-default bg-subtle p-2 lg:col-span-2 xl:col-span-1 xl:flex-col xl:overflow-visible xl:border-r xl:border-b-0 xl:p-4"
+          >
             <button
               type="button"
               aria-label="Cover"
@@ -94,7 +99,9 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
               <Cover design={bookDesign(book)} title={title} size="none" className="w-8 shadow-sm" />
               <span className="pt-1">Cover</span>
             </button>
-            <p className="mt-4 mb-1 px-3 text-xs font-medium tracking-wider text-secondary uppercase">Chapters</p>
+            <p className="mt-4 mb-1 hidden px-3 text-xs font-medium tracking-wider text-secondary uppercase xl:block">
+              Chapters
+            </p>
             {book.chapters.map((c, i) => (
               <button
                 key={c.id}
@@ -114,7 +121,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             ))}
           </nav>
 
-          <section aria-label="Reading view" className="min-w-0 overflow-y-auto px-12 py-10">
+          <section aria-label="Reading view" className="min-w-0 overflow-y-auto px-5 py-6 sm:px-8 lg:py-10 xl:px-12">
             {chapter ? (
               <article className="mx-auto max-w-[640px]">
                 <div className="flex items-start justify-between gap-4">
@@ -123,7 +130,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                       Chapter {chapterIndex + 1}
                     </p>
                     {editing !== chapter.id && (
-                      <h2 className="mt-1 font-display text-2xl font-medium">{chapter.title}</h2>
+                      <h2 className="mt-1 font-display text-xl font-medium sm:text-2xl">{chapter.title}</h2>
                     )}
                   </div>
                   {/* A suggested rewrite has to be kept or discarded first, so its comparison stays honest. */}
@@ -160,7 +167,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                   subtitle={book.subtitle}
                   author={book.author}
                   size="none"
-                  className="w-72"
+                  className="w-56 sm:w-72"
                 />
                 {coverPhoto(book.cover)?.credit && (
                   <p className="text-xs text-secondary">{coverPhoto(book.cover)?.credit}</p>
@@ -169,7 +176,10 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             )}
           </section>
 
-          <section aria-label="Adjust" className="border-l border-default bg-surface p-6">
+          <section
+            aria-label="Adjust"
+            className="border-t border-default bg-surface p-5 lg:border-t-0 lg:border-l lg:p-6"
+          >
             {chapter ? (
               <ChapterPanel key={chapter.id} book={book} chapter={chapter} rewriteMs={rewriteMs} />
             ) : (

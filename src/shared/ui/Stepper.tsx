@@ -3,7 +3,7 @@ import { cn } from "@/shared/lib";
 
 export function Stepper({ steps, current }: { steps: string[]; current: number }) {
   return (
-    <ol aria-label="Progress" className="flex items-center gap-5 text-sm">
+    <ol aria-label="Progress" className="flex items-center gap-3 text-sm sm:gap-5">
       {steps.map((step, i) => {
         const state = i < current ? "done" : i === current ? "current" : "upcoming";
         return (
@@ -21,9 +21,13 @@ export function Stepper({ steps, current }: { steps: string[]; current: number }
               {state === "done" ? <Check className="size-3.5 text-success" /> : i + 1}
             </span>
             {/* The invisible bold copy reserves the label's semibold width, so the current step doesn't widen the row. */}
+            {/* On phones only the current step keeps its name on screen; the others stay readable to screen readers. */}
             <span
               data-label={step}
-              className="inline-grid after:invisible after:h-0 after:overflow-hidden after:font-semibold after:content-[attr(data-label)]"
+              className={cn(
+                "inline-grid after:invisible after:h-0 after:overflow-hidden after:font-semibold after:content-[attr(data-label)]",
+                state !== "current" && "max-sm:sr-only",
+              )}
             >
               {step}
             </span>

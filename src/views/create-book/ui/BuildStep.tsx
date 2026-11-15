@@ -130,7 +130,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
         </nav>
       )}
 
-      <article className="min-h-[360px] rounded-lg border border-default bg-surface px-10 py-8">
+      <article className="min-h-[360px] rounded-lg border border-default bg-surface px-5 py-6 sm:px-10 sm:py-8">
         {shown ? (
           <>
             <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {shownIndex + 1}</p>

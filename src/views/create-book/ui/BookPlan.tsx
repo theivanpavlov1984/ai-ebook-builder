@@ -46,7 +46,7 @@ export function BookPlan({ book }: { book: Book }) {
   return (
     <section aria-label="How Primer planned your book" className="mt-6 rounded-lg border border-default bg-surface p-5">
       <p className="text-sm font-semibold">How Primer planned your book</p>
-      <dl className="mt-4 grid grid-cols-2 gap-x-8 gap-y-4">
+      <dl className="mt-4 grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
         {items.map((i) => (
           <div key={i.label} className="min-w-0">
             <dt className="text-xs font-medium tracking-wider text-secondary uppercase">{i.label}</dt>

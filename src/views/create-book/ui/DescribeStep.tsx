@@ -190,8 +190,8 @@ function DescribeForm({ id }: { id: string }) {
             }
           />
           <p className="mt-2 text-sm text-secondary">
-            How your book should feel. It sets the voice of the writing and the style of your cover – watch it change on
-            the right.
+            How your book should feel. It sets the voice of the writing and the style of your cover – watch the cover
+            change as you pick.
           </p>
         </div>
 

@@ -54,13 +54,14 @@ export function DemoControls() {
         )}
       >
         <FlaskConical aria-hidden className="size-3.5" />
-        Demo controls
+        {/* Icon only on phones, where it sits in the top bar; the name stays for screen readers. */}
+        <span className="sr-only sm:not-sr-only">Demo controls</span>
       </button>
-      {/* After the button in the DOM, so Tab goes from the button into the panel; drawn above it. */}
+      {/* After the button in the DOM, so Tab goes from the button into the panel; drawn below it in the phone bar, above it in the sidebar. */}
       {open && (
         <fieldset
           id="demo-controls"
-          className="absolute bottom-full left-0 mb-2 w-56 rounded-md border border-default bg-surface p-3 shadow-md"
+          className="absolute top-full right-0 z-30 mt-2 w-56 rounded-md border border-default bg-surface p-3 shadow-md lg:top-auto lg:right-auto lg:bottom-full lg:left-0 lg:mt-0 lg:mb-2"
         >
           <legend className="float-left text-xs font-semibold">Simulate failures</legend>
           <p className="clear-left pt-0.5 text-xs text-secondary">Each fires once, so “Try again” works.</p>
