@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -124,5 +124,43 @@ describe("FinalStep", () => {
     // The last-page preview shows the link and the signature.
     expect(screen.getAllByText("breadclub.com/join").length).toBeGreaterThan(0);
     expect(screen.getByText("– Bread Club")).toBeInTheDocument();
+  });
+
+  it("shows how the book was planned: audience, voice, shape and ending", () => {
+    const id = newBook();
+    wrap(<FinalStep id={id} />);
+    const plan = screen.getByRole("region", { name: /how primer planned your book/i });
+    expect(plan).toHaveTextContent("Parents");
+    expect(plan).toHaveTextContent("Calm");
+    expect(plan).toHaveTextContent("3 chapters");
+    expect(plan).toHaveTextContent("Join my newsletter at example.com");
+  });
+
+  it("previews the real PDF page by page, with loading, failure and retry", async () => {
+    URL.createObjectURL = vi.fn(() => "blob:preview");
+    URL.revokeObjectURL = vi.fn();
+    const id = newBook();
+    const build = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("layout failed"))
+      .mockResolvedValueOnce(new Blob(["%PDF"], { type: "application/pdf" }));
+    wrap(<FinalStep id={id} build={build} />);
+
+    await userEvent.click(screen.getByRole("button", { name: /flip through the pdf/i }));
+    const dialog = screen.getByRole("dialog", { name: /your pdf, page by page/i });
+    expect(await within(dialog).findByRole("alert")).toHaveTextContent(/couldn.t build the preview/i);
+
+    await userEvent.click(within(dialog).getByRole("button", { name: /try again/i }));
+    const frame = await within(dialog).findByTitle("PDF preview");
+    expect(frame).toHaveAttribute("src", "blob:preview#view=Fit");
+    expect(build).toHaveBeenLastCalledWith(expect.objectContaining({ id }));
+    expect(within(dialog).getByRole("button", { name: /download pdf/i })).toBeInTheDocument();
+    expect(within(dialog).getByRole("link", { name: /open the pdf in a new tab/i })).toHaveAttribute(
+      "href",
+      "blob:preview",
+    );
+
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(URL.revokeObjectURL).toHaveBeenCalledWith("blob:preview"));
   });
 });

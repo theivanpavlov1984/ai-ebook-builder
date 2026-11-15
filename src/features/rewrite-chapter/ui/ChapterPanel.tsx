@@ -99,7 +99,7 @@ export function ChapterPanel({ book, chapter, rewriteMs }: { book: Book; chapter
           onClick={() => undoChapter(book.id, chapter.id)}
           icon={<Undo2 aria-hidden className="size-3.5" />}
         >
-          Undo rewrite
+          Undo last change
         </Button>
       </div>
     </div>

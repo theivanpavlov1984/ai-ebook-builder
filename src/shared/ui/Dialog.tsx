@@ -13,6 +13,7 @@ export function Dialog({
   description,
   children,
   footer,
+  size = "md",
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -20,6 +21,8 @@ export function Dialog({
   description?: string;
   children?: ReactNode;
   footer?: ReactNode;
+  /** `lg` for content that needs room, like a document preview. */
+  size?: "md" | "lg";
 }) {
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
@@ -27,7 +30,10 @@ export function Dialog({
         <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-inverse/40" />
         <DialogPrimitive.Content
           {...(description ? {} : { "aria-describedby": undefined })}
-          className="fixed top-1/2 left-1/2 z-50 w-[min(480px,calc(100vw-48px))] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-surface p-6 shadow-md"
+          className={cn(
+            "fixed top-1/2 left-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-surface p-6 shadow-md",
+            size === "lg" ? "w-[min(960px,calc(100vw-48px))]" : "w-[min(480px,calc(100vw-48px))]",
+          )}
         >
           <div className="flex items-start justify-between gap-4">
             <DialogPrimitive.Title className="font-brand text-xl font-bold tracking-tight">

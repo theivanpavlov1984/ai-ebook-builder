@@ -22,6 +22,8 @@ type BooksState = {
   /** Make the suggestion the chapter body; the old body becomes a version. */
   acceptRewrite: (id: string, chapterId: string) => void;
   discardRewrite: (id: string, chapterId: string) => void;
+  /** The author's own edit of a chapter. A changed body keeps the old one as a version, so it can be undone. */
+  editChapter: (id: string, chapterId: string, edit: { title: string; body: string[] }) => void;
   undoChapter: (id: string, chapterId: string) => boolean;
   undo: (id: string) => boolean;
   deleteBook: (id: string) => void;
@@ -116,6 +118,20 @@ export const useBooks = create<BooksState>()(
           patchBook(id, (b) => ({
             ...b,
             chapters: b.chapters.map((c) => (c.id === chapterId ? { ...c, draft: undefined } : c)),
+          })),
+
+        editChapter: (id, chapterId, { title, body }) =>
+          patchBook(id, (b) => ({
+            ...b,
+            chapters: b.chapters.map((c) => {
+              if (c.id !== chapterId) return c;
+              const changed = body.join("\n\n") !== c.body.join("\n\n");
+              return {
+                ...c,
+                title,
+                ...(changed ? { body, versions: [...c.versions, c.body], draft: undefined } : {}),
+              };
+            }),
           })),
 
         undoChapter: (id, chapterId) => {

@@ -99,7 +99,7 @@ describe("Studio", () => {
     const id = newBook();
     wrap(<Studio id={id} rewriteMs={0} />);
     const panel = screen.getByRole("region", { name: /adjust/i });
-    const undo = within(panel).getByRole("button", { name: /undo rewrite/i });
+    const undo = within(panel).getByRole("button", { name: /undo last change/i });
     expect(undo).toBeDisabled();
 
     await userEvent.click(within(panel).getByRole("radio", { name: /shorter/i }));
@@ -112,10 +112,48 @@ describe("Studio", () => {
     await waitFor(() => expect(st().books[id].chapters[0].versions).toHaveLength(2));
     expect(within(panel).getByText(/version 3/i)).toBeInTheDocument();
 
-    await userEvent.click(within(panel).getByRole("button", { name: /undo rewrite/i }));
-    await userEvent.click(within(panel).getByRole("button", { name: /undo rewrite/i }));
+    await userEvent.click(within(panel).getByRole("button", { name: /undo last change/i }));
+    await userEvent.click(within(panel).getByRole("button", { name: /undo last change/i }));
     expect(st().books[id].chapters[0].body).toEqual(["Original paragraph of chapter 1.", "Second paragraph."]);
-    expect(within(panel).getByRole("button", { name: /undo rewrite/i })).toBeDisabled();
+    expect(within(panel).getByRole("button", { name: /undo last change/i })).toBeDisabled();
+  });
+
+  it("edits a chapter's title and text by hand, and undoes back to the original", async () => {
+    const id = newBook();
+    wrap(<Studio id={id} rewriteMs={0} />);
+    await userEvent.click(screen.getByRole("button", { name: /edit text/i }));
+    const form = screen.getByRole("form", { name: /edit chapter/i });
+    const title = within(form).getByLabelText(/chapter title/i);
+    await userEvent.clear(title);
+    await userEvent.type(title, "Why bread before breakfast");
+    const text = within(form).getByLabelText(/^text/i);
+    await userEvent.clear(text);
+    await userEvent.type(text, "My own first paragraph.{enter}{enter}And a second one.");
+    await userEvent.click(within(form).getByRole("button", { name: /save changes/i }));
+
+    expect(st().books[id].chapters[0]).toMatchObject({
+      title: "Why bread before breakfast",
+      body: ["My own first paragraph.", "And a second one."],
+    });
+    expect(screen.getByRole("heading", { name: "Why bread before breakfast" })).toBeInTheDocument();
+    expect(screen.getByText("And a second one.")).toBeInTheDocument();
+
+    const panel = screen.getByRole("region", { name: /adjust/i });
+    await userEvent.click(within(panel).getByRole("button", { name: /undo last change/i }));
+    expect(st().books[id].chapters[0].body).toEqual(["Original paragraph of chapter 1.", "Second paragraph."]);
+  });
+
+  it("won't save an empty chapter, and Cancel leaves it as it was", async () => {
+    const id = newBook();
+    wrap(<Studio id={id} rewriteMs={0} />);
+    await userEvent.click(screen.getByRole("button", { name: /edit text/i }));
+    const form = screen.getByRole("form", { name: /edit chapter/i });
+    await userEvent.clear(within(form).getByLabelText(/^text/i));
+    await userEvent.click(within(form).getByRole("button", { name: /save changes/i }));
+    expect(within(form).getByText(/a chapter needs some text/i)).toBeInTheDocument();
+    await userEvent.click(within(form).getByRole("button", { name: /cancel/i }));
+    expect(screen.queryByRole("form", { name: /edit chapter/i })).not.toBeInTheDocument();
+    expect(st().books[id].chapters[0].body).toEqual(["Original paragraph of chapter 1.", "Second paragraph."]);
   });
 
   it("a free instruction is enough to rewrite", async () => {

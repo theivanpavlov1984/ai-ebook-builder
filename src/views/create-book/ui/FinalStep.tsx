@@ -7,15 +7,25 @@ import { bookDesign, Cover, ctaLink, ctaText, estimate, useBooks, type Book, use
 import { AppShell, NotFound } from "@/widgets/layout";
 import { Button, focusRing, Input, Stepper, useToast } from "@/shared/ui";
 import { cn } from "@/shared/lib";
-import { downloadPdf } from "@/features/download-pdf";
+import { buildPdf, downloadPdf, PdfPreview } from "@/features/download-pdf";
+import { BookPlan } from "./BookPlan";
 
 type Download = (book: Book) => Promise<void>;
+type Build = (book: Book) => Promise<Blob>;
 
-export function FinalStep({ id, download = downloadPdf }: { id: string; download?: Download }) {
+export function FinalStep({
+  id,
+  download = downloadPdf,
+  build = buildPdf,
+}: {
+  id: string;
+  download?: Download;
+  build?: Build;
+}) {
   const { book, hydrated, notFound } = useBook(id);
   if (notFound) return <NotFound />;
   if (!hydrated || !book) return null;
-  return <Final id={id} download={download} />;
+  return <Final id={id} download={download} build={build} />;
 }
 
 function PagePreview({ label, children }: { label: string; children: React.ReactNode }) {
@@ -29,7 +39,7 @@ function PagePreview({ label, children }: { label: string; children: React.React
   );
 }
 
-function Final({ id, download }: { id: string; download: Download }) {
+function Final({ id, download, build }: { id: string; download: Download; build: Build }) {
   const { show } = useToast();
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
@@ -80,6 +90,7 @@ function Final({ id, download }: { id: string; download: Download }) {
             <p className="mt-2 text-md text-secondary">
               {book.chapters.length} chapters · ~{pages} pages · {minutes}-minute read
             </p>
+            <BookPlan book={book} />
             <div className="mt-8 flex flex-wrap gap-6">
               <figure className="flex flex-col gap-2">
                 <Cover
@@ -155,9 +166,28 @@ function Final({ id, download }: { id: string; download: Download }) {
 
             <LastPage book={book} />
 
-            <Button onClick={() => void onDownload()} loading={busy} icon={<Download aria-hidden className="size-4" />}>
-              Download PDF
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                onClick={() => void onDownload()}
+                loading={busy}
+                icon={<Download aria-hidden className="size-4" />}
+              >
+                Download PDF
+              </Button>
+              <PdfPreview
+                getBook={() => useBooks.getState().books[id]}
+                build={build}
+                footer={
+                  <Button
+                    onClick={() => void onDownload()}
+                    loading={busy}
+                    icon={<Download aria-hidden className="size-4" />}
+                  >
+                    Download PDF
+                  </Button>
+                }
+              />
+            </div>
 
             <div className="flex flex-col gap-2 border-t border-default pt-5">
               <Button variant="secondary" onClick={() => void onCopy()} icon={<Link2 aria-hidden className="size-4" />}>

@@ -129,6 +129,9 @@ Three columns:
 - Or a free instruction: "Add an example for a 3-person startup".
 - A rewrite arrives as a **suggestion**: changed paragraphs are highlighted, Original / Suggestion compares them,
   Keep or Discard decides. Kept rewrites become **versions** – undo restores the previous one.
+- Or **Edit text** by hand: the chapter's title and text as plain fields, paragraphs split by an empty line.
+  A saved edit is a version too, so "Undo last change" brings the previous text back. Saving an empty chapter
+  is refused with a reason; while a suggested rewrite is open, it has to be kept or discarded first.
 
 **Adjust the cover:**
 
@@ -142,7 +145,11 @@ Global **undo** for every change.
 
 ### 6. Finalize
 
-- Full preview as book spreads.
+- **How Primer planned your book:** who it's for, the voice, the shape (chapters, pages, reading time) and how it
+  ends – what the book was built from, so the result is explainable.
+- Preview of the cover, contents, chapter 1 and the last page, and **Flip through the PDF**: the exact file
+  Download saves, in the browser's own PDF viewer, page by page (loading, failure + retry, and a new-tab link
+  for a browser without a built-in viewer).
 - A short check before sharing: author name set · facts reviewed ("AI can make mistakes – skim the
   chapters before you share") – a gentle checklist, not a blocker.
 - **Last page**, next to its preview: the call to action, an optional link and an optional brand. The link is

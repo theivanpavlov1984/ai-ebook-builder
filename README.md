@@ -40,7 +40,7 @@ src/
   views/      Screens. FSD calls this layer "pages" – renamed so Next.js doesn't treat it as the Pages Router.
     landing/  create-book/ (5 wizard steps)  review/  books/  shared-book/  design-system/
   widgets/    Big reusable blocks: layout (app shell, creation layout), live-preview, example-shelf
-  features/   User actions: start-book, rewrite-chapter, change-cover, download-pdf, simulate-failures
+  features/   User actions: start-book, rewrite-chapter, edit-chapter, change-cover, download-pdf, simulate-failures
   entities/   Business entities: book – its types, store, cover generation, share links, simulated AI writer
   shared/     No product knowledge: ui (design-system components), lib, api (simulated network), styles (tokens)
 ```
@@ -59,7 +59,8 @@ A few placement decisions worth knowing:
   and views, so it sits below them. The generic part (latency, injected failures) is in `shared/api`.
 - **The cover is part of the book entity.** Cover design and the cover "scene" are computed once and drawn twice:
   as SVG on screen and by react-pdf in the PDF, so the two can't drift apart.
-- **`download-pdf` exposes only `downloadPdf()`.** react-pdf and the fonts load on click, not with the page.
+- **`download-pdf` exposes `downloadPdf()`, `buildPdf()` and the `PdfPreview` button.** react-pdf and the fonts load
+  on click, not with the page.
 - **The five wizard steps are one view slice** (`create-book`): they share the generation model and tests.
 
 Tests sit next to the code they cover. `src/test/no-raw-colors.test.ts` fails if a hex/rgb color appears

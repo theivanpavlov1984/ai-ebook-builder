@@ -189,6 +189,15 @@ The PDF contents now link to their chapters, and every chapter is a bookmark. AI
 chapter heading, as the docs show; the installed react-pdf types only allow it on a page, so it moved there. We
 checked the file itself with PDFKit: six contents links to the right pages, six bookmarks, one external link.
 
+Then the other three. **Edit text**: the chapter's title and text as two fields, paragraphs split by an empty
+line, saved as a version so the panel's undo – renamed "Undo last change" – works for hand edits too. **How
+Primer planned your book** on the final step: audience, voice, shape and ending, each from what the author chose.
+AI's first copy said what the voice does to the writing; in this prototype it sets each chapter's opening line and
+the cover, so it now says exactly that. **Flip through the PDF** builds the same file as Download and shows it in
+the browser's PDF viewer. It came up blank in the app's built-in browser pane, which has no PDF viewer for
+frames; in real Chromium (checked with Playwright) it shows all 15 pages with thumbnails and the chapter
+bookmarks. A new-tab link covers browsers without a viewer, and the frame opens at whole-page fit.
+
 ---
 
 ## Template for the next entries

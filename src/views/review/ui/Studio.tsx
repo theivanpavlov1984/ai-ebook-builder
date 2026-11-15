@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PenLine } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { bookDesign, Cover, coverPhoto, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
@@ -8,6 +8,7 @@ import { AppShell, NotFound } from "@/widgets/layout";
 import { Button, focusRing, Stepper } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { ChapterPanel, ChapterReader } from "@/features/rewrite-chapter";
+import { ChapterEditor } from "@/features/edit-chapter";
 import { CoverPanel } from "@/features/change-cover";
 
 export function Studio({ id, rewriteMs = 1200 }: { id: string; rewriteMs?: number }) {
@@ -22,6 +23,9 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
   const [selected, setSelected] = useState<string>(book.chapters[0]?.id ?? "cover");
+  // The chapter being edited by hand, if any. Choosing another chapter closes the editor.
+  const [editing, setEditing] = useState<string>();
+  const rewriting = useBooks((s) => Boolean(s.rewriting[selected]));
 
   const chapter = book.chapters.find((c) => c.id === selected);
   const chapterIndex = book.chapters.findIndex((c) => c.id === selected);
@@ -85,11 +89,34 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
           <main className="min-w-0 overflow-y-auto px-12 py-10">
             {chapter ? (
               <article className="mx-auto max-w-[640px]">
-                <p className="text-xs font-medium tracking-wider text-secondary uppercase">
-                  Chapter {chapterIndex + 1}
-                </p>
-                <h2 className="mt-1 font-display text-2xl font-medium">{chapter.title}</h2>
-                <ChapterReader key={chapter.id} bookId={id} chapter={chapter} />
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium tracking-wider text-secondary uppercase">
+                      Chapter {chapterIndex + 1}
+                    </p>
+                    {editing !== chapter.id && (
+                      <h2 className="mt-1 font-display text-2xl font-medium">{chapter.title}</h2>
+                    )}
+                  </div>
+                  {/* A suggested rewrite has to be kept or discarded first, so its comparison stays honest. */}
+                  {editing !== chapter.id && !chapter.draft && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="mt-1 shrink-0"
+                      disabled={rewriting}
+                      icon={<PenLine aria-hidden className="size-3.5" />}
+                      onClick={() => setEditing(chapter.id)}
+                    >
+                      Edit text
+                    </Button>
+                  )}
+                </div>
+                {editing === chapter.id ? (
+                  <ChapterEditor key={chapter.id} bookId={id} chapter={chapter} onDone={() => setEditing(undefined)} />
+                ) : (
+                  <ChapterReader key={chapter.id} bookId={id} chapter={chapter} />
+                )}
               </article>
             ) : (
               <div className="flex flex-col items-center gap-4 pt-6">
