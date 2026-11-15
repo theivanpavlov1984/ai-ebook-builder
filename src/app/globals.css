@@ -4,7 +4,7 @@
 /*
  * Tailwind theme → Primer semantic tokens. Default palettes are cleared so only tokens exist as utilities.
  * Utility names: bg-canvas / bg-surface / bg-subtle / bg-inverse, text-primary / text-secondary /
- * text-on-inverse / text-accent-strong, border-default / border-strong, bg-accent / bg-accent-subtle,
+ * text-on-inverse / text-accent-strong, border-default / border-strong / border-input, bg-accent / bg-accent-subtle,
  * danger / success / warning (+ -subtle), ring-focus.
  */
 @theme inline {
@@ -19,6 +19,7 @@
   --color-accent-strong: var(--primer-text-accent);
   --color-default: var(--primer-border-default);
   --color-strong: var(--primer-border-strong);
+  --color-input: var(--primer-input-border);
   --color-accent: var(--primer-accent);
   --color-accent-subtle: var(--primer-accent-subtle);
   --color-glow-warm: var(--primer-glow-warm);

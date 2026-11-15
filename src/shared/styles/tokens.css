@@ -12,9 +12,13 @@
   --paper-200: #ede6da;
   --paper-300: #e7dfd3;
   --paper-400: #d6cbbb;
+  /* Field borders: the lightest warm grey that still meets 3:1 against white and paper. */
+  --paper-500: #968b7f;
 
   --ink-900: #1f1b16;
   --ink-700: #3d362e;
+  /* Secondary text: 4.5:1 or more on every light background, the subtle and accent tints included. */
+  --ink-600: #6b6257;
   --ink-500: #7a7166;
   --ink-400: #9a9085;
 
@@ -40,12 +44,13 @@
   --primer-bg-inverse: var(--ink-900);
 
   --primer-text-primary: var(--ink-900);
-  --primer-text-secondary: var(--ink-500);
+  --primer-text-secondary: var(--ink-600);
   --primer-text-inverse: var(--paper-50);
   --primer-text-accent: var(--terracotta-700);
 
   --primer-border-default: var(--paper-300);
   --primer-border-strong: var(--paper-400);
+  --primer-border-input: var(--paper-500);
 
   --primer-accent: var(--terracotta-500);
   --primer-accent-subtle: var(--terracotta-100);
@@ -78,7 +83,7 @@
   /* ── Component ──────────────────────────────────────────── */
   --primer-button-primary-bg: var(--primer-bg-inverse);
   --primer-button-primary-text: var(--primer-text-inverse);
-  --primer-input-border: var(--primer-border-default);
+  --primer-input-border: var(--primer-border-input);
   --primer-input-border-focus: var(--primer-accent);
   --primer-chip-selected-bg: var(--primer-bg-inverse);
 }

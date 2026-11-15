@@ -139,5 +139,8 @@ export function useGeneration(bookId: string, timing: Timing = defaultTiming) {
   else if (book?.cover.status === "working") progressText = "Designing your cover…";
   else if (failed) progressText = failed === 1 ? "One part needs another try." : `${failed} parts need another try.`;
 
-  return { items, streaming, resumed, done, failed, progressText, retry };
+  // Nothing left in progress, but some part failed: the book is waiting for the user's "Try again".
+  const stalled = !done && failed > 0 && activeIndex < 0 && book?.cover.status !== "working";
+
+  return { items, streaming, resumed, done, failed, stalled, progressText, retry };
 }

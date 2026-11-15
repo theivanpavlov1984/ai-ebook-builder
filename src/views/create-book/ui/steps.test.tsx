@@ -199,6 +199,27 @@ describe("OutlineStep", () => {
     expect(st().books[id].chapters.map((c) => c.id)).toEqual(["c2", "c1", "c3"]);
   });
 
+  it("keeps keyboard focus with a moved chapter and announces where it went", async () => {
+    const id = newBook({ title: "Bread", chapters: chapters(3) });
+    wrap(<OutlineStep id={id} />);
+    screen.getByRole("button", { name: "Move chapter 2 down" }).focus();
+    await userEvent.keyboard("{Enter}");
+    // Now last: its "down" is disabled, so focus lands on its "up" instead of getting lost.
+    await waitFor(() => expect(screen.getByRole("button", { name: "Move chapter 3 up" })).toHaveFocus());
+    expect(screen.getByText("Moved “Chapter 2” to position 3 of 3.")).toBeInTheDocument();
+  });
+
+  it("puts focus on the next chapter after a removal, and in the new title after adding", async () => {
+    const id = newBook({ title: "Bread", chapters: chapters(5) });
+    wrap(<OutlineStep id={id} />);
+    await userEvent.click(screen.getByRole("button", { name: "Remove chapter 2" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Remove chapter 2" })).toHaveFocus());
+    expect(screen.getByLabelText("Chapter 2 title")).toHaveValue("Chapter 3");
+
+    await userEvent.click(screen.getByRole("button", { name: /add chapter/i }));
+    await waitFor(() => expect(screen.getByLabelText("Chapter 5 title")).toHaveFocus());
+  });
+
   it("nudges when the book would be longer than ~20 pages", () => {
     const id = newBook({ title: "Bread", chapters: chapters(9) });
     wrap(<OutlineStep id={id} />);

@@ -36,6 +36,8 @@ function OutlineEditor({ id }: { id: string }) {
   const undo = useBooks((s) => s.undo);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(book.chapters.length ? "ready" : "loading");
   const [rounds, setRounds] = useState<Record<string, number>>({});
+  // What a screen reader hears after a change to the list – moving, swapping or adding a chapter.
+  const [announcement, setAnnouncement] = useState("");
   const started = useRef(false);
 
   const draft = useCallback(async () => {
@@ -59,11 +61,32 @@ function OutlineEditor({ id }: { id: string }) {
   const chapters = book.chapters;
   const setChapters = (next: Chapter[], snapshot = false) => updateBook(id, { chapters: next }, { snapshot });
 
+  /**
+   * Keyboard users keep their place: after a change, focus goes to the first of `labels` that exists and is
+   * enabled (a chapter moved to the end has no "down" any more; a removed one has no buttons at all).
+   */
+  function focusAfterRender(labels: string[]) {
+    setTimeout(() => {
+      for (const label of labels) {
+        const el = document.querySelector<HTMLElement>(`[aria-label="${label}"]`);
+        if (el && !el.hasAttribute("disabled")) return el.focus();
+      }
+    });
+  }
+
   function move(i: number, delta: number) {
     const next = [...chapters];
     const [c] = next.splice(i, 1);
-    next.splice(i + delta, 0, c);
+    const to = i + delta;
+    next.splice(to, 0, c);
     setChapters(next);
+    setAnnouncement(`Moved “${c.title}” to position ${to + 1} of ${next.length}.`);
+    const n = to + 1;
+    focusAfterRender(
+      delta > 0
+        ? [`Move chapter ${n} down`, `Move chapter ${n} up`]
+        : [`Move chapter ${n} up`, `Move chapter ${n} down`],
+    );
   }
 
   function remove(i: number) {
@@ -71,6 +94,9 @@ function OutlineEditor({ id }: { id: string }) {
       chapters.filter((_, j) => j !== i),
       true,
     );
+    // The next chapter takes this place; after the last one, the one before it.
+    const n = Math.min(i + 1, chapters.length - 1);
+    focusAfterRender([`Remove chapter ${n}`, `Chapter ${n} title`]);
     show({
       tone: "info",
       message: `“${chapters[i].title}” removed`,
@@ -87,10 +113,15 @@ function OutlineEditor({ id }: { id: string }) {
       chapters.map((x, j) => (j === i ? { ...x, ...alt } : x)),
       true,
     );
+    setAnnouncement(`Chapter ${i + 1} is now “${alt.title}”.`);
   }
 
   function add() {
-    setChapters([...chapters, toChapter(alternativeChapter(book, chapters.length, 1))]);
+    const chapter = toChapter(alternativeChapter(book, chapters.length, 1));
+    setChapters([...chapters, chapter]);
+    setAnnouncement(`Added chapter ${chapters.length + 1}: “${chapter.title}”.`);
+    // Straight into the new chapter's title, ready to rename it.
+    focusAfterRender([`Chapter ${chapters.length + 1} title`]);
   }
 
   function writeBook() {
@@ -133,6 +164,10 @@ function OutlineEditor({ id }: { id: string }) {
           </Button>
         </div>
       )}
+
+      <p aria-live="polite" className="sr-only">
+        {announcement}
+      </p>
 
       {status === "ready" && (
         <div className="flex flex-col gap-6">

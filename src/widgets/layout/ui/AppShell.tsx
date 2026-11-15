@@ -2,7 +2,7 @@ import { Library, Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/shared/lib";
-import { focusRing, OfflineBanner, Wordmark } from "@/shared/ui";
+import { CONTENT_ID, focusRing, OfflineBanner, SkipLink, Wordmark } from "@/shared/ui";
 import { DemoControls } from "@/features/simulate-failures";
 
 const nav = [
@@ -13,6 +13,7 @@ const nav = [
 export function AppShell({ active, children }: { active: "new" | "books"; children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
+      <SkipLink />
       <aside className="sticky top-0 flex h-screen w-[220px] shrink-0 flex-col gap-8 border-r border-default bg-subtle px-4 py-6">
         <Link href="/" aria-label="Primer" className={cn("self-start rounded-sm px-2", focusRing)}>
           <Wordmark />
@@ -44,7 +45,7 @@ export function AppShell({ active, children }: { active: "new" | "books"; childr
           <DemoControls />
         </div>
       </aside>
-      <main className="min-w-0 flex-1">
+      <main id={CONTENT_ID} tabIndex={-1} className="min-w-0 flex-1 outline-hidden">
         <OfflineBanner />
         {children}
       </main>

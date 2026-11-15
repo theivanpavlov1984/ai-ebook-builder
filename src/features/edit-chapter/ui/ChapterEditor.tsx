@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useState, type FormEvent, type KeyboardEvent } from "react";
 import { useBooks, type Chapter } from "@/entities/book";
 import { Button, Input, Textarea, useToast } from "@/shared/ui";
 import { bodyToText, textToBody } from "../model/text";
@@ -9,12 +9,37 @@ import { bodyToText, textToBody } from "../model/text";
  * The author's own words: the chapter's title and text as plain fields. Saving keeps the previous text
  * as a version (Undo in the panel brings it back), so editing by hand is as safe as a suggested rewrite.
  */
-export function ChapterEditor({ bookId, chapter, onDone }: { bookId: string; chapter: Chapter; onDone: () => void }) {
+export function ChapterEditor({
+  bookId,
+  chapter,
+  onDone,
+  onDirtyChange,
+}: {
+  bookId: string;
+  chapter: Chapter;
+  onDone: () => void;
+  /** Tells the page whether there are unsaved changes, so leaving the chapter can ask first. */
+  onDirtyChange?: (dirty: boolean) => void;
+}) {
   const editChapter = useBooks((s) => s.editChapter);
   const { show } = useToast();
   const [title, setTitle] = useState(chapter.title);
   const [text, setText] = useState(() => bodyToText(chapter.body));
   const [errors, setErrors] = useState<{ title?: string; text?: string }>({});
+  const dirty = title.trim() !== chapter.title || textToBody(text).join("\n\n") !== chapter.body.join("\n\n");
+
+  useEffect(() => {
+    onDirtyChange?.(dirty);
+  }, [dirty, onDirtyChange]);
+  useEffect(() => () => onDirtyChange?.(false), [onDirtyChange]);
+
+  // Closing or reloading the tab with unsaved changes gets the browser's own "Leave site?" question.
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
 
   function save(e?: FormEvent) {
     e?.preventDefault();

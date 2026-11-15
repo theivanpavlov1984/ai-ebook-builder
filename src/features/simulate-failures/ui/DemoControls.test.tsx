@@ -20,6 +20,17 @@ describe("DemoControls", () => {
     await userEvent.click(screen.getByRole("checkbox", { name: /fail everything once/i }));
     expect(activeFailures()).toContain("all");
   });
+
+  it("closes on Escape and gives focus back to its button", async () => {
+    render(<DemoControls />);
+    const button = screen.getByRole("button", { name: /demo controls/i });
+    await userEvent.click(button);
+    expect(screen.getByRole("group", { name: /simulate failures/i })).toBeInTheDocument();
+    await userEvent.tab();
+    await userEvent.keyboard("{Escape}");
+    expect(screen.queryByRole("group", { name: /simulate failures/i })).not.toBeInTheDocument();
+    expect(button).toHaveFocus();
+  });
 });
 
 describe("OfflineBanner", () => {

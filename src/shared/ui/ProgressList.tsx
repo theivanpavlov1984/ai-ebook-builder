@@ -34,9 +34,12 @@ export function ProgressList({ items, onRetry }: { items: ProgressItem[]; onRetr
             <StatusIcon status={item.status} />
           </span>
           <div className="flex-1">
+            {/* Focus lands here after "Try again", so a keyboard user isn't dropped to the top of the page. */}
             <p
+              tabIndex={-1}
+              data-retry-focus
               className={cn(
-                "text-base",
+                "text-base outline-hidden",
                 item.status === "waiting" ? "text-secondary" : "text-primary",
                 item.status === "working" && "font-medium",
               )}
@@ -48,7 +51,17 @@ export function ProgressList({ items, onRetry }: { items: ProgressItem[]; onRetr
               <div className="mt-1 flex items-center gap-3">
                 <p className="text-sm text-danger">{statusText.failed}</p>
                 {onRetry && (
-                  <Button size="sm" variant="secondary" onClick={() => onRetry(item.id)}>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    // Starts with the visible text; names the part, so two failures don't read the same.
+                    aria-label={`Try again: ${item.label}`}
+                    onClick={(e) => {
+                      const row = e.currentTarget.closest("li");
+                      onRetry(item.id);
+                      row?.querySelector<HTMLElement>("[data-retry-focus]")?.focus();
+                    }}
+                  >
                     Try again
                   </Button>
                 )}

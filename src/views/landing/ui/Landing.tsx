@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { ChipGroup, Wordmark, focusRing } from "@/shared/ui";
+import { CONTENT_ID, ChipGroup, SkipLink, Wordmark, focusRing } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { ContinueCard, type Mood } from "@/entities/book";
 import { LivePreview } from "@/widgets/live-preview";
@@ -44,6 +44,7 @@ export function Landing() {
 
   return (
     <div className="relative min-h-screen bg-canvas">
+      <SkipLink />
       {/* Soft warm light behind the hero – decoration only. */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[1080px] overflow-hidden">
         <div className="absolute top-36 -left-64 h-[820px] w-[640px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-warm),transparent)] opacity-85 blur-3xl" />
@@ -79,7 +80,7 @@ export function Landing() {
         </a>
       </header>
 
-      <main>
+      <main id={CONTENT_ID} tabIndex={-1} className="outline-hidden">
         <section id="start" className="relative flex flex-col items-center px-5 pt-6 pb-14 text-center lg:px-8">
           <p className="inline-flex min-h-8 items-center gap-2 rounded-full border border-default bg-surface/60 px-3.5 py-1 text-sm text-secondary">
             <span aria-hidden className="size-1.5 rounded-full bg-accent" />

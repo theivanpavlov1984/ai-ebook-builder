@@ -62,10 +62,12 @@ ink-900       text-primary  input-border-focus
 | ---------------- | --------- | ----------- | --------- |
 | `paper-0`        | `#FFFFFF` | `ink-900`   | `#1F1B16` |
 | `paper-50`       | `#FBF8F3` | `ink-700`   | `#3D362E` |
-| `paper-100`      | `#F5F0E8` | `ink-500`   | `#7A7166` |
+| `paper-100`      | `#F5F0E8` | `ink-600`   | `#6B6257` |
+|                  |           | `ink-500`   | `#7A7166` |
 | `paper-200`      | `#EDE6DA` | `ink-400`   | `#9A9085` |
 | `paper-300`      | `#E7DFD3` |             |           |
 | `paper-400`      | `#D6CBBB` |             |           |
+| `paper-500`      | `#968B7F` |             |           |
 | `terracotta-50`  | `#FBF0EA` | `red-50`    | `#FDECEC` |
 | `terracotta-100` | `#F4DED3` | `red-600`   | `#C0262D` |
 | `terracotta-300` | `#E2A07F` | `green-50`  | `#EAF4EE` |
@@ -82,14 +84,15 @@ ink-900       text-primary  input-border-focus
 | `bg-subtle`                  | paper-100                  | Sidebar, side panels, hover                   |
 | `bg-inverse`                 | ink-900                    | Primary button, selected chip                 |
 | `text-primary`               | ink-900                    | Body and headings                             |
-| `text-secondary`             | ink-500                    | Hints, meta                                   |
+| `text-secondary`             | ink-600                    | Hints, meta – 4.5:1 on every light background |
 | `text-inverse`               | paper-50                   | On dark                                       |
 | `text-accent`                | terracotta-700             | Links, active nav                             |
-| `border-default`             | paper-300                  | Inputs, cards, dividers                       |
+| `border-default`             | paper-300                  | Cards, dividers                               |
+| `border-input`               | paper-500                  | Field borders – 3:1 against white and paper   |
 | `border-strong`              | paper-400                  | Hover borders                                 |
 | `accent`                     | terracotta-500             | Active step, focus, brand details             |
 | `accent-subtle`              | terracotta-100             | Active nav background, highlights             |
-| `focus-ring`                 | terracotta-500 at 35%      | Focus outline                                 |
+| `focus-ring`                 | terracotta-500 at 35%      | Soft glow around the landing prompt card      |
 | `danger` / `danger-subtle`   | red-600 / red-50           | Errors                                        |
 | `success` / `success-subtle` | green-600 / green-50       | Done states                                   |
 | `warning` / `warning-subtle` | amber-600 / amber-50       | Soft nudges (e.g. "the book is getting long") |
@@ -97,6 +100,10 @@ ink-900       text-primary  input-border-focus
 
 **Rules**
 
+- **Contrast is checked, not eyeballed:** body and secondary text 4.5:1 or more on every light background,
+  field borders and the focus outline 3:1 or more.
+- **Keyboard focus** is a 2 px accent outline with a 2 px gap (`focusRing`), not a translucent ring: it stays
+  visible on any background and in Windows high-contrast mode.
 - The primary button is **dark ink, not the accent** – keeps the UI calm and away from the coral-SaaS look.
 - Terracotta is close to red, so **errors use a cooler red and always come with an icon and text** –
   color is never the only signal.

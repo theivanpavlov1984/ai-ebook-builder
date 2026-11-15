@@ -1,7 +1,7 @@
 "use client";
 
 import { FlaskConical } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { focusRing } from "@/shared/ui";
 import { activeFailures, setFailures } from "@/shared/api";
 import { cn } from "@/shared/lib";
@@ -19,6 +19,7 @@ const toggles = [
 export function DemoControls() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string[]>([]);
+  const button = useRef<HTMLButtonElement>(null);
 
   function toggle(key: string) {
     const current = activeFailures();
@@ -28,29 +29,21 @@ export function DemoControls() {
   }
 
   return (
-    <div className="relative">
-      {open && (
-        <div className="absolute bottom-full left-0 mb-2 w-56 rounded-md border border-default bg-surface p-3 shadow-md">
-          <p className="text-xs font-semibold">Simulate failures</p>
-          <p className="mt-0.5 text-xs text-secondary">Each fires once, so “Try again” works.</p>
-          <div className="mt-2 flex flex-col gap-1.5">
-            {toggles.map((t) => (
-              <label key={t.key} className="flex cursor-pointer items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={active.includes(t.key)}
-                  onChange={() => toggle(t.key)}
-                  className="size-4 accent-accent"
-                />
-                {t.label}
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
+    // Escape closes the panel and puts focus back on its button.
+    <div
+      className="relative"
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && open) {
+          setOpen(false);
+          button.current?.focus();
+        }
+      }}
+    >
       <button
+        ref={button}
         type="button"
         aria-expanded={open}
+        aria-controls="demo-controls"
         onClick={() => {
           setActive(activeFailures());
           setOpen(!open);
@@ -63,6 +56,29 @@ export function DemoControls() {
         <FlaskConical aria-hidden className="size-3.5" />
         Demo controls
       </button>
+      {/* After the button in the DOM, so Tab goes from the button into the panel; drawn above it. */}
+      {open && (
+        <fieldset
+          id="demo-controls"
+          className="absolute bottom-full left-0 mb-2 w-56 rounded-md border border-default bg-surface p-3 shadow-md"
+        >
+          <legend className="float-left text-xs font-semibold">Simulate failures</legend>
+          <p className="clear-left pt-0.5 text-xs text-secondary">Each fires once, so “Try again” works.</p>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {toggles.map((t) => (
+              <label key={t.key} className="flex cursor-pointer items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={active.includes(t.key)}
+                  onChange={() => toggle(t.key)}
+                  className={cn("size-4 accent-accent", focusRing)}
+                />
+                {t.label}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
     </div>
   );
 }

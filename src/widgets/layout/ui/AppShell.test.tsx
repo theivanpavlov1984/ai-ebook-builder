@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { AppShell } from "./AppShell";
 
@@ -13,5 +14,13 @@ describe("AppShell", () => {
     render(<AppShell active="books">Shelf</AppShell>);
     expect(screen.getByRole("link", { name: /primer/i })).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveTextContent("Shelf");
+  });
+
+  it("starts with a skip link to the page content, so keyboard users can jump past the navigation", async () => {
+    render(<AppShell active="books">Shelf</AppShell>);
+    await userEvent.tab();
+    const skip = screen.getByRole("link", { name: /skip to content/i });
+    expect(skip).toHaveFocus();
+    expect(skip).toHaveAttribute("href", `#${screen.getByRole("main").id}`);
   });
 });

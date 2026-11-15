@@ -93,6 +93,9 @@ describe("Studio", () => {
     expect(st().books[id].chapters[0].draft).toBeUndefined();
     expect(st().books[id].chapters[0].versions).toHaveLength(0);
     expect(screen.getByText("Original paragraph of chapter 1.")).toBeInTheDocument();
+    // One main landmark (the app shell's); the selected chapter is marked for screen readers.
+    expect(screen.getAllByRole("main")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /chapter title 1/i })).toHaveAttribute("aria-current", "true");
   });
 
   it("rewrites a chapter and undoes back to the exact original", async () => {
@@ -154,6 +157,35 @@ describe("Studio", () => {
     await userEvent.click(within(form).getByRole("button", { name: /cancel/i }));
     expect(screen.queryByRole("form", { name: /edit chapter/i })).not.toBeInTheDocument();
     expect(st().books[id].chapters[0].body).toEqual(["Original paragraph of chapter 1.", "Second paragraph."]);
+  });
+
+  it("asks before leaving a chapter with unsaved edits, and leaves untouched ones without asking", async () => {
+    const id = newBook();
+    wrap(<Studio id={id} rewriteMs={0} />);
+    const nav = screen.getByRole("navigation", { name: /book structure/i });
+
+    // No changes yet: switching chapters just closes the editor.
+    await userEvent.click(screen.getByRole("button", { name: /edit text/i }));
+    await userEvent.click(within(nav).getByRole("button", { name: /chapter title 2/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByText("Original paragraph of chapter 2.")).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: /edit text/i }));
+    await userEvent.type(screen.getByLabelText(/^text/i), " More.");
+    await userEvent.click(within(nav).getByRole("button", { name: /chapter title 3/i }));
+    const dialog = screen.getByRole("dialog", { name: /discard your changes/i });
+
+    await userEvent.click(within(dialog).getByRole("button", { name: /keep editing/i }));
+    expect(screen.getByLabelText(/^text/i)).toHaveValue("Original paragraph of chapter 2.\n\nSecond paragraph. More.");
+
+    await userEvent.click(within(nav).getByRole("button", { name: /chapter title 3/i }));
+    await userEvent.click(
+      within(screen.getByRole("dialog", { name: /discard your changes/i })).getByRole("button", {
+        name: /discard changes/i,
+      }),
+    );
+    expect(screen.getByText("Original paragraph of chapter 3.")).toBeInTheDocument();
+    expect(st().books[id].chapters[1].body).toEqual(["Original paragraph of chapter 2.", "Second paragraph."]);
   });
 
   it("a free instruction is enough to rewrite", async () => {

@@ -59,7 +59,7 @@ export function StartForm({
         className={cn(
           "w-full rounded-[20px] border bg-surface px-5 pt-5 pb-3.5 text-left shadow-hero",
           "transition-[border-color,box-shadow] duration-150 ease-standard",
-          "focus-within:ring-4 focus-within:ring-focus",
+          "focus-within:ring-4 focus-within:ring-focus focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent focus-within:outline-solid",
           error ? "border-danger" : "border-default focus-within:border-strong",
         )}
       >
@@ -84,7 +84,7 @@ export function StartForm({
             }
           }}
           /* Three lines on phones, so the example in the placeholder fits without a scrollbar. */
-          className="block h-21 w-full resize-none bg-transparent text-lg text-primary outline-none placeholder:text-secondary sm:h-auto"
+          className="block h-21 w-full resize-none bg-transparent text-lg text-primary outline-hidden placeholder:text-secondary sm:h-auto"
         />
         <div className="mt-2 flex items-center justify-between gap-4">
           <Button

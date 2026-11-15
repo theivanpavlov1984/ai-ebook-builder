@@ -73,7 +73,7 @@ export function Input({ label, hint, error, id, className, ...rest }: InputProps
         id={ids.fieldId}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy({ label, hint, error }, ids.hintId, ids.errorId)}
-        className={cn(control, "h-10", error ? "border-danger" : "border-default", className)}
+        className={cn(control, "h-10", error ? "border-danger" : "border-input", className)}
         {...rest}
       />
     </FieldFrame>
@@ -113,7 +113,7 @@ export function Textarea({ label, hint, error, id, autoGrow, className, onInput,
           fit();
           onInput?.(e);
         }}
-        className={cn(control, "resize-none py-2.5", error ? "border-danger" : "border-default", className)}
+        className={cn(control, "resize-none py-2.5", error ? "border-danger" : "border-input", className)}
         {...rest}
       />
     </FieldFrame>

@@ -198,6 +198,18 @@ the browser's PDF viewer. It came up blank in the app's built-in browser pane, w
 frames; in real Chromium (checked with Playwright) it shows all 15 pages with thumbnails and the chapter
 bookmarks. A new-tab link covers browsers without a viewer, and the frame opens at whole-page fit.
 
+**A second pass: keyboard, failures, contrast.** Leaving a chapter with unsaved hand edits now asks first. Then
+I asked AI to check accessibility properly. Its first idea – loading axe-core from a CDN into the page – was
+blocked by the tool's safety rules, so it computed WCAG contrast from tokens.css instead and turned that into a
+test. Three real failures: secondary text on the beige tints (4.2:1 and 3.7:1), field borders (1.3:1, under the
+3:1 a form control needs) and the translucent focus ring (1.6:1). New shades fixed the first two. The focus ring
+became a solid accent outline – and the browser check found the first try invisible: Tailwind's outline-hidden
+sets the outline style to none and outline-2 inherits it, so focus-visible also needs outline-solid. Tabbing
+through every screen found the rest: the outline lost focus when a chapter moved to the end or was removed, and
+announced nothing; Review had two main landmarks and didn't mark the selected chapter; there was no skip link;
+"Try again" had the same name for every failed part and dropped focus after a retry; Demo controls ignored
+Escape; and a book waiting for a retry still said "Writing 6 of 6" in the tab. All fixed, each with a test.
+
 ---
 
 ## Template for the next entries

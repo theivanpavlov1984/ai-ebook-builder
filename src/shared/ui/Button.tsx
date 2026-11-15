@@ -23,7 +23,13 @@ const sizes: Record<Size, string> = {
   sm: "h-8 px-3 text-sm gap-1.5",
 };
 
-export const focusRing = "outline-none focus-visible:ring-4 focus-visible:ring-focus";
+/**
+ * Keyboard focus: a solid accent outline with a gap – 4.4:1 against the page, and it survives Windows
+ * high-contrast mode (outline-hidden keeps an invisible outline there; a box-shadow ring would vanish).
+ * outline-solid is needed: outline-hidden sets the outline style variable to none, and outline-2 reads it.
+ */
+export const focusRing =
+  "outline-hidden focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function Button({
   variant = "primary",

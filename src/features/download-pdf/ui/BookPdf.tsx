@@ -7,7 +7,7 @@ import { PdfCover } from "./PdfCover";
 const PAGE: [number, number] = [420, 588];
 // Print colors mirror the app's ink / secondary / accent primitives.
 const INK = "#1F1B16";
-const MUTED = "#7A7166";
+const MUTED = "#6B6257";
 const ACCENT = "#9A3B1C";
 const RULE = "#E7DFD3";
 const ACCENT_SUBTLE = "#F4DED3";

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { bookDesign, Cover, coverPhoto, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
 import { AppShell, NotFound } from "@/widgets/layout";
-import { Button, focusRing, Stepper } from "@/shared/ui";
+import { Button, Dialog, focusRing, Stepper } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { ChapterPanel, ChapterReader } from "@/features/rewrite-chapter";
 import { ChapterEditor } from "@/features/edit-chapter";
@@ -25,11 +25,35 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
   const [selected, setSelected] = useState<string>(book.chapters[0]?.id ?? "cover");
   // The chapter being edited by hand, if any. Choosing another chapter closes the editor.
   const [editing, setEditing] = useState<string>();
+  // Unsaved hand edits: leaving the chapter asks first instead of dropping them.
+  const [dirty, setDirty] = useState(false);
+  const [leaving, setLeaving] = useState<string>();
   const rewriting = useBooks((s) => Boolean(s.rewriting[selected]));
 
   const chapter = book.chapters.find((c) => c.id === selected);
   const chapterIndex = book.chapters.findIndex((c) => c.id === selected);
   const { pages, minutes } = estimate(book);
+
+  function finalize() {
+    updateBook(id, { stage: forwardStage(book, "final") });
+    router.push(`/book/${id}/final`);
+  }
+
+  /** Go to a chapter, the cover ("cover") or the final step ("final"), closing the editor on the way. */
+  function leaveTo(target: string) {
+    setLeaving(undefined);
+    setEditing(undefined);
+    setDirty(false);
+    if (target === "final") finalize();
+    else setSelected(target);
+  }
+
+  function go(target: string) {
+    if (target === selected && target !== "final") return;
+    if (editing && dirty) setLeaving(target);
+    else leaveTo(target);
+  }
+
   const title = book.title || book.topic;
 
   const navItem = (active: boolean) =>
@@ -51,10 +75,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             <Button
               icon={<ArrowRight aria-hidden className="size-4" />}
               className="flex-row-reverse"
-              onClick={() => {
-                updateBook(id, { stage: forwardStage(book, "final") });
-                router.push(`/book/${id}/final`);
-              }}
+              onClick={() => go("final")}
             >
               Finalize
             </Button>
@@ -66,7 +87,8 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             <button
               type="button"
               aria-label="Cover"
-              onClick={() => setSelected("cover")}
+              aria-current={selected === "cover" ? "true" : undefined}
+              onClick={() => go("cover")}
               className={navItem(selected === "cover")}
             >
               <Cover design={bookDesign(book)} title={title} size="none" className="w-8 shadow-sm" />
@@ -74,7 +96,13 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             </button>
             <p className="mt-4 mb-1 px-3 text-xs font-medium tracking-wider text-secondary uppercase">Chapters</p>
             {book.chapters.map((c, i) => (
-              <button key={c.id} type="button" onClick={() => setSelected(c.id)} className={navItem(c.id === selected)}>
+              <button
+                key={c.id}
+                type="button"
+                aria-current={c.id === selected ? "true" : undefined}
+                onClick={() => go(c.id)}
+                className={navItem(c.id === selected)}
+              >
                 <span className="w-4 shrink-0 text-secondary">{i + 1}</span>
                 <span className="flex-1">{c.title}</span>
                 {c.draft ? (
@@ -86,7 +114,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             ))}
           </nav>
 
-          <main className="min-w-0 overflow-y-auto px-12 py-10">
+          <section aria-label="Reading view" className="min-w-0 overflow-y-auto px-12 py-10">
             {chapter ? (
               <article className="mx-auto max-w-[640px]">
                 <div className="flex items-start justify-between gap-4">
@@ -113,7 +141,13 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                   )}
                 </div>
                 {editing === chapter.id ? (
-                  <ChapterEditor key={chapter.id} bookId={id} chapter={chapter} onDone={() => setEditing(undefined)} />
+                  <ChapterEditor
+                    key={chapter.id}
+                    bookId={id}
+                    chapter={chapter}
+                    onDone={() => setEditing(undefined)}
+                    onDirtyChange={setDirty}
+                  />
                 ) : (
                   <ChapterReader key={chapter.id} bookId={id} chapter={chapter} />
                 )}
@@ -133,7 +167,7 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
                 )}
               </div>
             )}
-          </main>
+          </section>
 
           <section aria-label="Adjust" className="border-l border-default bg-surface p-6">
             {chapter ? (
@@ -144,6 +178,21 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
           </section>
         </div>
       </div>
+
+      <Dialog
+        open={leaving !== undefined}
+        onOpenChange={(open) => !open && setLeaving(undefined)}
+        title="Discard your changes?"
+        description={`Your edits to “${chapter?.title ?? "this chapter"}” aren’t saved yet.`}
+        footer={
+          <>
+            <Button variant="ghost" onClick={() => setLeaving(undefined)}>
+              Keep editing
+            </Button>
+            <Button onClick={() => leaving && leaveTo(leaving)}>Discard changes</Button>
+          </>
+        }
+      />
     </AppShell>
   );
 }

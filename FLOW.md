@@ -180,6 +180,8 @@ Every step has loading, empty, error and success states. Specific cases:
 | Cover fails                           | Falls back to another art direction automatically                                  |
 | Photo suggestions fail                | "Photos didn't load" + "Try again"; the current cover stays as it is               |
 | Last-page link isn't a web address    | Hint under the field after leaving it; the PDF simply has no link until it's fixed |
+| Leaving a chapter with unsaved edits  | "Discard your changes?" – Keep editing / Discard; closing the tab asks the browser |
+| A part failed and nothing else runs   | The tab title says "1 part needs another try", not "Writing 6 of 6"                |
 | No photos match the topic             | Says so and leads with calm, general photos; upload stays available                |
 | Own photo too small or not a photo    | Says what's wrong and what to pick instead (at least 1200 px tall, JPG/PNG/WebP)   |
 | Tab closed or refreshed               | State is saved locally; "Continue your book" banner on return                      |

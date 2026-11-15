@@ -55,6 +55,11 @@ describe("buildTabTitle", () => {
     expect(buildTabTitle(6, 6, false)).toBe("Designing the cover · Primer");
     expect(buildTabTitle(6, 6, true)).toBe("✓ Your book is ready · Primer");
   });
+
+  it("says when the book is waiting for a retry instead of still claiming to write", () => {
+    expect(buildTabTitle(5, 6, false, 1)).toBe("1 part needs another try · Primer");
+    expect(buildTabTitle(4, 6, false, 2)).toBe("2 parts need another try · Primer");
+  });
 });
 
 describe("BuildStep", () => {

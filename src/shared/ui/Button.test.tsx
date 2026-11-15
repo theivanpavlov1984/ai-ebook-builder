@@ -34,8 +34,15 @@ describe("Button", () => {
     expect(screen.getByRole("button", { name: "Skip" })).not.toHaveClass("bg-surface");
   });
 
-  it("has a visible focus style", () => {
+  it("has a solid focus outline that survives high-contrast mode", () => {
     render(<Button>Go</Button>);
-    expect(screen.getByRole("button")).toHaveClass("focus-visible:ring-focus");
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass(
+      "outline-hidden",
+      "focus-visible:outline-solid",
+      "focus-visible:outline-2",
+      "focus-visible:outline-accent",
+    );
+    expect(button).not.toHaveClass("outline-none");
   });
 });

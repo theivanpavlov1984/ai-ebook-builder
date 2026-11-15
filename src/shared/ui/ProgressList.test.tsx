@@ -21,6 +21,14 @@ describe("ProgressList", () => {
     expect(onRetry).toHaveBeenCalledWith("ch2");
   });
 
+  it("names each retry after its part and keeps keyboard focus in that row", async () => {
+    render(<ProgressList items={items} onRetry={() => {}} />);
+    const retry = screen.getByRole("button", { name: "Try again: Chapter 2" });
+    retry.focus();
+    await userEvent.keyboard("{Enter}");
+    expect(screen.getByText("Chapter 2")).toHaveFocus();
+  });
+
   it("gives every status a text label for screen readers", () => {
     render(<ProgressList items={items} />);
     expect(within(screen.getByText("Outline").closest("li")!).getByText("Done")).toBeInTheDocument();

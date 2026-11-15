@@ -12,8 +12,11 @@ import { defaultTiming, useGeneration, type Timing } from "../model/useGeneratio
 
 export type { Timing };
 
-export function buildTabTitle(finished: number, total: number, done: boolean): string {
+export function buildTabTitle(finished: number, total: number, done: boolean, stalled = 0): string {
   if (done) return "✓ Your book is ready · Primer";
+  // Someone who switched tabs should learn that the book waits for them, not that it is still writing.
+  if (stalled)
+    return stalled === 1 ? "1 part needs another try · Primer" : `${stalled} parts need another try · Primer`;
   if (total > 0 && finished >= total) return "Designing the cover · Primer";
   return `Writing ${Math.min(finished + 1, Math.max(total, 1))} of ${total} · Primer`;
 }
@@ -29,7 +32,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
   const router = useRouter();
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
-  const { items, streaming, resumed, done, progressText, retry } = useGeneration(id, timing);
+  const { items, streaming, resumed, done, failed, stalled, progressText, retry } = useGeneration(id, timing);
   const [viewing, setViewing] = useState<string>();
 
   useEffect(() => {
@@ -39,7 +42,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
 
   const finished = book.chapters.filter((c) => c.status === "done");
   // Progress in the tab title, so a user who switches tabs knows when to come back.
-  useTabTitle(buildTabTitle(finished.length, book.chapters.length, done));
+  useTabTitle(buildTabTitle(finished.length, book.chapters.length, done, stalled ? failed : 0));
 
   const shownId = viewing ?? streaming?.id ?? finished.at(-1)?.id;
   const shown = book.chapters.find((c) => c.id === shownId);
