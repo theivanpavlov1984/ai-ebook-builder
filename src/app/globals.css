@@ -139,42 +139,42 @@
 }
 
 /*
- * Landing headlines (after Lovable): the end of a heading arrives as a band of ember gradient sweeping through
- * the letters, then cools to the text colour. Sweep in views/landing sets data-sweep: "wait" keeps it hidden
- * until it comes on screen, "on" plays it once. Reduced motion jumps to the last frame – plain text.
+ * Landing headlines (after Lovable, measured on lovable.dev): the end of a heading is wiped in from left to right
+ * behind a band of ember – 1.2 s, ease-in-out, a 1 px blur that clears. Before it plays the visible third of the
+ * gradient is the transparent one, so the words wait unseen. Sweep in views/landing sets data-sweep: "wait" before
+ * it comes on screen, "on" to play it once. Reduced motion and forced colours get plain text.
  */
 .text-sweep[data-sweep] {
-  background-image: var(--primer-gradient-ember);
-  background-size: 260% 100%;
+  background-image: var(--primer-gradient-sweep);
+  background-size: 300% 100%;
+  background-position: 100% 0;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-.text-sweep[data-sweep="wait"] {
-  opacity: 0;
+  -webkit-text-fill-color: transparent;
 }
 .text-sweep[data-sweep="on"] {
-  animation: text-sweep 2.6s var(--primer-ease) both;
+  animation: text-sweep 1.2s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0.1s forwards;
 }
 @keyframes text-sweep {
-  0% {
+  from {
     background-position: 100% 0;
-    -webkit-text-fill-color: transparent;
-    opacity: 0;
-    filter: blur(8px);
+    filter: blur(1px);
   }
-  18% {
-    opacity: 1;
+  to {
+    background-position: 0 0;
     filter: blur(0);
   }
-  68% {
-    background-position: 0% 0;
-    -webkit-text-fill-color: transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-sweep[data-sweep] {
+    animation: none;
+    background-position: 0 0;
   }
-  100% {
-    background-position: 0% 0;
-    -webkit-text-fill-color: currentColor;
+}
+@media (forced-colors: active) {
+  .text-sweep[data-sweep] {
+    background: none;
+    -webkit-text-fill-color: CanvasText;
   }
 }
 

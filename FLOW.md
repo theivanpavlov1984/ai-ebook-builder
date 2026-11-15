@@ -124,7 +124,8 @@ Not a spinner – the book is assembled in front of the user:
 
 Three columns:
 
-- **Left – Structure:** table of contents with status of each chapter.
+- **Left – Structure:** the cover as a card with "Edit cover" on top, then the table of contents with each chapter's status.
+  The cover leads because it is half of what makes the book feel finished (Final's "Edit cover" opens it directly).
 - **Center – Book:** reading view of the selected chapter (or the cover).
 - **Right – Adjust:** actions for whatever is selected.
 
@@ -231,17 +232,17 @@ No backend and no real AI – the brief allows simulation. To keep it convincing
 
 ## 7. Out of scope (and why)
 
-| Cut                                             | Why                                                                                                                                                         |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Accounts, sign-up                               | Not needed to prove the experience; removes friction. "My books" is stored locally                                                                          |
-| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book                                                                                           |
-| Pricing and plans                               | No payments to back them, so every price would be invented; the FAQ says it is free while a prototype                                                       |
-| Real AI / backend                               | Allowed by the brief; time goes to UX and craft instead                                                                                                     |
-| A full text editor                              | Not needed per the brief; rewrites by intent fit non-writers. A light "Edit text" covers "Will it sound like me?" – no formatting, find & replace or images |
-| Images inside chapters                          | Nice to have; cover quality matters more                                                                                                                    |
-| EPUB                                            | The stakeholder confirmed PDF is enough                                                                                                                     |
-| Mobile creation flow                            | The brief asks for a desktop tool. Only the landing page and the reader's page are built phones-first – people open a shared link on their phone            |
-| Multiple languages                              | Not in the brief                                                                                                                                            |
+| Cut                                             | Why                                                                                                                                                                                         |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accounts, sign-up                               | Not needed to prove the experience; removes friction. "My books" is stored locally                                                                                                          |
+| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book                                                                                                                           |
+| Pricing and plans                               | No payments to back them, so every price would be invented; the FAQ says it is free while a prototype                                                                                       |
+| Real AI / backend                               | Allowed by the brief; time goes to UX and craft instead                                                                                                                                     |
+| A full text editor                              | The brief: "Full editing capabilities are not needed." Rewrites by intent fit non-writers; a light "Edit text" covers "Will it sound like me?" – no formatting, find & replace or images    |
+| Images inside chapters                          | Nice to have; cover quality matters more                                                                                                                                                    |
+| EPUB                                            | The stakeholder confirmed PDF is enough                                                                                                                                                     |
+| A phone-first creation flow                     | The brief asks for a desktop tool, so the flow is designed for desktop. It still works from 375 px – one column, a top bar – because the landing page invites people to start on any device |
+| Multiple languages                              | Not in the brief                                                                                                                                                                            |
 
 ## 8. How I'd measure success (if this were live)
 

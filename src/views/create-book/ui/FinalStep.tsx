@@ -99,7 +99,16 @@ function Final({ id, download, build }: { id: string; download: Download; build:
                   author={book.author}
                   size="lg"
                 />
-                <figcaption className="text-xs text-secondary">Cover</figcaption>
+                <figcaption className="flex items-center justify-between text-xs text-secondary">
+                  Cover
+                  <Link
+                    href={`/book/${id}/review`}
+                    onClick={() => useBooks.getState().requestCover(id)}
+                    className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
+                  >
+                    Edit cover
+                  </Link>
+                </figcaption>
               </figure>
               <PagePreview label="Contents">
                 <p className="text-[8px] tracking-wider text-secondary uppercase">Contents</p>

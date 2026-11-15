@@ -179,5 +179,6 @@ describe("FinalStep – before you share", () => {
     wrap(<FinalStep id={id} />);
     const progress = screen.getByRole("list", { name: /progress/i });
     expect(within(progress).getAllByRole("link")).toHaveLength(5);
+    expect(screen.getByRole("link", { name: /edit cover/i })).toHaveAttribute("href", `/book/${id}/review`);
   });
 });

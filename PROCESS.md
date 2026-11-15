@@ -229,6 +229,11 @@ fragments; each step now shows the whole screen in a browser frame. And I did ta
 Lovable's heading endings that light up as they scroll in. Ours runs once through our own ember gradient
 (terracotta → ember → amber, one token) and settles back into the heading's colour, so it stays an accent on
 arrival, not decoration that sits there.
+Later Ivan said ours looked already played by the time he saw it, while Lovable's plays in front of you. Copying by
+eye had missed why. Reading their CSS and logging when their class is added showed the trigger was the same – half
+the line on screen, near the bottom edge. The difference was the motion: theirs is a 1.2 s wipe, the words appearing
+behind a coloured band from an invisible start; ours faded in the whole phrase in colour over 2.6 s, so most of it
+happened before the eye arrived. Ours now uses their gradient layout and timing with our colours.
 
 **A UX audit of the live build.** Before submitting I asked AI to walk the production site as a first-time user
 against Nielsen's heuristics, NN/g form and wizard guidance and WCAG, at 375, 768, 1024 and 1440 px, including
@@ -255,7 +260,9 @@ what it's waiting for; My books shows where each book stands and can rename or d
 of the framework's; the "AI is simulated" note shows on Title, where the template titles first appear, not only on
 Build; the Final screen says why the share link is so long. Walking the fixes in the browser turned up one more, which
 the audit had missed: Back from Build to Describe showed the form still busy from "Write it now" – Next keeps the left
-page mounted, state and all – so the page now clears what belonged to the last visit when it is left.
+page mounted, state and all – so the page now clears what belonged to the last visit when it is left. Comparing with
+competitors' editors later, I couldn't find the cover in Review myself: it was one small row above the chapters. It is
+now a card with "Edit cover" leading the structure, and the cover preview on Final links straight to it.
 
 ---
 

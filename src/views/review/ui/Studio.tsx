@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, PenLine } from "lucide-react";
+import { ArrowRight, Palette, PenLine } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { bookDesign, Cover, coverPhoto, forwardStage, estimate, useBooks, useBook } from "@/entities/book";
@@ -22,7 +22,12 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
   const router = useRouter();
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
-  const [selected, setSelected] = useState<string>(book.chapters[0]?.id ?? "cover");
+  const [picked, setPicked] = useState<string>(book.chapters[0]?.id ?? "cover");
+  // "Edit cover" on Final asks for the cover. Next keeps this page mounted with its state after the user leaves,
+  // so the request lives in the store and wins over the last pick until the user picks something here.
+  const coverRequested = useBooks((s) => Boolean(s.coverRequested[id]));
+  const requestCover = useBooks((s) => s.requestCover);
+  const selected = coverRequested ? "cover" : picked;
   // The chapter being edited by hand, if any. Choosing another chapter closes the editor.
   const [editing, setEditing] = useState<string>();
   // Unsaved hand edits: leaving the chapter asks first instead of dropping them.
@@ -49,7 +54,10 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
     setDirty(false);
     if (target === "final") finalize();
     else if (target.startsWith("/")) router.push(target);
-    else setSelected(target);
+    else {
+      setPicked(target);
+      requestCover(id, false);
+    }
   }
 
   function go(target: string) {
@@ -104,15 +112,22 @@ function StudioView({ id, rewriteMs }: { id: string; rewriteMs: number }) {
             aria-label="Book structure"
             className="flex gap-1 overflow-x-auto border-b border-default bg-subtle p-2 lg:col-span-2 xl:col-span-1 xl:flex-col xl:overflow-visible xl:border-r xl:border-b-0 xl:p-4"
           >
+            {/* The cover is half of what makes the book feel finished, so it leads the structure as a card with its
+                own call to edit, not as one more row (a first-time reviewer looked for it and missed it). */}
             <button
               type="button"
-              aria-label="Cover"
+              aria-label="Edit cover"
               aria-current={selected === "cover" ? "true" : undefined}
               onClick={() => go("cover")}
-              className={navItem(selected === "cover")}
+              className={cn(navItem(selected === "cover"), "xl:flex-col xl:gap-3 xl:p-3")}
             >
-              <Cover design={bookDesign(book)} title={title} size="none" className="w-8 shadow-sm" />
-              <span className="pt-1">Cover</span>
+              <Cover design={bookDesign(book)} title={title} size="none" className="w-8 shrink-0 shadow-sm xl:w-28" />
+              <span className="flex flex-col gap-0.5 pt-1 xl:pt-0">
+                <span className="flex items-center gap-1.5 font-medium text-primary">
+                  <Palette aria-hidden className="size-3.5 shrink-0 text-accent-strong" /> Edit cover
+                </span>
+                <span className="text-xs font-normal text-secondary">Title, style or a photo</span>
+              </span>
             </button>
             <p className="mt-4 mb-1 hidden px-3 text-xs font-medium tracking-wider text-secondary uppercase xl:block">
               Chapters

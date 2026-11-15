@@ -214,10 +214,20 @@ describe("Studio", () => {
     expect(st().rewriting).toEqual({});
   });
 
+  it("opens on the cover when Final's 'Edit cover' asked for it, until the user picks a chapter", async () => {
+    const id = newBook();
+    st().requestCover(id);
+    wrap(<Studio id={id} rewriteMs={0} />);
+    const panel = screen.getByRole("region", { name: /adjust/i });
+    expect(within(panel).getByRole("radiogroup", { name: /cover style/i })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /chapter title 2/i }));
+    expect(st().coverRequested[id]).toBeUndefined();
+  });
+
   it("lets the user pick a cover style, shuffle it and edit the title", async () => {
     const id = newBook();
     wrap(<Studio id={id} rewriteMs={0} />);
-    await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
+    await userEvent.click(screen.getByRole("button", { name: /edit cover/i }));
     const panel = screen.getByRole("region", { name: /adjust/i });
     const options = within(within(panel).getByRole("radiogroup", { name: /cover style/i })).getAllByRole("radio");
     expect(options).toHaveLength(3);
@@ -234,7 +244,7 @@ describe("Studio", () => {
   it("puts a photo that fits the topic on the cover, with its credit, and switches back to shapes", async () => {
     const id = newBook();
     wrap(<Studio id={id} rewriteMs={0} />);
-    await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
+    await userEvent.click(screen.getByRole("button", { name: /edit cover/i }));
     const panel = screen.getByRole("region", { name: /adjust/i });
     await userEvent.click(within(panel).getByRole("radio", { name: "Photo" }));
     expect(within(panel).getByText(/finding photos for/i)).toBeInTheDocument();
@@ -261,7 +271,7 @@ describe("Studio", () => {
     setFailures(["photos"]);
     const id = newBook();
     wrap(<Studio id={id} rewriteMs={0} />);
-    await userEvent.click(screen.getByRole("button", { name: /^cover$/i }));
+    await userEvent.click(screen.getByRole("button", { name: /edit cover/i }));
     const panel = screen.getByRole("region", { name: /adjust/i });
     await userEvent.click(within(panel).getByRole("radio", { name: "Photo" }));
     const alert = await within(panel).findByRole("alert", {}, { timeout: 2000 });

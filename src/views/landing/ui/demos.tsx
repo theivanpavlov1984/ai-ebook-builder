@@ -335,9 +335,9 @@ export function Reveal({
 }
 
 /**
- * The end of a headline, arriving as a sweep of the ember gradient that cools to the text colour – once, when
- * it comes on screen. `immediate` plays it on load (the hero). Without IntersectionObserver, or for reduced
- * motion, it is plain text.
+ * The end of a headline, wiped in behind a band of ember – once, when half of it is on screen (where lovable.dev
+ * starts theirs). `immediate` plays it on load (the hero). Without IntersectionObserver, or for reduced motion, it
+ * is plain text.
  */
 export function Sweep({ children, immediate = false }: { children: ReactNode; immediate?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -356,7 +356,7 @@ export function Sweep({ children, immediate = false }: { children: ReactNode; im
         } else if (first) setState("wait");
         first = false;
       },
-      { threshold: 0.6 },
+      { threshold: 0.5 },
     );
     observer.observe(el);
     return () => observer.disconnect();

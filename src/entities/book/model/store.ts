@@ -13,6 +13,9 @@ type BooksState = {
   createBook: (topic: string) => string;
   updateBook: (id: string, patch: Partial<Book>, opts?: { snapshot?: boolean }) => void;
   updateChapter: (id: string, chapterId: string, patch: Partial<Chapter>) => void;
+  /** Books whose Review should open on the cover (the "Edit cover" link on Final). Session-only. */
+  coverRequested: Record<string, boolean>;
+  requestCover: (id: string, on?: boolean) => void;
   /** Chapters being rewritten right now. Session-only, never persisted. */
   rewriting: Record<string, boolean>;
   rewriteChapter: (id: string, chapterId: string, body: string[]) => void;
@@ -47,6 +50,15 @@ export const useBooks = create<BooksState>()(
         books: {},
         history: {},
         rewriting: {},
+        coverRequested: {},
+
+        requestCover: (id, on = true) =>
+          set((s) => {
+            const coverRequested = { ...s.coverRequested };
+            if (on) coverRequested[id] = true;
+            else delete coverRequested[id];
+            return { coverRequested };
+          }),
 
         createBook: (topic) => {
           const id = newId();

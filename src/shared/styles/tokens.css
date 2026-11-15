@@ -60,16 +60,22 @@
   /* Soft light behind the landing hero – never behind text-heavy content. */
   --primer-glow-warm: var(--peach-200);
   --primer-glow-deep: var(--terracotta-300);
-  /* Headline sweep on the landing: deep terracotta through ember and gold and back, wider than the text. */
-  --primer-gradient-ember: linear-gradient(
-    100deg,
-    var(--terracotta-700) 0%,
-    var(--terracotta-500) 22%,
-    var(--ember-400) 38%,
-    var(--amber-400) 50%,
-    var(--ember-400) 62%,
-    var(--terracotta-500) 78%,
-    var(--terracotta-700) 100%
+  /*
+   * Headline sweep, after Lovable: three widths of the text. The left third is the text's own colour, the middle a
+   * band of ember, the right third transparent. Sliding it from right to left wipes the words in behind the band.
+   * currentColor resolves where it is used, so the sweep ends in whatever colour the headline has.
+   */
+  --primer-gradient-sweep: linear-gradient(
+    90deg,
+    currentColor 0,
+    currentColor 33.33%,
+    var(--amber-400) 40%,
+    var(--ember-400) 45%,
+    var(--terracotta-500) 50%,
+    var(--ember-400) 55%,
+    var(--amber-400) 60%,
+    transparent 66.67%,
+    transparent
   );
   --primer-focus-ring: color-mix(in srgb, var(--terracotta-500) 35%, transparent);
 

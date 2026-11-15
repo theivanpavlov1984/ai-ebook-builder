@@ -14,8 +14,8 @@ Primer helps a first-time author make a lead-magnet eBook. The UI has two jobs:
    from the first screen.
 
 **Goals:** distinctive but quiet; covers are the visual hero; every screen built from the same tokens.
-**Non-goals:** a brand book, dark mode, a mobile creation flow (the brief asks for desktop; the landing page
-and the reader's page are the exceptions, see §4.5).
+**Non-goals:** a brand book, dark mode, a phone-first creation flow (the brief asks for desktop; the flow still works
+from 375 px, and the landing page and the reader's page are designed phones-first, see §4.5).
 **Anti-goals – this fails even if it works:** looks like a generic AI SaaS (coral gradient, glossy cards,
 stats dashboard); looks like a template; inconsistent spacing or type between screens.
 
@@ -153,8 +153,9 @@ Scale (size / line height, px):
   (stops for good on the first focus, letter or tone click); the hero light fades in, drifts on a 40 s loop and
   sinks on scroll (CSS scroll-driven, where supported); "Watch your book being written" writes a book live;
   "How it works" is a sticky scroll story on desktop; bento tiles show a rewrite being kept, cover styles
-  trading places and sign-ups arriving; sections rise in once; "~15" counts up; heading endings light up once
-  in the ember gradient (`--primer-gradient-ember`) as they scroll in, then settle into the heading colour.
+  trading places and sign-ups arriving; sections rise in once; "~15" counts up; heading endings are wiped in once,
+  left to right behind a band of ember (`--primer-gradient-sweep`, 1.2 s) when half of them is on screen – the
+  timing and gradient layout measured on lovable.dev.
 - **Cover in the hero stays calm.** The demo colours the live cover from the whole example topic; the visitor's
   own typing repaints it only after a 600 ms pause, so the palette never changes letter by letter.
 
