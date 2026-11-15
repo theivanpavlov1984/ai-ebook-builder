@@ -12,13 +12,24 @@ import { directionsForMood, exampleTopics, shapeIdea, validateTopic, useBooks, t
  * Works on its own, or controlled (`value` + `onValueChange`) when a parent previews the topic live.
  * `mood` – the tone picked on the landing – is saved on the new book, so the Describe step starts from it.
  * `examples={false}` hides the example topics (the closing call to action repeats the field without them).
+ * `placeholder` and `onFieldFocus` let the landing play example topics in the empty field until the visitor
+ * takes over.
  */
 export function StartForm({
   value,
   onValueChange,
   mood = "practical",
   examples = true,
-}: { value?: string; onValueChange?: (v: string) => void; mood?: Mood; examples?: boolean } = {}) {
+  placeholder = "What's your book about? e.g. Morning routines for remote workers",
+  onFieldFocus,
+}: {
+  value?: string;
+  onValueChange?: (v: string) => void;
+  mood?: Mood;
+  examples?: boolean;
+  placeholder?: string;
+  onFieldFocus?: () => void;
+} = {}) {
   const router = useRouter();
   const createBook = useBooks((s) => s.createBook);
   const updateBook = useBooks((s) => s.updateBook);
@@ -70,7 +81,8 @@ export function StartForm({
           id={fieldId}
           rows={2}
           value={topic}
-          placeholder="What's your book about? e.g. Morning routines for remote workers"
+          placeholder={placeholder}
+          onFocus={onFieldFocus}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${errorId} ${hintId}` : hintId}
           onChange={(e) => {

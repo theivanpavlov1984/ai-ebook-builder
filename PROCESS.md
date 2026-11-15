@@ -210,6 +210,26 @@ announced nothing; Review had two main landmarks and didn't mark the selected ch
 "Try again" had the same name for every failed part and dropped focus after a retry; Demo controls ignored
 Escape; and a book waiting for a retry still said "Writing 6 of 6" in the tab. All fixed, each with a test.
 
+**Bringing the landing page to life.** The page was nearly static, and its "Watch your book being written"
+showed a still screenshot. I asked AI to go through competitors and top AI startups and list what moves on
+their home pages: getebook.ai, Inkfluence, Designrr, Beautiful.ai, Claude, Jet Admin and Lovable (Gamma and
+OpenAI sit behind bot checks; I passed Lovable's myself). What we took is mechanics, not looks: Jet's prompt
+that plays example requests – ours also switches the tone and redraws the cover, which nobody else can show;
+Lovable's live mini-interfaces instead of videos, its three-layer hero light and its sticky scroll story;
+Inkfluence's "new subscriber" notifications, because sign-ups are the point of a lead magnet. What we left:
+floating books, pulsing buttons, gradient text that stays on – the tells of AI slop. Checking it in a real browser found two
+things the tests couldn't: the streaming chapter grew its card and pushed the page down (now it reserves its
+height), and the sign-up times followed names instead of their place in the list. The app's built-in browser
+pane renders no frames while hidden, so the motion was checked with Playwright, including reduced motion.
+
+Reviewing it, I pushed back on three things. The hero cover flickered: its colours come from the title, so every
+typed letter repainted it – it read as a bug, not as life. Now the demo colours the cover from the whole example
+topic, and real typing repaints it only after a 600 ms pause. The "How it works" screens were cropped into
+fragments; each step now shows the whole screen in a browser frame. And I did take one gradient after all:
+Lovable's heading endings that light up as they scroll in. Ours runs once through our own ember gradient
+(terracotta → ember → amber, one token) and settles back into the heading's colour, so it stays an accent on
+arrival, not decoration that sits there.
+
 ---
 
 ## Template for the next entries

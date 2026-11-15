@@ -100,6 +100,97 @@
   }
 }
 
+/*
+ * Landing hero light, in three layers (after Lovable): it fades in on load, drifts slowly, and – where the
+ * browser supports scroll-driven animation – sinks and fades as the page scrolls. Pure CSS, no script.
+ */
+.hero-glow-enter {
+  animation: hero-glow-enter 1.6s var(--primer-ease) both;
+}
+.hero-glow-drift {
+  animation: hero-glow-drift 40s ease-in-out infinite alternate;
+}
+.hero-glow-drift-reverse {
+  animation: hero-glow-drift 46s ease-in-out infinite alternate-reverse;
+}
+@keyframes hero-glow-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes hero-glow-drift {
+  to {
+    transform: translate(60px, -40px) scale(1.08);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  .hero-glow-scroll {
+    animation: hero-glow-scroll linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 900px;
+  }
+  @keyframes hero-glow-scroll {
+    to {
+      opacity: 0.35;
+      transform: translateY(160px);
+    }
+  }
+}
+
+/*
+ * Landing headlines (after Lovable): the end of a heading arrives as a band of ember gradient sweeping through
+ * the letters, then cools to the text colour. Sweep in views/landing sets data-sweep: "wait" keeps it hidden
+ * until it comes on screen, "on" plays it once. Reduced motion jumps to the last frame – plain text.
+ */
+.text-sweep[data-sweep] {
+  background-image: var(--primer-gradient-ember);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.text-sweep[data-sweep="wait"] {
+  opacity: 0;
+}
+.text-sweep[data-sweep="on"] {
+  animation: text-sweep 2.6s var(--primer-ease) both;
+}
+@keyframes text-sweep {
+  0% {
+    background-position: 100% 0;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    filter: blur(8px);
+  }
+  18% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  68% {
+    background-position: 0% 0;
+    -webkit-text-fill-color: transparent;
+  }
+  100% {
+    background-position: 0% 0;
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* Landing: sections rise in once as they come on screen (Reveal in views/landing). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms var(--primer-ease),
+    transform 700ms var(--primer-ease);
+}
+[data-reveal="shown"] {
+  opacity: 1;
+  transform: none;
+}
+
 body {
   background: var(--primer-bg-canvas);
   color: var(--primer-text-primary);

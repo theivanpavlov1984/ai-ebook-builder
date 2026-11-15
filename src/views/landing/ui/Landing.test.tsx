@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useBooks, decodeBook, sampleBooks } from "@/entities/book";
@@ -43,7 +43,9 @@ describe("Landing", () => {
   it("explains how it works in three steps", () => {
     render(<Landing />);
     const section = screen.getByRole("region", { name: /how it works/i });
-    expect(within(section).getAllByRole("listitem")).toHaveLength(3);
+    // Two layouts of the same three steps – stacked on phones, a scroll story on desktop; CSS shows one.
+    for (const list of within(section).getAllByRole("list"))
+      expect(within(list).getAllByRole("listitem")).toHaveLength(3);
   });
 
   it("lists what you get", () => {
@@ -103,6 +105,33 @@ describe("sampleBooks", () => {
     for (const b of books) {
       expect(b.chapters.length).toBeGreaterThanOrEqual(6);
       expect(b.chapters.every((c) => c.body.length > 0)).toBe(true);
+    }
+  });
+
+  it("plays example topics in the empty prompt until the visitor takes over", async () => {
+    // A browser that can tell what is on screen and doesn't ask for reduced motion.
+    const io = vi.fn(function (this: unknown, cb: IntersectionObserverCallback) {
+      return {
+        observe: (el: Element) => cb([{ isIntersecting: true, target: el } as IntersectionObserverEntry], {} as never),
+        disconnect: () => {},
+        unobserve: () => {},
+      };
+    });
+    vi.stubGlobal("IntersectionObserver", io);
+    vi.stubGlobal("matchMedia", (q: string) => ({
+      matches: false,
+      media: q,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    }));
+    try {
+      render(<Landing />);
+      await waitFor(() => expect(field().getAttribute("placeholder")).toMatch(/^Morn/), { timeout: 2000 });
+      await userEvent.click(field());
+      expect(field()).toHaveAttribute("placeholder", expect.stringMatching(/^What's your book about\?/));
+      expect(screen.getByRole("radio", { name: "Practical" })).toHaveAttribute("aria-checked", "true");
+    } finally {
+      vi.unstubAllGlobals();
     }
   });
 });

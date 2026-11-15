@@ -36,6 +36,9 @@
   --green-600: #2f7a4f;
   --amber-50: #fdf4e3;
   --amber-600: #a86a10;
+  /* Ember gradient stops: a hotter orange and a warm gold between the terracottas. */
+  --ember-400: #e2703a;
+  --amber-400: #e8a33d;
 
   /* ── Semantic ───────────────────────────────────────────── */
   --primer-bg-canvas: var(--paper-50);
@@ -57,6 +60,17 @@
   /* Soft light behind the landing hero – never behind text-heavy content. */
   --primer-glow-warm: var(--peach-200);
   --primer-glow-deep: var(--terracotta-300);
+  /* Headline sweep on the landing: deep terracotta through ember and gold and back, wider than the text. */
+  --primer-gradient-ember: linear-gradient(
+    100deg,
+    var(--terracotta-700) 0%,
+    var(--terracotta-500) 22%,
+    var(--ember-400) 38%,
+    var(--amber-400) 50%,
+    var(--ember-400) 62%,
+    var(--terracotta-500) 78%,
+    var(--terracotta-700) 100%
+  );
   --primer-focus-ring: color-mix(in srgb, var(--terracotta-500) 35%, transparent);
 
   --primer-danger: var(--red-600);

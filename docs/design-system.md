@@ -144,6 +144,19 @@ Scale (size / line height, px):
   `hero` – a soft terracotta-tinted lift for the landing prompt card.
 - **Motion:** `fast` 150 ms · `base` 250 ms · `slow` 400 ms, easing `cubic-bezier(.2,.8,.2,1)`.
   With `prefers-reduced-motion`, movement is removed and only opacity changes remain.
+- **Landing motion – rules.** Every moving thing shows the product; nothing moves just to decorate (no floating
+  books, pulsing buttons or shimmering gradients). Demos are drawn from the real components, not recorded;
+  they play only while on screen, pause off screen, and show their finished frame for reduced motion or when
+  the browser can't tell what is on screen. Nothing shifts the page as it plays – a streaming text reserves its
+  final height. Timelines live in `views/landing/model/demos.ts` as pure "time → frame" functions.
+- **Landing motion – inventory.** The empty prompt types example topics while the tone and the live cover follow
+  (stops for good on the first focus, letter or tone click); the hero light fades in, drifts on a 40 s loop and
+  sinks on scroll (CSS scroll-driven, where supported); "Watch your book being written" writes a book live;
+  "How it works" is a sticky scroll story on desktop; bento tiles show a rewrite being kept, cover styles
+  trading places and sign-ups arriving; sections rise in once; "~15" counts up; heading endings light up once
+  in the ember gradient (`--primer-gradient-ember`) as they scroll in, then settle into the heading colour.
+- **Cover in the hero stays calm.** The demo colours the live cover from the whole example topic; the visitor's
+  own typing repaints it only after a 600 ms pause, so the palette never changes letter by letter.
 
 ### 4.5 Layout
 

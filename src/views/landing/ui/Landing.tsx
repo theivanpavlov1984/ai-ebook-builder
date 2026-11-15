@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { CONTENT_ID, ChipGroup, SkipLink, Wordmark, focusRing } from "@/shared/ui";
-import { cn } from "@/shared/lib";
+import { cn, useInView, usePlayClock, usePrefersReducedMotion } from "@/shared/lib";
 import { ContinueCard, type Mood } from "@/entities/book";
 import { LivePreview } from "@/widgets/live-preview";
 import { StartForm } from "@/features/start-book";
+import { heroExamples, heroFrame } from "../model/demos";
+import { Sweep } from "./demos";
 import {
   BrandStrip,
   Examples,
@@ -42,14 +44,31 @@ export function Landing() {
   const [topic, setTopic] = useState("");
   const [mood, setMood] = useState<Mood>("practical");
 
+  // Until the visitor takes over, the empty prompt plays example topics and the tone and cover follow them.
+  // It stops for good on the first focus, typed letter or tone click; it pauses off screen.
+  const [tookOver, setTookOver] = useState(false);
+  const reduced = usePrefersReducedMotion();
+  const [heroRef, heroInView] = useInView<HTMLElement>({ threshold: 0.3 });
+  const demo = !tookOver && !topic && !reduced;
+  const frame = heroFrame(usePlayClock(demo && heroInView));
+  const shownMood = demo ? frame.mood : mood;
+  // The whole topic of the book the cover shows – the current example once its first letters are typed.
+  const current = heroExamples[frame.index].topic;
+  const coverTopic = current.toLowerCase().startsWith(frame.cover.toLowerCase()) ? current : frame.cover;
+
   return (
     <div className="relative min-h-screen bg-canvas">
       <SkipLink />
       {/* Soft warm light behind the hero – decoration only. */}
+      {/* It fades in, drifts slowly, and sinks away as the page scrolls (see hero-glow in globals.css). */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[1080px] overflow-hidden">
-        <div className="absolute top-36 -left-64 h-[820px] w-[640px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-warm),transparent)] opacity-85 blur-3xl" />
-        <div className="absolute top-4 -right-60 h-[860px] w-[680px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-deep),transparent)] opacity-60 blur-3xl" />
-        <div className="absolute top-[420px] left-1/2 h-[420px] w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent-subtle),transparent)] blur-2xl" />
+        <div className="hero-glow-scroll absolute inset-0">
+          <div className="hero-glow-enter absolute inset-0">
+            <div className="hero-glow-drift absolute top-36 -left-64 h-[820px] w-[640px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-warm),transparent)] opacity-85 blur-3xl" />
+            <div className="hero-glow-drift-reverse absolute top-4 -right-60 h-[860px] w-[680px] rounded-full bg-[radial-gradient(closest-side,var(--color-glow-deep),transparent)] opacity-60 blur-3xl" />
+            <div className="absolute top-[420px] left-1/2 h-[420px] w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent-subtle),transparent)] blur-2xl" />
+          </div>
+        </div>
       </div>
 
       {/* Phones and tablets get one column; from lg (1024 px) up the layout is the desktop design. */}
@@ -81,13 +100,17 @@ export function Landing() {
       </header>
 
       <main id={CONTENT_ID} tabIndex={-1} className="outline-hidden">
-        <section id="start" className="relative flex flex-col items-center px-5 pt-6 pb-14 text-center lg:px-8">
+        <section
+          ref={heroRef}
+          id="start"
+          className="relative flex flex-col items-center px-5 pt-6 pb-14 text-center lg:px-8"
+        >
           <p className="inline-flex min-h-8 items-center gap-2 rounded-full border border-default bg-surface/60 px-3.5 py-1 text-sm text-secondary">
             <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             Lead-magnet eBooks for coaches, experts and creators
           </p>
           <h1 className="mt-5 max-w-[780px] font-brand text-3xl font-bold tracking-tight lg:text-hero">
-            Turn what you know into a free eBook
+            Turn what you know into <Sweep immediate>a free eBook</Sweep>
           </h1>
           <p className="mt-5 max-w-[620px] text-md text-secondary lg:text-lg">
             Write one sentence. Primer writes the chapters, designs the cover and gives you a PDF and a sign-up page –
@@ -98,12 +121,24 @@ export function Landing() {
               label="Tone"
               options={tones}
               mode="single"
-              value={mood}
-              onChange={setMood}
+              value={shownMood}
+              onChange={(m) => {
+                setTookOver(true);
+                setMood(m);
+              }}
               appearance="segmented"
             />
           </div>
-          <StartForm value={topic} onValueChange={setTopic} mood={mood} />
+          <StartForm
+            value={topic}
+            onValueChange={(v) => {
+              setTookOver(true);
+              setTopic(v);
+            }}
+            mood={mood}
+            placeholder={demo ? frame.text : undefined}
+            onFieldFocus={() => setTookOver(true)}
+          />
           <div className="mt-4 w-full max-w-[760px] text-left empty:hidden">
             <ContinueCard />
           </div>
@@ -125,7 +160,12 @@ export function Landing() {
             </p>
           </div>
           <div className="mt-7">
-            <LivePreview topic={topic} mood={mood} />
+            <LivePreview
+              topic={demo ? frame.cover : topic}
+              mood={shownMood}
+              demo={demo}
+              designFrom={demo ? coverTopic : undefined}
+            />
           </div>
         </section>
 
