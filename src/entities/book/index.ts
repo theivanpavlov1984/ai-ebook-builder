@@ -41,6 +41,7 @@ export {
 export {
   alternativeChapter,
   ctaText,
+  type CtaText,
   draftOutline,
   shapeIdea,
   suggestAudiences,
@@ -55,8 +56,11 @@ export { isDemoTopic } from "./api/content/demo";
 
 // lib
 export { decodeBook, encodeBook, shareUrl } from "./lib/share";
+export { ctaLink } from "./lib/cta-link";
+export { chapterBlocks, type ChapterBlock } from "./lib/chapter-blocks";
 
 // ui
+export { ChapterText } from "./ui/ChapterText";
 export { BookCard } from "./ui/BookCard";
 export { BookPanel, bookDesign } from "./ui/BookPanel";
 export { ContinueCard } from "./ui/ContinueCard";

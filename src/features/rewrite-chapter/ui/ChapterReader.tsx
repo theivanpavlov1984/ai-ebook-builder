@@ -2,7 +2,7 @@
 
 import { Check, LoaderCircle, X } from "lucide-react";
 import { useState } from "react";
-import { useBooks, type Chapter } from "@/entities/book";
+import { ChapterText, useBooks, type Chapter } from "@/entities/book";
 import { Button, focusRing } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { changedParagraphs } from "../model/diff";
@@ -28,7 +28,7 @@ export function ChapterReader({ bookId, chapter }: { bookId: string; chapter: Ch
           {rewriting && <LoaderCircle aria-hidden className="size-4 animate-spin" />}
           {rewriting ? "Rewriting this chapter…" : ""}
         </p>
-        <Paragraphs body={chapter.body} className={cn("transition-opacity duration-200", rewriting && "opacity-40")} />
+        <ChapterText body={chapter.body} className={cn("transition-opacity duration-200", rewriting && "opacity-40")} />
       </div>
     );
   }
@@ -92,29 +92,7 @@ export function ChapterReader({ bookId, chapter }: { bookId: string; chapter: Ch
           </Button>
         </div>
       </section>
-      <Paragraphs body={showing} highlight={showOriginal ? undefined : changed} />
-    </div>
-  );
-}
-
-function Paragraphs({ body, highlight, className }: { body: string[]; highlight?: boolean[]; className?: string }) {
-  return (
-    <div className={cn("flex flex-col gap-4 font-display text-reader", className)}>
-      {body.map((p, i) =>
-        highlight?.[i] ? (
-          <p
-            key={i}
-            className="-mx-3 rounded-md border-l-2 border-accent bg-accent-subtle px-3 py-1 whitespace-pre-line"
-          >
-            <span className="sr-only">Changed: </span>
-            {p}
-          </p>
-        ) : (
-          <p key={i} className="whitespace-pre-line">
-            {p}
-          </p>
-        ),
-      )}
+      <ChapterText body={showing} highlight={showOriginal ? undefined : changed} />
     </div>
   );
 }

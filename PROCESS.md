@@ -179,6 +179,16 @@ as the brief says. Last, topics like "Negotiating your first salary as a junior 
 every title and chapter, so titles got cut off and the text read oddly. The parser now treats "as a …" like "for …":
 the subject goes into the titles, "junior designers" becomes the audience.
 
+**After a second look at getebook.ai.** I pasted fifteen screenshots of two getebook.ai runs into Doop and asked AI
+to put them in order and say what Primer lacks. Its ranked list: direct text editing, a clickable call to action,
+set-off boxes inside the book, clickable contents, a summary of what the AI understood, a page-by-page PDF preview.
+I took three for now. The last page gets a link and a brand, edited next to its preview; the link is clickable
+in the PDF and on the shared page, and an address that isn't one gets a hint instead of a dead link. Each chapter's
+"Try this today" list is set as a box, on screen and in the PDF, from one parser, so the two never disagree.
+The PDF contents now link to their chapters, and every chapter is a bookmark. AI first put the bookmark on the
+chapter heading, as the docs show; the installed react-pdf types only allow it on a page, so it moved there. We
+checked the file itself with PDFKit: six contents links to the right pages, six bookmarks, one external link.
+
 ---
 
 ## Template for the next entries

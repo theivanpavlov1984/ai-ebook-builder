@@ -145,7 +145,11 @@ Global **undo** for every change.
 - Full preview as book spreads.
 - A short check before sharing: author name set · facts reviewed ("AI can make mistakes – skim the
   chapters before you share") – a gentle checklist, not a blocker.
+- **Last page**, next to its preview: the call to action, an optional link and an optional brand. The link is
+  clickable in the PDF and on the shared page; an address that isn't one ("mysite") gets a plain hint, not a block.
 - **Download PDF** and **Share link** (copy). The book stays editable – finalize is not a dead end.
+- In the PDF the contents link to their chapters and each chapter is a bookmark; every chapter's closing
+  "Try this today" list is a box, as it is on screen.
 
 ### 7. Shared book (public page)
 
@@ -168,6 +172,7 @@ Every step has loading, empty, error and success states. Specific cases:
 | **The whole generation fails**        | Inputs and finished parts are kept; "Resume" continues from the last finished step |
 | Cover fails                           | Falls back to another art direction automatically                                  |
 | Photo suggestions fail                | "Photos didn't load" + "Try again"; the current cover stays as it is               |
+| Last-page link isn't a web address    | Hint under the field after leaving it; the PDF simply has no link until it's fixed |
 | No photos match the topic             | Says so and leads with calm, general photos; upload stays available                |
 | Own photo too small or not a photo    | Says what's wrong and what to pick instead (at least 1200 px tall, JPG/PNG/WebP)   |
 | Tab closed or refreshed               | State is saved locally; "Continue your book" banner on return                      |

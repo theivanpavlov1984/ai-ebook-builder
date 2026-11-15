@@ -3,9 +3,9 @@
 import { Check, CircleAlert, Download, ExternalLink, Link2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { bookDesign, Cover, ctaText, estimate, useBooks, type Book, useBook, shareUrl } from "@/entities/book";
+import { bookDesign, Cover, ctaLink, ctaText, estimate, useBooks, type Book, useBook, shareUrl } from "@/entities/book";
 import { AppShell, NotFound } from "@/widgets/layout";
-import { Button, focusRing, Stepper, useToast } from "@/shared/ui";
+import { Button, focusRing, Input, Stepper, useToast } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { downloadPdf } from "@/features/download-pdf";
 
@@ -110,9 +110,11 @@ function Final({ id, download }: { id: string; download: Download }) {
               )}
               <PagePreview label="Last page">
                 <p className="text-[8px] tracking-wider text-secondary uppercase">{cta.heading}</p>
-                <p className="mt-2 border-l-2 border-accent pl-2 font-display text-[10px] leading-snug whitespace-pre-line">
-                  {cta.body}
-                </p>
+                <div className="mt-2 flex flex-col gap-1.5 border-l-2 border-accent pl-2 font-display text-[10px] leading-snug">
+                  <p className="whitespace-pre-line">{cta.body}</p>
+                  {cta.link && <p className="break-all text-accent-strong underline">{cta.link.label}</p>}
+                  {cta.signature && <p>{cta.signature}</p>}
+                </div>
               </PagePreview>
             </div>
           </section>
@@ -150,6 +152,8 @@ function Final({ id, download }: { id: string; download: Download }) {
                 </li>
               </ul>
             </div>
+
+            <LastPage book={book} />
 
             <Button onClick={() => void onDownload()} loading={busy} icon={<Download aria-hidden className="size-4" />}>
               Download PDF
@@ -200,5 +204,51 @@ function Final({ id, download }: { id: string; download: Download }) {
         </div>
       </div>
     </AppShell>
+  );
+}
+
+/**
+ * The closing page of a lead magnet is where readers go next: the call to action, a link that is clickable
+ * in the PDF, and the brand it signs with. Edited here, next to its preview, like the cover in Review.
+ */
+function LastPage({ book }: { book: Book }) {
+  const updateBook = useBooks((s) => s.updateBook);
+  const [linkTouched, setLinkTouched] = useState(false);
+  const url = book.ctaUrl ?? "";
+  const link = ctaLink(url);
+  const badLink = linkTouched && url.trim() !== "" && !link;
+
+  return (
+    <div className="flex flex-col gap-4 border-t border-default pt-5">
+      <div>
+        <p className="text-sm font-semibold">Last page</p>
+        <p className="mt-1 text-sm text-secondary">
+          Where readers go after the book. The link is clickable in the PDF.
+        </p>
+      </div>
+      <Input
+        label="What should readers do next?"
+        placeholder="e.g. Book a free 20-minute call"
+        value={book.cta}
+        onChange={(e) => updateBook(book.id, { cta: e.target.value })}
+      />
+      <Input
+        label="Link (optional)"
+        placeholder="yoursite.com/call"
+        inputMode="url"
+        autoComplete="url"
+        value={url}
+        onChange={(e) => updateBook(book.id, { ctaUrl: e.target.value })}
+        onBlur={() => setLinkTouched(true)}
+        error={badLink ? "That doesn’t look like a web address. Try yoursite.com/call." : undefined}
+        hint={link ? `Opens ${link.label}` : undefined}
+      />
+      <Input
+        label="Brand or business (optional)"
+        placeholder="e.g. Lind Studio"
+        value={book.brand ?? ""}
+        onChange={(e) => updateBook(book.id, { brand: e.target.value })}
+      />
+    </div>
   );
 }

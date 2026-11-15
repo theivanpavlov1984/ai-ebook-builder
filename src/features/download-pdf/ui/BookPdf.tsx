@@ -1,5 +1,5 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import { bookDesign, coverScene, ctaText, type Book } from "@/entities/book";
+import { Document, Link, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import { bookDesign, chapterBlocks, coverScene, ctaText, type Book } from "@/entities/book";
 import { family, type PdfFonts } from "../lib/fonts";
 import { PdfCover } from "./PdfCover";
 
@@ -10,6 +10,7 @@ const INK = "#1F1B16";
 const MUTED = "#7A7166";
 const ACCENT = "#9A3B1C";
 const RULE = "#E7DFD3";
+const ACCENT_SUBTLE = "#F4DED3";
 
 function makeStyles(fonts: PdfFonts) {
   const display = family("display", fonts);
@@ -34,7 +35,28 @@ function makeStyles(fonts: PdfFonts) {
       fontSize: 8,
       color: MUTED,
     },
+    // "Try this today": the same box readers see on screen.
+    action: {
+      marginTop: 4,
+      marginBottom: 12,
+      paddingVertical: 12,
+      paddingHorizontal: 14,
+      backgroundColor: ACCENT_SUBTLE,
+      borderRadius: 6,
+    },
+    actionLabel: {
+      fontFamily: ui,
+      fontSize: 7.5,
+      letterSpacing: 1.2,
+      color: ACCENT,
+      textTransform: "uppercase",
+      marginBottom: 6,
+    },
+    actionRow: { flexDirection: "row", marginTop: 3 },
+    actionNum: { width: 14, fontFamily: ui, fontSize: 9, color: ACCENT, paddingTop: 1.5 },
+    actionText: { flex: 1, fontSize: 10.5, lineHeight: 1.45 },
     ctaBox: { marginTop: 8, padding: 20, borderLeftWidth: 2, borderLeftColor: ACCENT },
+    ctaLink: { fontFamily: ui, fontSize: 11, color: ACCENT, textDecoration: "underline", marginBottom: 12 },
     made: { position: "absolute", bottom: 40, left: 52, fontFamily: ui, fontSize: 8, color: MUTED },
   });
 }
@@ -63,27 +85,45 @@ export function BookPdf({ book, fonts, origin = "" }: { book: Book; fonts: PdfFo
       <Page size={PAGE} style={s.page}>
         <Text style={s.label}>Contents</Text>
         <Text style={s.h1}>{title}</Text>
+        {/* Each row links to its chapter, so the contents work like a menu in any PDF reader. */}
         {book.chapters.map((c, i) => (
-          <View key={c.id} style={s.tocRow} wrap={false}>
-            <Text style={s.tocNum}>{String(i + 1).padStart(2, "0")}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.tocTitle}>{c.title}</Text>
-              <Text style={s.tocSummary}>{c.summary}</Text>
+          <Link key={c.id} src={`#chapter-${i + 1}`} style={{ color: INK, textDecoration: "none" }}>
+            <View style={s.tocRow} wrap={false}>
+              <Text style={s.tocNum}>{String(i + 1).padStart(2, "0")}</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={s.tocTitle}>{c.title}</Text>
+                <Text style={s.tocSummary}>{c.summary}</Text>
+              </View>
             </View>
-          </View>
+          </Link>
         ))}
         {footer}
       </Page>
 
       {book.chapters.map((c, i) => (
-        <Page key={c.id} size={PAGE} style={s.page}>
-          <Text style={s.label}>Chapter {i + 1}</Text>
+        <Page key={c.id} size={PAGE} style={s.page} bookmark={c.title}>
+          {/* The contents link here; the page's bookmark lists the chapter in the PDF reader's sidebar. */}
+          <Text id={`chapter-${i + 1}`} style={s.label}>
+            Chapter {i + 1}
+          </Text>
           <Text style={s.h1}>{c.title}</Text>
-          {c.body.map((p, j) => (
-            <Text key={j} style={s.para}>
-              {p}
-            </Text>
-          ))}
+          {chapterBlocks(c.body).map((b) =>
+            b.kind === "action" ? (
+              <View key={b.from} style={s.action} wrap={false}>
+                <Text style={s.actionLabel}>{b.heading}</Text>
+                {b.steps.map((step, n) => (
+                  <View key={n} style={s.actionRow}>
+                    <Text style={s.actionNum}>{n + 1}</Text>
+                    <Text style={s.actionText}>{step}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <Text key={b.from} style={s.para}>
+                {b.text}
+              </Text>
+            ),
+          )}
           {footer}
         </Page>
       ))}
@@ -96,6 +136,12 @@ export function BookPdf({ book, fonts, origin = "" }: { book: Book; fonts: PdfFo
               {p}
             </Text>
           ))}
+          {cta.link && (
+            <Link src={cta.link.href} style={s.ctaLink}>
+              {cta.link.label}
+            </Link>
+          )}
+          {cta.signature && <Text style={{ ...s.para, fontSize: 13 }}>{cta.signature}</Text>}
         </View>
         <Text style={s.made}>Made with Primer</Text>
       </Page>

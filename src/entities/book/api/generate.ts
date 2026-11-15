@@ -5,6 +5,7 @@
 import { hashSeed, type Mood } from "../model/cover-design";
 import type { Book, Chapter } from "../model/types";
 import { demoAudiences, demoChapter, demoOutline, demoTitles, isDemoTopic } from "./content/demo";
+import { ctaLink } from "../lib/cta-link";
 import { audienceHints, audiencePool, exampleTopics, moodOpeners, slots, titlePools } from "./content/templates";
 
 type Brief = { topic: string; audience: string; mood: Mood };
@@ -208,12 +209,25 @@ export function writeChapter(
   return out;
 }
 
-export function ctaText(b: Pick<Book, "cta" | "author" | "title">): { heading: string; body: string } {
-  // Signed only when the author gave a name.
-  const signature = b.author.trim() ? `\n\n– ${b.author.trim()}` : "";
-  if (b.cta.trim()) return { heading: "What's next", body: `${b.cta.trim()}${signature}` };
+export type CtaText = {
+  heading: string;
+  body: string;
+  /** Where the last page sends readers, when the author gave a valid address. */
+  link?: { href: string; label: string };
+  /** "– Mara Lind, Lind Studio": only the parts the author filled in; none when both are empty. */
+  signature?: string;
+};
+
+/** The book's last page: the author's call to action (or a thank-you), its link and the signature. */
+export function ctaText(b: Pick<Book, "cta" | "author" | "title" | "ctaUrl" | "brand">): CtaText {
+  const name = [b.author.trim(), b.brand?.trim()].filter(Boolean).join(", ");
+  const signature = name ? `– ${name}` : undefined;
+  const link = ctaLink(b.ctaUrl);
+  if (b.cta.trim()) return { heading: "What's next", body: b.cta.trim(), link, signature };
   return {
     heading: "Thanks for reading",
-    body: `I hope ${b.title || "this guide"} gave you a clear first step. If it helped, I'd love to hear what you try first.${signature}`,
+    body: `I hope ${b.title || "this guide"} gave you a clear first step. If it helped, I'd love to hear what you try first.`,
+    link,
+    signature,
   };
 }

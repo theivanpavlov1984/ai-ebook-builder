@@ -3,7 +3,7 @@
 import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { bookDesign, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
+import { bookDesign, ChapterText, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { ProgressList, Button, focusRing, StepHeader } from "@/shared/ui";
 import { failuresFromUrl, setFailures } from "@/shared/api";
@@ -132,16 +132,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
           <>
             <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {shownIndex + 1}</p>
             <h2 className="mt-1 font-display text-xl font-medium">{shown.title}</h2>
-            <div className="mt-5 flex flex-col gap-4 font-display text-reader">
-              {paragraphs.map((p, i) => (
-                <p key={i} className="whitespace-pre-line">
-                  {p}
-                  {isStreaming && i === paragraphs.length - 1 && (
-                    <span aria-hidden className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-accent align-middle" />
-                  )}
-                </p>
-              ))}
-            </div>
+            <ChapterText body={paragraphs} caret={Boolean(isStreaming)} className="mt-5" />
           </>
         ) : (
           <div className="flex h-full min-h-[300px] flex-col items-center justify-center gap-2 text-center">

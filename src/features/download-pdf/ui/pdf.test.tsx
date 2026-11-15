@@ -65,6 +65,17 @@ describe("PDF export", () => {
     expect(spans[1].y - spans[0].y).toBeCloseTo(scene.title.lineGap);
   });
 
+  it("links the contents to the chapters, bookmarks them, and makes the last page's link clickable", async () => {
+    const buf = await renderToBuffer(
+      <BookPdf book={{ ...book, ctaUrl: "lindstudio.com/call", brand: "Lind Studio" }} fonts="standard" />,
+    );
+    const pdf = buf.toString("latin1");
+    expect(pdf).toContain("(https://lindstudio.com/call)");
+    // One internal link per contents row, each to its chapter's destination.
+    for (let i = 1; i <= book.chapters.length; i++) expect(pdf).toContain(`chapter-${i}`);
+    expect((pdf.match(/\/Outlines/g) ?? []).length).toBeGreaterThan(0);
+  });
+
   it("makes a safe file name", () => {
     expect(slugify("Design Systems for Small Teams!")).toBe("design-systems-for-small-teams");
     expect(slugify("  Ünïcode & Co.  ")).toBe("unicode-co");

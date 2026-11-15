@@ -187,9 +187,19 @@ describe("generation", () => {
     expect(ctaText({ cta: "", author: "Ivan Pavlov", title: "X" }).heading.length).toBeGreaterThan(0);
   });
 
-  it("ctaText signs the last page only when the author gave a name", () => {
-    expect(ctaText({ cta: "", author: "Mara Lind", title: "X" }).body).toMatch(/– Mara Lind$/);
-    expect(ctaText({ cta: "", author: "  ", title: "X" }).body).not.toMatch(/–/);
+  it("ctaText signs the last page with the author and brand the author gave, and nothing otherwise", () => {
+    expect(ctaText({ cta: "", author: "Mara Lind", title: "X" }).signature).toBe("– Mara Lind");
+    expect(ctaText({ cta: "", author: "Mara Lind", brand: "Lind Studio", title: "X" }).signature).toBe(
+      "– Mara Lind, Lind Studio",
+    );
+    expect(ctaText({ cta: "", author: "", brand: "Lind Studio", title: "X" }).signature).toBe("– Lind Studio");
+    expect(ctaText({ cta: "", author: "  ", title: "X" }).signature).toBeUndefined();
+  });
+
+  it("ctaText carries the link when the address is valid", () => {
+    const cta = ctaText({ cta: "Book a call", author: "", ctaUrl: "lindstudio.com/call", title: "X" });
+    expect(cta.link).toEqual({ href: "https://lindstudio.com/call", label: "lindstudio.com/call" });
+    expect(ctaText({ cta: "Book a call", author: "", ctaUrl: "not a link", title: "X" }).link).toBeUndefined();
   });
 });
 

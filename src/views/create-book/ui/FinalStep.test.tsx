@@ -108,4 +108,21 @@ describe("FinalStep", () => {
     wrap(<FinalStep id={id} download={vi.fn()} />);
     expect(st().books[id].finalizedAt).toBeGreaterThan(0);
   });
+
+  it("edits the last page: a call to action, a link that must be a web address, and a brand", async () => {
+    const id = newBook();
+    wrap(<FinalStep id={id} />);
+    const link = screen.getByLabelText(/^link/i);
+    await userEvent.type(link, "not a link");
+    await userEvent.tab();
+    expect(screen.getByText(/doesn.t look like a web address/i)).toBeInTheDocument();
+    await userEvent.clear(link);
+    await userEvent.type(link, "breadclub.com/join");
+    expect(screen.getByText("Opens breadclub.com/join")).toBeInTheDocument();
+    await userEvent.type(screen.getByLabelText(/brand or business/i), "Bread Club");
+    expect(st().books[id]).toMatchObject({ ctaUrl: "breadclub.com/join", brand: "Bread Club" });
+    // The last-page preview shows the link and the signature.
+    expect(screen.getAllByText("breadclub.com/join").length).toBeGreaterThan(0);
+    expect(screen.getByText("– Bread Club")).toBeInTheDocument();
+  });
 });

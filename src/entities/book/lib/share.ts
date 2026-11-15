@@ -14,6 +14,9 @@ type Packed = {
   a: string;
   m: Mood;
   cta: string;
+  /** The closing page's link and brand, when the author gave them. */
+  u?: string;
+  b?: string;
   topic: string;
   c: [ArtDirection, number];
   /** A photo from the library and its layout. An uploaded photo is too big for a link, so it isn't shared. */
@@ -32,6 +35,8 @@ export function encodeBook(book: Book): string {
     a: book.author,
     m: book.mood,
     cta: book.cta,
+    ...(book.ctaUrl?.trim() ? { u: book.ctaUrl.trim() } : {}),
+    ...(book.brand?.trim() ? { b: book.brand.trim() } : {}),
     topic: book.topic,
     c: [book.cover.direction, book.cover.variant],
     ...(book.cover.artwork === "photo" && book.cover.photo?.kind === "library"
@@ -53,6 +58,8 @@ function isPacked(x: unknown): x is Packed {
     isStr(p.s) &&
     isStr(p.a) &&
     isStr(p.cta) &&
+    (p.u === undefined || isStr(p.u)) &&
+    (p.b === undefined || isStr(p.b)) &&
     isStr(p.topic) &&
     MOODS.includes(p.m as Mood) &&
     Array.isArray(p.c) &&
@@ -90,6 +97,8 @@ export function decodeBook(hash: string): Book | null {
     audience: "",
     mood: p.m,
     cta: p.cta,
+    ...(p.u ? { ctaUrl: p.u } : {}),
+    ...(p.b ? { brand: p.b } : {}),
     title: p.t,
     subtitle: p.s,
     author: p.a,

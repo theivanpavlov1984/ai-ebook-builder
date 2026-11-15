@@ -31,4 +31,12 @@ describe("share links and photo covers", () => {
     expect(shared?.cover.artwork).toBeUndefined();
     expect(shared?.cover.direction).toBe(book.cover.direction);
   });
+
+  it("carry the last page's link and brand, and leave them out when empty", () => {
+    const shared = decodeBook(encodeBook({ ...book, ctaUrl: "lindstudio.com/call", brand: "Lind Studio" }));
+    expect(shared).toMatchObject({ ctaUrl: "lindstudio.com/call", brand: "Lind Studio" });
+    const plain = decodeBook(encodeBook({ ...book, ctaUrl: " ", brand: "" }));
+    expect(plain?.ctaUrl).toBeUndefined();
+    expect(plain?.brand).toBeUndefined();
+  });
 });

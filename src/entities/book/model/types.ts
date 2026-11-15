@@ -27,6 +27,10 @@ export type Book = {
   mood: Mood;
   /** What readers should do after reading – becomes the closing page. */
   cta: string;
+  /** The address the closing page links to ("mysite.com/call"), clickable in the PDF. */
+  ctaUrl?: string;
+  /** A business or brand name, signed on the closing page after the author's name. */
+  brand?: string;
   title: string;
   subtitle: string;
   author: string;

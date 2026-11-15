@@ -1,9 +1,9 @@
 "use client";
 
-import { Check, Download } from "lucide-react";
+import { Check, Download, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
-import { bookDesign, Cover, ctaText, type Book, decodeBook } from "@/entities/book";
+import { bookDesign, ChapterText, Cover, ctaText, type Book, decodeBook } from "@/entities/book";
 import { Wordmark, Button, focusRing, Input } from "@/shared/ui";
 import { simulate } from "@/shared/api";
 import { cn, useTabTitle } from "@/shared/lib";
@@ -188,13 +188,7 @@ function Reader({ book }: { book: Book }) {
         <section key={c.id} id={`ch-${i + 1}`} className="mt-14 first:mt-0">
           <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {i + 1}</p>
           <h2 className="mt-1 font-display text-xl font-medium md:text-2xl">{c.title}</h2>
-          <div className="mt-5 flex flex-col gap-4 font-display text-reader">
-            {c.body.map((p, j) => (
-              <p key={j} className="whitespace-pre-line">
-                {p}
-              </p>
-            ))}
-          </div>
+          <ChapterText body={c.body} className="mt-5" />
         </section>
       ))}
       <section className="mt-16 rounded-lg border-l-4 border-accent bg-surface p-5 md:p-8">
@@ -204,6 +198,20 @@ function Reader({ book }: { book: Book }) {
             {p}
           </p>
         ))}
+        {cta.link && (
+          <a
+            href={cta.link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "mt-4 inline-flex items-center gap-1.5 rounded-sm font-medium break-all text-accent-strong underline underline-offset-2",
+              focusRing,
+            )}
+          >
+            {cta.link.label} <ExternalLink aria-hidden className="size-4 shrink-0" />
+          </a>
+        )}
+        {cta.signature && <p className="mt-4 font-display text-lg">{cta.signature}</p>}
       </section>
     </article>
   );
