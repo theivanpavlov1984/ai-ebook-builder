@@ -29,15 +29,28 @@ const lowerFirst = (s: string) => (s ? s[0].toLowerCase() + s.slice(1) : s);
 const upperFirst = (s: string) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 const sentences = (p: string) => p.match(/[^.!?]+[.!?]+/g)?.map((s) => s.trim()) ?? [p];
 
+/** "junior designer" → "junior designers", "coach" → "coaches", "nanny" → "nannies". Naive, but enough here. */
+function plural(phrase: string): string {
+  if (/s$/i.test(phrase)) return phrase;
+  if (/(ch|sh|x|z)$/i.test(phrase)) return `${phrase}es`;
+  if (/[^aeiou]y$/i.test(phrase)) return `${phrase.slice(0, -1)}ies`;
+  return `${phrase}s`;
+}
+
 /**
  * Splits a topic into what it's about and who it's for:
- * "Sourdough baking for busy parents" → { subject: "sourdough baking", forWhom: "busy parents" }.
+ * "Sourdough baking for busy parents" → { subject: "sourdough baking", forWhom: "busy parents" };
+ * "Negotiating your first salary as a junior designer" → { subject: "negotiating your first salary",
+ * forWhom: "junior designers" }. Without the split the whole sentence would land in every title and chapter.
  */
 export function parseTopic(topic: string): { subject: string; forWhom: string } {
   const t = topic.trim().replace(/[.!?]+$/, "");
-  const m = t.match(/^(.+?)\s+for\s+(.+)$/i);
-  const [subject, forWhom] = m && m[1].split(/\s+/).length >= 2 ? [m[1], m[2]] : [t, ""];
-  return { subject, forWhom };
+  const longEnough = (s: string) => s.split(/\s+/).length >= 2;
+  const forMatch = t.match(/^(.+?)\s+for\s+(.+)$/i);
+  if (forMatch && longEnough(forMatch[1])) return { subject: forMatch[1], forWhom: forMatch[2] };
+  const asMatch = t.match(/^(.+?)\s+as\s+an?\s+(.+)$/i);
+  if (asMatch && longEnough(asMatch[1])) return { subject: asMatch[1], forWhom: plural(asMatch[2]) };
+  return { subject: t, forWhom: "" };
 }
 
 function fill(text: string, b: Pick<Brief, "topic" | "audience">): string {

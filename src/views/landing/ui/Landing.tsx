@@ -51,11 +51,12 @@ export function Landing() {
         <div className="absolute top-[420px] left-1/2 h-[420px] w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent-subtle),transparent)] blur-2xl" />
       </div>
 
-      <header className="relative mx-auto flex max-w-[1280px] items-center justify-between px-16 py-5">
+      {/* Phones and tablets get one column; from lg (1024 px) up the layout is the desktop design. */}
+      <header className="relative mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 lg:px-16 lg:py-5">
         <Link href="/" aria-label="Primer home" className={cn("rounded-sm", focusRing)}>
           <Wordmark className="text-2xl" />
         </Link>
-        <nav aria-label="Main" className="flex items-center gap-9">
+        <nav aria-label="Main" className="hidden items-center gap-9 lg:flex">
           <a href="#how" className={navLink}>
             How it works
           </a>
@@ -70,7 +71,7 @@ export function Landing() {
           href="#start"
           onClick={focusStart}
           className={cn(
-            "inline-flex h-10 items-center rounded-full bg-inverse px-5 text-base font-medium text-on-inverse hover:opacity-90",
+            "inline-flex h-10 items-center rounded-full bg-inverse px-4 text-base font-medium text-on-inverse hover:opacity-90 lg:px-5",
             focusRing,
           )}
         >
@@ -79,13 +80,15 @@ export function Landing() {
       </header>
 
       <main>
-        <section id="start" className="relative flex flex-col items-center px-8 pt-6 pb-14 text-center">
-          <p className="inline-flex h-8 items-center gap-2 rounded-full border border-default bg-surface/60 px-3.5 text-sm text-secondary">
+        <section id="start" className="relative flex flex-col items-center px-5 pt-6 pb-14 text-center lg:px-8">
+          <p className="inline-flex min-h-8 items-center gap-2 rounded-full border border-default bg-surface/60 px-3.5 py-1 text-sm text-secondary">
             <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             Lead-magnet eBooks for coaches, experts and creators
           </p>
-          <h1 className="mt-5 max-w-[780px] font-brand text-hero font-bold">Turn what you know into a free eBook</h1>
-          <p className="mt-5 max-w-[620px] text-lg text-secondary">
+          <h1 className="mt-5 max-w-[780px] font-brand text-3xl font-bold tracking-tight lg:text-hero">
+            Turn what you know into a free eBook
+          </h1>
+          <p className="mt-5 max-w-[620px] text-md text-secondary lg:text-lg">
             Write one sentence. Primer writes the chapters, designs the cover and gives you a PDF and a sign-up page –
             in about five minutes.
           </p>

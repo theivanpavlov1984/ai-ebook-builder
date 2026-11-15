@@ -14,7 +14,7 @@ export const slots: Slot[] = [
     titles: ["What {subject} can change for you", "The real case for {subject}", "Why now is a good time to start"],
     summary: "What you get from {subject}, and why the first step is smaller than it looks.",
     body: [
-      "Most people put off {subject} not because it's hard, but because it's unclear where to begin. Advice is everywhere, and much of it contradicts itself. This chapter cuts through that and shows what actually changes once you start.",
+      "It's easy to put off {subject} – not because it's hard, but because it's unclear where to begin. Advice is everywhere, and much of it contradicts itself. This chapter cuts through that and shows what actually changes once you start.",
       "For {audience}, the payoff is practical: less guesswork, fewer repeated mistakes and a result you can point to. You don't need special talent or a free month. You need a clear path and a little consistency.",
       "Think about the last time something felt harder than it should have. Usually the problem wasn't effort – it was the lack of a simple method. The same effort with a method behind it turns into progress instead of frustration.",
       "There's also a cost to waiting. Every month without a plan is a month of small, invisible losses – time, energy and confidence. Starting imperfectly beats waiting for the perfect moment, because the perfect moment rarely comes.",

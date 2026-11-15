@@ -39,7 +39,7 @@ type Option<T extends string> = { value: T; label: string };
 type Appearance = "chips" | "segmented";
 
 const segmentBase = cn(
-  "inline-flex h-8 items-center rounded-full border border-transparent px-3.5 text-sm whitespace-nowrap",
+  "inline-flex h-8 items-center rounded-full border border-transparent px-2.5 text-sm whitespace-nowrap sm:px-3.5",
   "transition-[background-color,color,box-shadow] duration-150 ease-standard",
   focusRing,
 );

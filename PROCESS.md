@@ -169,7 +169,15 @@ measured real PDF pages per chapter and fitted the estimate to them, so the outl
 file agree. Each chapter now ends with "Try this today", as chapter 1 promises. Audience suggestions follow the
 topic ("junior designers" for a salary-negotiation book, not "busy professionals"), the build screen stops saying
 "start reading as soon as the first chapter appears" once the book is done, and the reader's tab shows the book's
-title. Left for later: the reader's page and the landing page on phones.
+title.
+
+**Phones, then the topic parser.** The same walkthrough on a 375 px screen showed the reader's page – the one a
+lead magnet's readers open from an email or a message, usually on a phone – cut off on the right, and the landing
+page breaking apart. Both are now built phones-first: one column below 1024 px, the desktop design from there up
+(unchanged at 1280), checked at 375, 768 and 1280 with no sideways scrolling. The creation flow stays a desktop tool,
+as the brief says. Last, topics like "Negotiating your first salary as a junior designer" put the whole sentence into
+every title and chapter, so titles got cut off and the text read oddly. The parser now treats "as a …" like "for …":
+the subject goes into the titles, "junior designers" becomes the audience.
 
 ---
 

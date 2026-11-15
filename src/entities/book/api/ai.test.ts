@@ -67,6 +67,23 @@ describe("generation", () => {
     });
   });
 
+  it("reads 'as a …' as who it's for, in the plural", () => {
+    expect(parseTopic("Negotiating your first salary as a junior designer")).toEqual({
+      subject: "Negotiating your first salary",
+      forWhom: "junior designers",
+    });
+    expect(parseTopic("Finding clients as an independent coach").forWhom).toBe("independent coaches");
+    // A one-word subject is not split: "Life as a nanny" stays whole.
+    expect(parseTopic("Life as a nanny").subject).toBe("Life as a nanny");
+    const b = { ...custom, topic: "Negotiating your first salary as a junior designer", audience: "" };
+    expect(
+      draftOutline(b)
+        .map((c) => c.title)
+        .join(" "),
+    ).not.toMatch(/junior designer/i);
+    expect(suggestAudiences(b.topic)[0]).toBe("Junior designers");
+  });
+
   it("reads naturally: the subject goes into titles and text without the 'for whom' part", () => {
     const outline = draftOutline(custom);
     const text = JSON.stringify([outline, suggestTitles(custom).slice(1)]);

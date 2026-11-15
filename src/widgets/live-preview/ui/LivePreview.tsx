@@ -43,7 +43,8 @@ export function LivePreview({ topic, mood = "practical" }: { topic: string; mood
   const design = getCoverDesign({ title, mood, direction: directionsForMood(mood)[0] });
 
   const shelf = (from: number, to: number) => (
-    <div aria-hidden className="flex items-end gap-6">
+    // The example books flank the visitor's cover on wide screens; a phone shows only the visitor's book.
+    <div aria-hidden className="hidden items-end gap-6 lg:flex">
       {others.slice(from, to).map((o, i) => (
         <Cover
           key={o.key}

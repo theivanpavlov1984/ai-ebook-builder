@@ -91,26 +91,27 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
   }
 
   return (
-    <main className="mx-auto max-w-[1040px] px-8 py-14">
-      <section className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-14">
+    <main className="mx-auto max-w-[1040px] px-5 py-8 md:px-8 md:py-14">
+      {/* Phones first: readers usually open a shared link from a message or an email on their phone. */}
+      <section className="grid items-center gap-8 md:grid-cols-[auto_minmax(0,1fr)] md:gap-14">
         <Cover
           design={bookDesign(book)}
           title={book.title}
           subtitle={book.subtitle}
           author={book.author}
           size="none"
-          className="w-72"
+          className="mx-auto w-44 md:w-72"
         />
         <div>
           <p className="text-xs font-medium tracking-wider text-accent-strong uppercase">Free eBook</p>
-          <h1 className="mt-2 font-display text-3xl font-medium">{book.title}</h1>
+          <h1 className="mt-2 font-display text-2xl font-medium md:text-3xl">{book.title}</h1>
           {pitch && <p className="mt-3 text-md text-secondary">{pitch}</p>}
           {book.author.trim() && <p className="mt-2 text-sm text-secondary">by {book.author}</p>}
 
           {status === "unlocked" ? (
             <div
               role="status"
-              className="mt-8 flex flex-col items-start gap-4 rounded-lg border border-default bg-surface p-5"
+              className="mt-6 flex flex-col items-start gap-4 rounded-lg border border-default bg-surface p-5 md:mt-8"
             >
               <p className="flex items-center gap-2 font-medium">
                 <Check aria-hidden className="size-4 text-success" /> It&apos;s yours – start reading below, or take the
@@ -125,8 +126,8 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
               </Button>
             </div>
           ) : (
-            <form onSubmit={submit} className="mt-8 flex flex-col gap-3" noValidate>
-              <div className="flex items-start gap-3">
+            <form onSubmit={submit} className="mt-6 flex flex-col gap-3 md:mt-8" noValidate>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
                 <div className="flex-1">
                   <Input
                     label="Email"
@@ -141,7 +142,7 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
                     error={error}
                   />
                 </div>
-                <Button type="submit" loading={status === "sending"} className="mt-[26px]">
+                <Button type="submit" loading={status === "sending"} className="w-full sm:mt-[26px] sm:w-auto">
                   Get the eBook
                 </Button>
               </div>
@@ -153,9 +154,9 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
         </div>
       </section>
 
-      <section className="mt-16 border-t border-default pt-10">
+      <section className="mt-12 border-t border-default pt-8 md:mt-16 md:pt-10">
         <h2 className="font-display text-xl font-medium">What you’ll learn</h2>
-        <ol className="mt-5 grid grid-cols-2 gap-x-10 gap-y-5">
+        <ol className="mt-5 grid gap-x-10 gap-y-5 md:grid-cols-2">
           {book.chapters.map((c, i) => (
             <li key={c.id} className="flex gap-3">
               <span className="font-display text-lg text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
@@ -182,11 +183,11 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
 function Reader({ book }: { book: Book }) {
   const cta = ctaText(book);
   return (
-    <article className="mx-auto mt-16 max-w-[680px]">
+    <article className="mx-auto mt-12 max-w-[680px] md:mt-16">
       {book.chapters.map((c, i) => (
         <section key={c.id} id={`ch-${i + 1}`} className="mt-14 first:mt-0">
           <p className="text-xs font-medium tracking-wider text-secondary uppercase">Chapter {i + 1}</p>
-          <h2 className="mt-1 font-display text-2xl font-medium">{c.title}</h2>
+          <h2 className="mt-1 font-display text-xl font-medium md:text-2xl">{c.title}</h2>
           <div className="mt-5 flex flex-col gap-4 font-display text-reader">
             {c.body.map((p, j) => (
               <p key={j} className="whitespace-pre-line">
@@ -196,7 +197,7 @@ function Reader({ book }: { book: Book }) {
           </div>
         </section>
       ))}
-      <section className="mt-16 rounded-lg border-l-4 border-accent bg-surface p-8">
+      <section className="mt-16 rounded-lg border-l-4 border-accent bg-surface p-5 md:p-8">
         <p className="text-xs font-medium tracking-wider text-secondary uppercase">{cta.heading}</p>
         {cta.body.split("\n\n").map((p, i) => (
           <p key={i} className="mt-3 font-display text-lg">

@@ -10,7 +10,7 @@ const kind = ["Practical guide", "Calm playbook", "Bold handbook"];
 /** Real example books – each opens the page its readers would see. */
 export function ExampleShelf() {
   return (
-    <section aria-label="Example books" className="flex items-end gap-5">
+    <section aria-label="Example books" className="flex items-end gap-3 sm:gap-5">
       {books.map((b, i) => (
         <Link
           key={b.id}
@@ -23,7 +23,7 @@ export function ExampleShelf() {
             title={b.title}
             author={b.author}
             size="none"
-            className="w-40 transition-transform duration-250 ease-standard group-hover:-translate-y-1"
+            className="w-24 transition-transform duration-250 ease-standard group-hover:-translate-y-1 sm:w-32 lg:w-40"
           />
           <span className="flex items-center gap-1 text-xs text-secondary group-hover:text-accent-strong">
             {kind[i]}, peek inside <ArrowUpRight aria-hidden className="size-3" />

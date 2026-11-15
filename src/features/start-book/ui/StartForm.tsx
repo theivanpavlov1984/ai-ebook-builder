@@ -83,7 +83,8 @@ export function StartForm({
               e.currentTarget.form?.requestSubmit();
             }
           }}
-          className="block w-full resize-none bg-transparent text-lg text-primary outline-none placeholder:text-secondary"
+          /* Three lines on phones, so the example in the placeholder fits without a scrollbar. */
+          className="block h-21 w-full resize-none bg-transparent text-lg text-primary outline-none placeholder:text-secondary sm:h-auto"
         />
         <div className="mt-2 flex items-center justify-between gap-4">
           <Button
@@ -99,7 +100,7 @@ export function StartForm({
             Help me shape this idea
           </Button>
           <div className="flex items-center gap-3">
-            <span id={hintId} className="text-sm text-secondary">
+            <span id={hintId} className="hidden text-sm text-secondary sm:inline">
               Free · no sign-up
             </span>
             <button

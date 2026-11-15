@@ -8,15 +8,19 @@ import { focusRing, Wordmark } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { Eyebrow, ScreenCrop, SectionTitle } from "./parts";
 
-const box = "mx-auto w-full max-w-[1200px] px-8";
+/** Section container. Below lg (1024 px) sections stack into one column; from lg up they are the desktop design. */
+const box = "mx-auto w-full max-w-[1200px] px-5 lg:px-8";
 
 /* ── Brand strip ─────────────────────────────────────────────────────────────
  * Fictional brands drawn as type, not real companies: a real logo here would claim a customer we don't have. */
 export function BrandStrip() {
   return (
-    <section aria-label="Who uses Primer" className="relative pt-2 pb-14 text-center">
+    <section aria-label="Who uses Primer" className="relative px-5 pt-2 pb-14 text-center">
       <p className="text-sm text-secondary">Used by coaches, studios and creators</p>
-      <div aria-hidden className="mt-6 flex flex-wrap items-center justify-center gap-x-13 gap-y-4 text-secondary">
+      <div
+        aria-hidden
+        className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-secondary lg:gap-x-13"
+      >
         <span className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2l7 9h-4l5 7H4l5-7H5z" />
@@ -70,12 +74,12 @@ function Dot() {
 
 export function WatchSection() {
   return (
-    <section aria-labelledby="watch" className="border-y border-default bg-surface py-28">
-      <div className={cn(box, "grid grid-cols-[400px_minmax(0,1fr)] items-center gap-18")}>
+    <section aria-labelledby="watch" className="border-y border-default bg-surface py-16 lg:py-28">
+      <div className={cn(box, "grid items-center gap-10 lg:grid-cols-[400px_minmax(0,1fr)] lg:gap-18")}>
         <div>
           <Eyebrow>About a minute</Eyebrow>
           <SectionTitle id="watch">Watch your book being written</SectionTitle>
-          <p className="mt-5 text-lg text-secondary">
+          <p className="mt-5 text-md text-secondary lg:text-lg">
             Chapters appear as they’re written. Start reading chapter one while the rest is on its way – no spinner, no
             blank page.
           </p>
@@ -153,7 +157,7 @@ function ShelfRow({ covers, direction }: { covers: string[]; direction: "left" |
           alt=""
           width={150}
           height={225}
-          className="h-[225px] w-[150px] rounded-l-[4px] rounded-r-sm object-cover shadow-book"
+          className="h-[180px] w-[120px] rounded-l-[4px] rounded-r-sm object-cover shadow-book lg:h-[225px] lg:w-[150px]"
         />
       ))}
     </div>
@@ -162,11 +166,11 @@ function ShelfRow({ covers, direction }: { covers: string[]; direction: "left" |
 
 export function IdeasShelf() {
   return (
-    <section aria-labelledby="ideas" className="overflow-hidden pt-26 pb-28 text-center">
+    <section aria-labelledby="ideas" className="overflow-hidden pt-16 pb-16 text-center lg:pt-26 lg:pb-28">
       <div className={box}>
         <Eyebrow>Any topic you know</Eyebrow>
         <SectionTitle id="ideas">What will yours be about?</SectionTitle>
-        <p className="mx-auto mt-4 max-w-[560px] text-lg text-secondary">
+        <p className="mx-auto mt-4 max-w-[560px] text-md text-secondary lg:text-lg">
           Recipes, travel notes, design, gardening, money – if you can explain it to a friend, it can be a book.
         </p>
       </div>
@@ -199,18 +203,21 @@ const steps: { title: string; text: string; shot: ReactNode }[] = [
 
 export function HowItWorks() {
   return (
-    <section aria-label="How it works" className="border-t border-default py-28">
+    <section aria-label="How it works" className="border-t border-default py-16 lg:py-28">
       <div className={box}>
         <Eyebrow>How it works</Eyebrow>
-        <div className="mt-3.5 flex items-end justify-between gap-12">
-          <h2 id="how" className="max-w-[640px] font-brand text-3xl leading-[1.05] font-bold tracking-tight">
+        <div className="mt-3.5 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+          <h2
+            id="how"
+            className="max-w-[640px] font-brand text-2xl leading-[1.05] font-bold tracking-tight lg:text-3xl"
+          >
             From one sentence to a page that collects emails
           </h2>
           <p className="max-w-[380px] text-md text-secondary">
             Three steps, about five minutes. Every step can be changed later – nothing is final until you share.
           </p>
         </div>
-        <ol className="mt-14 grid grid-cols-3 gap-6">
+        <ol className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-3 lg:gap-6">
           {steps.map((s, i) => (
             <li key={s.title} className="flex min-w-0 flex-col gap-4.5">
               <div aria-hidden className="h-[250px] overflow-hidden rounded-lg border border-default bg-subtle">
@@ -237,7 +244,7 @@ const shelfBooks = sampleBooks();
 
 function ShotTile({ title, text, children }: { title: string; text: string; children: ReactNode }) {
   return (
-    <div className={cn(tile, "flex flex-col gap-4.5 px-7 pt-7")}>
+    <div className={cn(tile, "flex h-[340px] flex-col gap-4.5 px-6 pt-6 lg:h-auto lg:px-7 lg:pt-7")}>
       <div>
         <p className="font-brand text-lg font-bold tracking-tight">{title}</p>
         <p className="mt-2 text-base text-secondary">{text}</p>
@@ -251,12 +258,17 @@ function ShotTile({ title, text, children }: { title: string; text: string; chil
 
 export function WhatYouGet() {
   return (
-    <section aria-label="What you get" className="pt-6 pb-26">
+    <section aria-label="What you get" className="pt-6 pb-16 lg:pb-26">
       <div className={box}>
         <Eyebrow>What you get</Eyebrow>
         <SectionTitle id="gets">A finished lead magnet, not a draft</SectionTitle>
-        <div className="mt-12 grid auto-rows-[360px] grid-cols-3 gap-5">
-          <div className={cn(tile, "col-span-2 grid grid-cols-[250px_minmax(0,1fr)] items-center gap-4 p-8")}>
+        <div className="mt-10 grid gap-5 lg:mt-12 lg:auto-rows-[360px] lg:grid-cols-3">
+          <div
+            className={cn(
+              tile,
+              "grid items-center gap-8 p-6 lg:col-span-2 lg:grid-cols-[250px_minmax(0,1fr)] lg:gap-4 lg:p-8",
+            )}
+          >
             <div>
               <p className="font-brand text-xl font-bold tracking-tight">A cover made for your topic</p>
               <p className="mt-3 text-md text-secondary">
@@ -273,7 +285,7 @@ export function WhatYouGet() {
                   author={b.author}
                   size="none"
                   className={cn(
-                    "w-[140px] shrink-0",
+                    "w-[88px] shrink-0 sm:w-[120px] lg:w-[140px]",
                     i === 0 && "-rotate-3",
                     i === 1 && "-translate-y-2.5",
                     i === 2 && "rotate-3",
@@ -283,7 +295,7 @@ export function WhatYouGet() {
             </div>
           </div>
 
-          <div className={cn(tile, "flex flex-col justify-between bg-accent-subtle p-8")}>
+          <div className={cn(tile, "flex min-h-[220px] flex-col justify-between gap-6 bg-accent-subtle p-6 lg:p-8")}>
             <p className="font-brand text-xl font-bold tracking-tight">Short enough that people finish it</p>
             <div>
               <p className="font-brand text-[96px] leading-[0.9] font-extrabold tracking-[-0.04em] text-accent-strong">
@@ -323,12 +335,17 @@ const tools = [
 
 function ToolsStrip() {
   return (
-    <div className={cn(tile, "mt-5 flex items-center justify-between gap-10 px-10 py-7")}>
+    <div
+      className={cn(
+        tile,
+        "mt-5 flex flex-col items-start gap-5 px-6 py-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-7",
+      )}
+    >
       <div className="max-w-[300px]">
         <p className="font-brand text-lg font-bold tracking-tight">Works wherever a PDF and a link do</p>
         <p className="mt-1.5 text-base text-secondary">Sell it, send it to your list, or post the link.</p>
       </div>
-      <ul className="flex items-center gap-9 text-md font-semibold text-secondary">
+      <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-md font-semibold text-secondary lg:gap-9">
         {tools.map((t) => (
           <li key={t.name} className="inline-flex items-center gap-2">
             {/* Monochrome via a mask, so the logo takes the token colour. */}
@@ -348,12 +365,12 @@ function ToolsStrip() {
 /* ── Examples ────────────────────────────────────────────────────────────── */
 export function Examples() {
   return (
-    <section aria-labelledby="examples" className="border-t border-default bg-subtle py-26">
-      <div className={cn(box, "grid grid-cols-[380px_minmax(0,1fr)] items-center gap-16")}>
+    <section aria-labelledby="examples" className="border-t border-default bg-subtle py-16 lg:py-26">
+      <div className={cn(box, "grid items-center gap-10 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-16")}>
         <div>
           <Eyebrow>Examples</Eyebrow>
           <SectionTitle id="examples">Open a real one</SectionTitle>
-          <p className="mt-4.5 text-lg text-secondary">
+          <p className="mt-4.5 text-md text-secondary lg:text-lg">
             Each book opens the page its readers would see – the email form and all.
           </p>
         </div>
@@ -410,21 +427,21 @@ const reviews = [
 
 export function Reviews() {
   return (
-    <section aria-labelledby="reviews" className="py-28">
+    <section aria-labelledby="reviews" className="py-16 lg:py-28">
       <div className={box}>
-        <div className="flex items-end justify-between gap-12">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <div>
             <Eyebrow>What people say</Eyebrow>
             <SectionTitle id="reviews" className="max-w-[620px]">
               Finished books, not abandoned drafts
             </SectionTitle>
           </div>
-          <p className="max-w-[280px] text-right text-sm text-secondary">Sample reviews – Primer is a prototype.</p>
+          <p className="max-w-[280px] text-sm text-secondary lg:text-right">Sample reviews – Primer is a prototype.</p>
         </div>
-        <ul className="mt-12 grid grid-cols-3 gap-5">
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
           {reviews.map((r) => (
             <li key={r.name}>
-              <figure className="flex h-full flex-col justify-between gap-6 rounded-[20px] border border-default bg-surface p-7">
+              <figure className="flex h-full flex-col justify-between gap-6 rounded-[20px] border border-default bg-surface p-6 lg:p-7">
                 <blockquote className="text-md leading-relaxed">“{r.quote}”</blockquote>
                 <figcaption className="flex items-center gap-3">
                   <Image
@@ -479,8 +496,8 @@ const questions: { q: string; a: string }[] = [
 
 export function Questions() {
   return (
-    <section aria-labelledby="questions" className="border-t border-default py-28">
-      <div className={cn(box, "grid grid-cols-[1fr_1.5fr] gap-16")}>
+    <section aria-labelledby="questions" className="border-t border-default py-16 lg:py-28">
+      <div className={cn(box, "grid gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-16")}>
         <div>
           <Eyebrow>Questions</Eyebrow>
           <SectionTitle id="questions">Before you ask</SectionTitle>
@@ -493,7 +510,7 @@ export function Questions() {
             <details key={q} className="group rounded-[20px] border border-default bg-surface">
               <summary
                 className={cn(
-                  "flex cursor-pointer list-none items-center justify-between gap-6 rounded-[20px] px-6 py-5 text-md font-semibold [&::-webkit-details-marker]:hidden",
+                  "flex cursor-pointer list-none items-center justify-between gap-4 rounded-[20px] px-5 py-4.5 text-md font-semibold lg:gap-6 lg:px-6 lg:py-5 [&::-webkit-details-marker]:hidden",
                   focusRing,
                 )}
               >
@@ -503,7 +520,7 @@ export function Questions() {
                   className="size-4.5 shrink-0 text-secondary transition-transform group-open:rotate-45"
                 />
               </summary>
-              <p className="-mt-1 px-6 pb-5 text-md leading-relaxed text-secondary">{a}</p>
+              <p className="-mt-1 px-5 pb-5 text-md leading-relaxed text-secondary lg:px-6">{a}</p>
             </details>
           ))}
         </div>
@@ -515,18 +532,23 @@ export function Questions() {
 /* ── Closing call to action ──────────────────────────────────────────────── */
 export function FinalCta({ children }: { children: ReactNode }) {
   return (
-    <section aria-labelledby="final" className="relative overflow-hidden bg-inverse py-30 text-center text-on-inverse">
+    <section
+      aria-labelledby="final"
+      className="relative overflow-hidden bg-inverse py-20 text-center text-on-inverse lg:py-30"
+    >
       <div
         aria-hidden
         className="absolute top-3/5 left-1/2 h-[560px] w-[1100px] -translate-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent),transparent)] opacity-45 blur-2xl"
       />
-      <div className="relative flex flex-col items-center px-8">
-        <h2 id="final" className="font-brand text-[60px] leading-[1.02] font-bold tracking-tight">
+      <div className="relative flex flex-col items-center px-5 lg:px-8">
+        <h2
+          id="final"
+          className="font-brand text-2xl leading-[1.05] font-bold tracking-tight lg:text-[60px] lg:leading-[1.02]"
+        >
           You already know enough
-          <br />
-          to fill a book
+          <br className="hidden sm:block" /> to fill a book
         </h2>
-        <p className="mt-4.5 text-lg opacity-75">It takes about five minutes to prove it.</p>
+        <p className="mt-4.5 text-md opacity-75 lg:text-lg">It takes about five minutes to prove it.</p>
         <div className="mt-10 w-full max-w-[680px] text-primary">{children}</div>
       </div>
     </section>
@@ -538,7 +560,7 @@ const footLink = cn("rounded-sm text-base text-secondary hover:text-primary", fo
 
 export function Footer() {
   return (
-    <footer className="flex items-center justify-between gap-8 border-t border-default px-16 py-10">
+    <footer className="flex flex-col items-center gap-5 border-t border-default px-5 py-10 text-center lg:flex-row lg:justify-between lg:gap-8 lg:px-16 lg:text-left">
       <Wordmark className="text-xl" />
       <p className="text-base text-secondary">A prototype: the AI is simulated, your books stay in your browser.</p>
       <nav aria-label="Footer" className="flex gap-7">

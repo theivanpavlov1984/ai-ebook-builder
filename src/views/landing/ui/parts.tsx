@@ -10,7 +10,10 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 /** Section headline: the interface face, large. */
 export function SectionTitle({ id, children, className }: { id?: string; children: ReactNode; className?: string }) {
   return (
-    <h2 id={id} className={cn("mt-3.5 font-brand text-3xl leading-[1.05] font-bold tracking-tight", className)}>
+    <h2
+      id={id}
+      className={cn("mt-3.5 font-brand text-2xl leading-[1.05] font-bold tracking-tight lg:text-3xl", className)}
+    >
       {children}
     </h2>
   );
