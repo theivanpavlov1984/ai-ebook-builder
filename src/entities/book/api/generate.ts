@@ -5,7 +5,7 @@
 import { hashSeed, type Mood } from "../model/cover-design";
 import type { Book, Chapter } from "../model/types";
 import { demoAudiences, demoChapter, demoOutline, demoTitles, isDemoTopic } from "./content/demo";
-import { audiencePool, exampleTopics, moodOpeners, slots, titlePools } from "./content/templates";
+import { audienceHints, audiencePool, exampleTopics, moodOpeners, slots, titlePools } from "./content/templates";
 
 type Brief = { topic: string; audience: string; mood: Mood };
 export type RewriteDirection = "simpler" | "detailed" | "shorter" | "practical" | "warmer";
@@ -67,14 +67,24 @@ export function shapeIdea(roughIdea: string): string[] {
   ];
 }
 
+/**
+ * Three readers for the topic: the one the topic names ("… for busy parents"), then readers matched by keyword,
+ * then the general pool – so "Negotiating your first salary as a junior designer" suggests junior designers and
+ * graduates, not "Busy professionals".
+ */
 export function suggestAudiences(topic: string): string[] {
   if (isDemoTopic(topic)) return [...demoAudiences];
-  const seed = hashSeed(topic.toLowerCase());
   const out: string[] = [];
-  for (let i = 0; out.length < 3; i++) {
-    const a = pick(audiencePool, seed, i * 3);
-    if (!out.includes(a)) out.push(a);
-  }
+  const add = (a: string) => {
+    if (a && out.length < 3 && !out.some((o) => o.toLowerCase() === a.toLowerCase())) out.push(a);
+  };
+  const { forWhom } = parseTopic(topic);
+  add(upperFirst(forWhom));
+  const topicWords = topic.toLowerCase().match(/[a-z]+/g) ?? [];
+  for (const hint of audienceHints)
+    if (hint.stems.some((stem) => topicWords.some((w) => w.startsWith(stem)))) hint.audiences.forEach(add);
+  const seed = hashSeed(topic.toLowerCase());
+  for (let i = 0; out.length < 3; i++) add(pick(audiencePool, seed, i * 3));
   return out;
 }
 
@@ -117,15 +127,20 @@ function slotFor(b: Brief, chapter: Pick<Chapter, "title">): number {
   return i >= 0 ? i : hashSeed(chapter.title) % slots.length;
 }
 
-function baseParagraphs(b: Brief, chapter: Pick<Chapter, "title" | "summary">): string[] {
+/**
+ * A chapter is its prose plus a short to-do list at the end ("Try this today"), so every chapter ends with
+ * something the reader can do the same day – as chapter 1 promises. The hand-written demo chapters are prose only.
+ */
+function baseChapter(b: Brief, chapter: Pick<Chapter, "title" | "summary">): { prose: string[]; action: string[] } {
   if (isDemoTopic(b.topic)) {
     const i = demoOutline.findIndex((c) => c.title === chapter.title);
     const demo = i >= 0 ? demoChapter(i) : [];
-    if (demo.length) return demo;
+    if (demo.length) return { prose: demo, action: [] };
   }
   const slot = slots[slotFor(b, chapter)];
   const [first, ...rest] = slot.body.map((p) => fill(p, b));
-  return [`${moodOpeners[b.mood]} ${first}`, ...rest];
+  const steps = slot.steps.map((step, i) => `${i + 1}. ${fill(step, b)}`).join("\n");
+  return { prose: [`${moodOpeners[b.mood]} ${first}`, ...rest], action: ["Try this today:", steps] };
 }
 
 export function writeChapter(
@@ -133,31 +148,39 @@ export function writeChapter(
   chapter: Pick<Chapter, "title" | "summary">,
   opts?: { direction?: RewriteDirection; instruction?: string },
 ): string[] {
-  const base = baseParagraphs(b, chapter);
+  const { prose, action } = baseChapter(b, chapter);
   const slot = slots[slotFor(b, chapter)];
-  let out = base;
+  let out = [...prose, ...action];
 
   switch (opts?.direction) {
     case "shorter":
       out = [
-        sentences(base[0]).slice(0, 2).join(" "),
-        sentences(base[Math.floor(base.length / 2)])[0],
-        sentences(base[base.length - 1])[0],
+        sentences(prose[0]).slice(0, 2).join(" "),
+        sentences(prose[Math.floor(prose.length / 2)])[0],
+        sentences(prose[prose.length - 1])[0],
       ];
       break;
     case "simpler":
-      out = base.map((p, i) => (i === 0 ? "In short: " : "") + sentences(p).slice(0, 2).join(" "));
+      out = [...prose.map((p, i) => (i === 0 ? "In short: " : "") + sentences(p).slice(0, 2).join(" ")), ...action];
       break;
     case "detailed":
-      out = [...base.slice(0, -1), ...slot.deeper.map((p) => fill(p, b)), base[base.length - 1]];
+      out = [...prose.slice(0, -1), ...slot.deeper.map((p) => fill(p, b)), prose[prose.length - 1], ...action];
       break;
     case "practical":
-      out = [...base, "Try this:", slot.steps.map((s, i) => `${i + 1}. ${fill(s, b)}`).join("\n")];
+      // Less reasoning, more doing: the opening, the to-do list, and how to make it stick.
+      out = [
+        prose[0],
+        ...(action.length
+          ? action
+          : ["Try this today:", slot.steps.map((st, i) => `${i + 1}. ${fill(st, b)}`).join("\n")]),
+        "Give each step a time and a place in your calendar, and tick it off when it's done. A finished list is the best motivation there is.",
+        prose[prose.length - 1],
+      ];
       break;
     case "warmer":
       out = [
         `If this feels like a lot, that's completely normal – most ${lowerFirst(b.audience || "readers")} feel the same at first. Go one step at a time.`,
-        ...base,
+        ...out,
       ];
       break;
   }
@@ -173,9 +196,11 @@ export function writeChapter(
 }
 
 export function ctaText(b: Pick<Book, "cta" | "author" | "title">): { heading: string; body: string } {
-  if (b.cta.trim()) return { heading: "What's next", body: `${b.cta.trim()}\n\n– ${b.author}` };
+  // Signed only when the author gave a name.
+  const signature = b.author.trim() ? `\n\n– ${b.author.trim()}` : "";
+  if (b.cta.trim()) return { heading: "What's next", body: `${b.cta.trim()}${signature}` };
   return {
     heading: "Thanks for reading",
-    body: `I hope ${b.title || "this guide"} gave you a clear first step. If it helped, I'd love to hear what you try first.\n\n– ${b.author}`,
+    body: `I hope ${b.title || "this guide"} gave you a clear first step. If it helped, I'd love to hear what you try first.${signature}`,
   };
 }

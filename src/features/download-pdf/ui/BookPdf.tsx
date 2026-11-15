@@ -55,7 +55,7 @@ export function BookPdf({ book, fonts, origin = "" }: { book: Book; fonts: PdfFo
   );
 
   return (
-    <Document title={title} author={book.author} creator="Primer" producer="Primer">
+    <Document title={title} author={book.author.trim() || undefined} creator="Primer" producer="Primer">
       <Page size={PAGE} style={{ padding: 0 }}>
         <PdfCover scene={scene} width={PAGE[0]} height={PAGE[1]} fonts={fonts} />
       </Page>

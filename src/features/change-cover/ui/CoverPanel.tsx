@@ -56,6 +56,7 @@ export function CoverPanel({ book }: { book: Book }) {
         />
         <Input
           label="Author name"
+          placeholder="Your name"
           value={book.author}
           onChange={(e) => updateBook(book.id, { author: e.target.value })}
         />

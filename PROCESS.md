@@ -160,6 +160,17 @@ layouts keep the title readable. AI's first PDF cover had hard bands where the s
 ignores gradient stop opacity. Thin strips with stepped opacity left visible lines where they overlapped; the fix
 was nested strips whose opacities add up exactly, with a test for the math.
 
+**A first-time walkthrough before review.** I asked AI to go through Primer as a new user, from the landing page to
+the reader's link, and list what a reviewer would notice. What it found and we fixed: every new book carried my name
+as its author (on the cover, the last page and the share page) – now the field starts empty, the cover shows no
+name until one is given, and the final checklist asks for it. The outline promised "~15 pages" and the finished
+book said "~9": the estimate assumed 250 words a page, while the PDF fits about 150 under a chapter heading. We
+measured real PDF pages per chapter and fitted the estimate to them, so the outline, the finished book and the
+file agree. Each chapter now ends with "Try this today", as chapter 1 promises. Audience suggestions follow the
+topic ("junior designers" for a salary-negotiation book, not "busy professionals"), the build screen stops saying
+"start reading as soon as the first chapter appears" once the book is done, and the reader's tab shows the book's
+title. Left for later: the reader's page and the landing page on phones.
+
 ---
 
 ## Template for the next entries

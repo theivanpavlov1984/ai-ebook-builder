@@ -19,11 +19,16 @@ describe("estimate", () => {
     expect(estimate({ chapters: outlined(6) }).pages).toBe(15);
   });
 
-  it("counts written words: 750 words = 3 pages, reading at 200 wpm", () => {
-    const chapters = outlined(2).map((c) => ({ ...c, status: "done" as const, body: [words(750)] }));
-    const e = estimate({ chapters });
-    expect(e.pages).toBe(3 + 3 + 3);
-    expect(e.minutes).toBe(8);
+  it("counts written words the way the PDF lays them out, reading at 200 wpm", () => {
+    const book = (n: number) => ({
+      chapters: outlined(1).map((c) => ({ ...c, status: "done" as const, body: [words(n)] })),
+    });
+    // Measured in the exported PDF: 120 words fit on one page, 220 and 340 take two, 740 take three.
+    expect(estimate(book(120)).pages).toBe(3 + 1);
+    expect(estimate(book(220)).pages).toBe(3 + 2);
+    expect(estimate(book(340)).pages).toBe(3 + 2);
+    expect(estimate(book(740)).pages).toBe(3 + 3);
+    expect(estimate(book(740)).minutes).toBe(4);
   });
 
   it("an empty book is just cover, contents and CTA", () => {

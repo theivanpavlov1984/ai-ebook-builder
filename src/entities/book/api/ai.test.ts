@@ -146,11 +146,33 @@ describe("generation", () => {
     expect(suggestAudiences(custom.topic)).toHaveLength(3);
   });
 
+  it("suggestAudiences follows the topic: the readers it names first, then matching ones", () => {
+    const salary = suggestAudiences("Negotiating your first salary as a junior designer");
+    expect(salary).toHaveLength(3);
+    expect(salary).toContain("Junior designers");
+    expect(salary).not.toContain("Busy professionals");
+    expect(suggestAudiences("Sourdough baking for busy parents")[0]).toBe("Busy parents");
+    // Nothing to match: still three distinct options from the general pool.
+    expect(new Set(suggestAudiences("Origami cranes")).size).toBe(3);
+  });
+
+  it("every chapter ends with something to do today, and rewrites keep it", () => {
+    const ch = draftOutline(custom)[2];
+    expect(writeChapter(custom, ch).at(-2)).toBe("Try this today:");
+    expect(writeChapter(custom, ch, { direction: "simpler" }).at(-2)).toBe("Try this today:");
+    expect(writeChapter(custom, ch, { direction: "detailed" }).at(-2)).toBe("Try this today:");
+  });
+
   it("ctaText uses the author's call to action when given", () => {
     expect(
       ctaText({ cta: "Book a free 20-minute call at example.com", author: "Ivan Pavlov", title: "X" }).body,
     ).toMatch(/Book a free 20-minute call/);
     expect(ctaText({ cta: "", author: "Ivan Pavlov", title: "X" }).heading.length).toBeGreaterThan(0);
+  });
+
+  it("ctaText signs the last page only when the author gave a name", () => {
+    expect(ctaText({ cta: "", author: "Mara Lind", title: "X" }).body).toMatch(/– Mara Lind$/);
+    expect(ctaText({ cta: "", author: "  ", title: "X" }).body).not.toMatch(/–/);
   });
 });
 

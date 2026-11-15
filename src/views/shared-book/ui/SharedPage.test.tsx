@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { encodeBook, useBooks, type Book, type Chapter } from "@/entities/book";
@@ -49,6 +49,17 @@ describe("SharedPage", () => {
     window.location.hash = `#${encodeBook(st().books[id])}`;
     render(<SharedPage subscribeMs={0} download={vi.fn().mockResolvedValue(undefined)} />);
   }
+
+  it("names the book in the browser tab, and its author when there is one", () => {
+    openLanding();
+    expect(document.title).toBe("Bread Before Breakfast");
+    cleanup();
+    const id = newBook({ author: "Mara Lind" });
+    window.location.hash = `#${encodeBook(st().books[id])}`;
+    render(<SharedPage subscribeMs={0} />);
+    expect(document.title).toBe("Bread Before Breakfast by Mara Lind");
+    expect(screen.getByText("by Mara Lind")).toBeInTheDocument();
+  });
 
   it("is a lead-magnet landing page: cover, pitch and an email form – content locked", () => {
     openLanding();

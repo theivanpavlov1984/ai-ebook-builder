@@ -58,7 +58,7 @@ export const useBooks = create<BooksState>()(
             cta: "",
             title: "",
             subtitle: "",
-            author: "Ivan Pavlov",
+            author: "",
             chapters: [],
             cover: { direction: "editorial", variant: 0, status: "idle" },
           };

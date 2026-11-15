@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Download, ExternalLink, Link2 } from "lucide-react";
+import { Check, CircleAlert, Download, ExternalLink, Link2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { bookDesign, Cover, ctaText, estimate, useBooks, type Book, useBook, shareUrl } from "@/entities/book";
@@ -122,14 +122,18 @@ function Final({ id, download }: { id: string; download: Download }) {
               <p className="text-sm font-semibold">Before you share</p>
               <ul className="mt-3 flex flex-col gap-2 text-sm">
                 <li className="flex items-start gap-2">
-                  <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" />
+                  {book.author.trim() ? (
+                    <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" />
+                  ) : (
+                    <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-warning" />
+                  )}
                   <span>
-                    Author: {book.author}{" "}
+                    {book.author.trim() ? `Author: ${book.author.trim()}` : "No author name on the cover yet."}{" "}
                     <Link
                       href={`/book/${id}/review`}
                       className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
                     >
-                      change
+                      {book.author.trim() ? "change" : "Add yours"}
                     </Link>
                   </span>
                 </li>

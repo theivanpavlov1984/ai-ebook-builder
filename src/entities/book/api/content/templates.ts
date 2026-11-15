@@ -169,6 +169,43 @@ export const audiencePool = [
   "Students and career changers",
 ];
 
+/**
+ * Readers suggested for a topic, matched by keyword stems (a word that starts with one counts).
+ * The general pool above fills in when a topic matches nothing, or fewer than three.
+ */
+export const audienceHints: { stems: string[]; audiences: string[] }[] = [
+  { stems: ["design", "ux", "ui", "figma"], audiences: ["Junior designers", "Designers moving in-house"] },
+  {
+    stems: ["salary", "negotiat", "career", "job", "interview", "resume", "cv", "promotion"],
+    audiences: ["Graduates starting their first job", "Career changers", "Early-career professionals"],
+  },
+  { stems: ["freelanc", "client", "pricing", "invoice", "consult"], audiences: ["New freelancers", "Consultants"] },
+  { stems: ["startup", "founder", "saas", "mvp"], audiences: ["Early-stage founders", "Product managers"] },
+  { stems: ["team", "manager", "management", "leader"], audiences: ["First-time managers", "Team leads"] },
+  { stems: ["remote", "morning", "routine", "habit", "productiv", "focus"], audiences: ["Remote workers"] },
+  {
+    stems: ["parent", "kid", "child", "family", "toddler", "mom", "dad"],
+    audiences: ["New parents", "Parents with full-time jobs"],
+  },
+  {
+    stems: ["bak", "bread", "sourdough", "cook", "recipe", "kitchen", "meal"],
+    audiences: ["Home cooks", "Busy parents"],
+  },
+  {
+    stems: ["runner", "marathon", "jogging", "fitness", "workout", "strength", "gym"],
+    audiences: ["Runners training for a first race", "Beginners getting back in shape"],
+  },
+  {
+    stems: ["money", "budget", "saving", "debt", "financ"],
+    audiences: ["Young professionals", "Families on a tight budget"],
+  },
+  {
+    stems: ["newsletter", "writing", "blog", "content", "audience", "marketing"],
+    audiences: ["Coaches and consultants", "New newsletter writers"],
+  },
+  { stems: ["teach", "school", "student", "study", "exam"], audiences: ["Teachers", "Students preparing for exams"] },
+];
+
 export const titlePools = {
   clear: ["{T}: A Practical Guide", "The Practical Guide to {S}", "{S}, Step by Step"],
   benefit: ["{S}, Made Simple", "{S} Without the Overwhelm", "{S} in 30 Days: A Simple Plan"],

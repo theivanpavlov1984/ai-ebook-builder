@@ -65,7 +65,7 @@ function TitleForm({ id }: { id: string }) {
     updateBook(id, {
       title: effective.trim(),
       subtitle: subtitle.trim(),
-      author: author.trim() || "Anonymous",
+      author: author.trim(),
       stage: forwardStage(book, "outline"),
     });
     router.push(`/book/${id}/outline`);
@@ -135,7 +135,12 @@ function TitleForm({ id }: { id: string }) {
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
           />
-          <Input label="Author name" value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <Input
+            label="Author name"
+            placeholder="Your name – it goes on the cover"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+          />
         </div>
 
         <div>

@@ -2,12 +2,12 @@
 
 import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { bookDesign, Cover, forwardStage, isDemoTopic, useBook, useBooks } from "@/entities/book";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { ProgressList, Button, focusRing, StepHeader } from "@/shared/ui";
 import { failuresFromUrl, setFailures } from "@/shared/api";
-import { cn } from "@/shared/lib";
+import { cn, useTabTitle } from "@/shared/lib";
 import { defaultTiming, useGeneration, type Timing } from "../model/useGeneration";
 
 export type { Timing };
@@ -39,29 +39,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
 
   const finished = book.chapters.filter((c) => c.status === "done");
   // Progress in the tab title, so a user who switches tabs knows when to come back.
-  // The browser shows the first <title> in <head>. Next.js renders the page title from metadata,
-  // so we put our own element in front of it and remove it on leaving – Next's element is never touched.
-  const tabTitle = buildTabTitle(finished.length, book.chapters.length, done);
-  const titleEl = useRef<HTMLTitleElement | null>(null);
-  useEffect(() => {
-    const el = document.createElement("title");
-    const keepFirst = () => {
-      if (document.head.querySelector("title") !== el) document.head.prepend(el);
-    };
-    keepFirst();
-    // React may re-insert the metadata <title> at the top of <head> after navigation; stay in front of it.
-    const observer = new MutationObserver(keepFirst);
-    observer.observe(document.head, { childList: true });
-    titleEl.current = el;
-    return () => {
-      observer.disconnect();
-      el.remove();
-      titleEl.current = null;
-    };
-  }, []);
-  useEffect(() => {
-    if (titleEl.current) titleEl.current.textContent = tabTitle;
-  }, [tabTitle]);
+  useTabTitle(buildTabTitle(finished.length, book.chapters.length, done));
 
   const shownId = viewing ?? streaming?.id ?? finished.at(-1)?.id;
   const shown = book.chapters.find((c) => c.id === shownId);
@@ -91,9 +69,11 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
       <StepHeader
         title={done ? "Your book is ready" : "Writing your book"}
         intro={
-          resumed && !done
-            ? "Picking up where you left off – finished chapters are kept."
-            : "You can start reading as soon as the first chapter appears."
+          done
+            ? "Read any chapter below, then review the whole book – you can rewrite chapters and change the cover there."
+            : resumed
+              ? "Picking up where you left off – finished chapters are kept."
+              : "You can start reading as soon as the first chapter appears."
         }
       />
 

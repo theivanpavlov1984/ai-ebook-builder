@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { directionsForMood, writeChapter, useBooks, type ChapterStatus } from "@/entities/book";
+import { directionsForMood, estimate, writeChapter, useBooks, type ChapterStatus } from "@/entities/book";
 import type { ProgressItem, StepStatus } from "@/shared/ui";
 import { simulate, streamParagraphs } from "@/shared/api";
 
@@ -130,8 +130,11 @@ export function useGeneration(bookId: string, timing: Timing = defaultTiming) {
   const done = !!book && chapters.every((c) => c.status === "done") && book.cover.status === "done";
 
   let progressText = "";
-  if (done) progressText = "Your book is ready.";
-  else if (activeIndex >= 0)
+  if (done) {
+    // The heading already says it is ready; this line says what was made.
+    const { pages, minutes } = estimate({ chapters });
+    progressText = `${chapters.length} chapters and a cover · ~${pages} pages · ${minutes}-minute read`;
+  } else if (activeIndex >= 0)
     progressText = `Writing chapter ${activeIndex + 1} of ${chapters.length} · about ${remaining * SECONDS_PER_CHAPTER} seconds left`;
   else if (book?.cover.status === "working") progressText = "Designing your cover…";
   else if (failed) progressText = failed === 1 ? "One part needs another try." : `${failed} parts need another try.`;

@@ -6,7 +6,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { bookDesign, Cover, ctaText, type Book, decodeBook } from "@/entities/book";
 import { Wordmark, Button, focusRing, Input } from "@/shared/ui";
 import { simulate } from "@/shared/api";
-import { cn } from "@/shared/lib";
+import { cn, useTabTitle } from "@/shared/lib";
 import { downloadPdf } from "@/features/download-pdf";
 
 type Download = (book: Book) => Promise<void>;
@@ -61,6 +61,8 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
   const [status, setStatus] = useState<"idle" | "sending" | "unlocked">("idle");
   const [downloading, setDownloading] = useState(false);
   const pitch = book.subtitle || book.chapters[0]?.summary || "";
+  // The reader came for this book: name it in the tab, with the author when there is one.
+  useTabTitle(book.author.trim() ? `${book.title} by ${book.author.trim()}` : book.title);
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -103,7 +105,7 @@ function LeadLanding({ book, subscribeMs, download }: { book: Book; subscribeMs:
           <p className="text-xs font-medium tracking-wider text-accent-strong uppercase">Free eBook</p>
           <h1 className="mt-2 font-display text-3xl font-medium">{book.title}</h1>
           {pitch && <p className="mt-3 text-md text-secondary">{pitch}</p>}
-          <p className="mt-2 text-sm text-secondary">by {book.author}</p>
+          {book.author.trim() && <p className="mt-2 text-sm text-secondary">by {book.author}</p>}
 
           {status === "unlocked" ? (
             <div

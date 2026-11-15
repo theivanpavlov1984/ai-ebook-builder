@@ -19,7 +19,7 @@ describe("book store", () => {
     expect(b.stage).toBe("describe");
     expect(b.topic).toBe("Design systems for small teams");
     expect(b.mood).toBe("practical");
-    expect(b.author).toBe("Ivan Pavlov");
+    expect(b.author).toBe("");
     expect(b.chapters).toEqual([]);
     expect(b.cover).toEqual({ direction: "editorial", variant: 0, status: "idle" });
   });
