@@ -14,7 +14,8 @@ Primer helps a first-time author make a lead-magnet eBook. The UI has two jobs:
    from the first screen.
 
 **Goals:** distinctive but quiet; covers are the visual hero; every screen built from the same tokens.
-**Non-goals:** a brand book, dark mode, mobile layouts (the brief asks for desktop).
+**Non-goals:** a brand book, dark mode, a mobile creation flow (the brief asks for desktop; the landing page
+and the reader's page are the exceptions, see §4.5).
 **Anti-goals – this fails even if it works:** looks like a generic AI SaaS (coral gradient, glossy cards,
 stats dashboard); looks like a template; inconsistent spacing or type between screens.
 
@@ -149,7 +150,9 @@ Scale (size / line height, px):
 - **App shell:** sidebar 220 px (wordmark, _New book_, _My books_) + content.
 - **Creation steps (1–3):** form column max 640 px + book card panel 280 px on the right.
 - **Studio (step 5):** three columns – structure 260 px · book (flexible) · adjust panel 320 px.
-- Target desktop widths 1280–1600 px; works down to 1024 px.
+- The creation flow targets desktop widths 1280–1600 px and works down to 1024 px.
+- The landing page and the reader's page are built phones-first: one column below 1024 px (`lg`), the desktop
+  layout from there up; checked at 375, 768 and 1280 px.
 
 ## 5. Components (v1)
 
@@ -158,7 +161,7 @@ Each has default, hover, focus, active, disabled and – where relevant – load
 | Component         | Variants / notes                                                                             |
 | ----------------- | -------------------------------------------------------------------------------------------- |
 | **Button**        | primary (ink), secondary (surface + border), ghost; sizes md / sm; loading state             |
-| **Input**         | label, hint, error message; focus ring in accent                                             |
+| **Input**         | label, hint, error message; `border-input` (3:1), accent border and focus outline on focus   |
 | **Textarea**      | same as Input, auto-grow                                                                     |
 | **Chip**          | choice (single / multi), suggestion; selected = ink background                               |
 | **Card**          | surface + border; interactive variant with hover                                             |

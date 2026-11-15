@@ -1,6 +1,7 @@
 # Product flow
 
-Status: **draft v1** (Nov 12). Built on `RESEARCH.md`. Open questions are listed at the end.
+Status: **v2** (Nov 15) – first drafted Nov 12 from `RESEARCH.md`, now matches the built prototype.
+Open questions are listed at the end.
 
 ---
 
@@ -221,16 +222,17 @@ No backend and no real AI – the brief allows simulation. To keep it convincing
 
 ## 7. Out of scope (and why)
 
-| Cut                                             | Why                                                                                |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Accounts, sign-up                               | Not needed to prove the experience; removes friction. "My books" is stored locally |
-| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book                  |
-| Real AI / backend                               | Allowed by the brief; time goes to UX and craft instead                            |
-| Full text editor                                | The brief says it's not needed; intent-based adjustments fit non-writers better    |
-| Images inside chapters                          | Nice to have; cover quality matters more                                           |
-| EPUB                                            | The stakeholder confirmed PDF is enough                                            |
-| Mobile layout                                   | The brief asks for a desktop web tool                                              |
-| Multiple languages                              | Not in the brief                                                                   |
+| Cut                                             | Why                                                                                                                                                         |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accounts, sign-up                               | Not needed to prove the experience; removes friction. "My books" is stored locally                                                                          |
+| Stats, achievements, credits on the home screen | Vanity for a one-book user; the home screen should start the book                                                                                           |
+| Pricing and plans                               | No payments to back them, so every price would be invented; the FAQ says it is free while a prototype                                                       |
+| Real AI / backend                               | Allowed by the brief; time goes to UX and craft instead                                                                                                     |
+| A full text editor                              | Not needed per the brief; rewrites by intent fit non-writers. A light "Edit text" covers "Will it sound like me?" – no formatting, find & replace or images |
+| Images inside chapters                          | Nice to have; cover quality matters more                                                                                                                    |
+| EPUB                                            | The stakeholder confirmed PDF is enough                                                                                                                     |
+| Mobile creation flow                            | The brief asks for a desktop tool. Only the landing page and the reader's page are built phones-first – people open a shared link on their phone            |
+| Multiple languages                              | Not in the brief                                                                                                                                            |
 
 ## 8. How I'd measure success (if this were live)
 
@@ -245,4 +247,5 @@ No backend and no real AI – the brief allows simulation. To keep it convincing
 - [x] PDF only (confirmed).
 - [x] Product name – **Primer** (working name): a primer is a short introductory book on a subject –
       exactly what a lead magnet is.
-- [ ] Validate principles and the flow with 3–5 potential users before building the studio.
+- [ ] Validate principles and the flow with 3–5 potential users. Not done within the deadline; research
+      relied on reviews, forums and hands-on competitor runs instead (`RESEARCH.md`).
