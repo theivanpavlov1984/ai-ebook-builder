@@ -1,6 +1,6 @@
 # Product flow
 
-Status: **v2** (Nov 15) – first drafted Nov 12 from `RESEARCH.md`, now matches the built prototype.
+Status: **v2** (Nov 15) – first drafted Nov 13 from `RESEARCH.md`, now matches the built prototype.
 Open questions are listed at the end.
 
 ---
@@ -99,11 +99,14 @@ Three short questions on one screen:
 
 ### 3. Outline (checkpoint)
 
-- AI drafts 6–8 chapters, each with a one-line summary.
+- AI drafts 6–8 chapters, each with a one-line summary. While it drafts, the screen echoes the user's request
+  ("You asked for …") and ticks off the stages: reading the topic, choosing chapters for this audience, putting
+  them in order. The chapters then arrive one at a time.
 - Per chapter: rename, remove, reorder (drag), "suggest another idea". Plus "Add chapter".
 - Shows the expected result: "6 chapters · ~16 pages · 20-minute read · ready in about a minute".
   If the outline grows past ~20 pages, a gentle nudge: lead magnets work best short.
-- One button: **Write my book**. "Looks good" is the default – editing is optional.
+- One button: **Write my book**, in a bar that stays at the bottom of the screen with the book's size, so a long
+  outline never hides it. "Looks good" is the default – editing is optional.
 - _Why a separate step:_ it's the cheapest moment to steer the AI, and it answers
   "control without starting over" before the long generation.
 
@@ -156,6 +159,10 @@ Global **undo** for every change.
 - Preview of the cover, contents, chapter 1 and the last page, and **Flip through the PDF**: the exact file
   Download saves, in the browser's own PDF viewer, page by page (loading, failure + retry, and a new-tab link
   for a browser without a built-in viewer).
+- **The page your readers see:** below the book, the shared page in a browser frame, with an example reader typing an
+  email, getting the book and a "New subscriber" note popping up for the author. It shows what the book is for – a
+  list that grows – before it is shared; the frame opens the real page. It rests on the empty form off screen and
+  with reduced motion, and says the sign-up is an example.
 - A short check before sharing: author name set · a note that AI can make mistakes, with a link to read the chapters
   in Review – a reminder, not a blocker (an earlier checkbox gated nothing, so it was a note pretending to be a check).
 - **Last page**, next to its preview: the call to action, an optional link and an optional brand. The link is

@@ -42,6 +42,7 @@ export function CoverPanel({ book }: { book: Book }) {
           value={artwork}
           onChange={chooseArtwork}
           appearance="segmented"
+          fill
         />
       </div>
 

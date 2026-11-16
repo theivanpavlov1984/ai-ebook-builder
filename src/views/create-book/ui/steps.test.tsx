@@ -197,6 +197,20 @@ describe("OutlineStep", () => {
     });
   });
 
+  it("says what it drafts from and which stage it is on", async () => {
+    const id = newBook({ title: "Bread", audience: "Busy parents" });
+    wrap(<OutlineStep id={id} />);
+    expect(screen.getByText("“Sourdough baking for busy parents”")).toBeInTheDocument();
+    expect(screen.getByText("Reading your topic")).toBeInTheDocument();
+    expect(screen.getByText("Choosing chapters for busy parents")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getAllByRole("textbox", { name: /chapter \d title/i })).toHaveLength(6), {
+      timeout: 3000,
+    });
+    // The button and the book's size share the bar that stays at the bottom of the screen.
+    const write = screen.getByRole("button", { name: "Write my book" });
+    expect(write.parentElement).toHaveTextContent(/6 chapters · ~\d+ pages/);
+  });
+
   it("recovers from a failed draft with Try again", async () => {
     setFailures(["outline"]);
     const id = newBook({ title: "Bread" });

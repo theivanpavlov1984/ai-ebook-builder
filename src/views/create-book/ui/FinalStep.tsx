@@ -9,6 +9,7 @@ import { Button, focusRing, Input, useToast } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 import { buildPdf, downloadPdf, PdfPreview } from "@/features/download-pdf";
 import { BookPlan } from "./BookPlan";
+import { ReaderPagePreview } from "./ReaderPagePreview";
 
 type Download = (book: Book) => Promise<void>;
 type Build = (book: Book) => Promise<Blob>;
@@ -136,6 +137,7 @@ function Final({ id, download, build }: { id: string; download: Download; build:
                 </div>
               </PagePreview>
             </div>
+            <ReaderPagePreview book={book} link={link} />
           </section>
 
           <aside aria-label="Finish" className="flex flex-col gap-6 rounded-lg border border-default bg-surface p-6">

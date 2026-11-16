@@ -63,6 +63,14 @@ describe("buildTabTitle", () => {
 });
 
 describe("BuildStep", () => {
+  it("fills the progress bar as the book is made", async () => {
+    const id = newBook();
+    wrap(<BuildStep id={id} timing={fast} />);
+    const bar = screen.getByRole("progressbar", { name: "Your book" });
+    expect(Number(bar.getAttribute("aria-valuenow"))).toBeLessThan(100);
+    await waitFor(() => expect(bar).toHaveAttribute("aria-valuenow", "100"));
+  });
+
   it("shows progress in the tab title and restores it on leaving", async () => {
     document.title = "Primer";
     const id = newBook();

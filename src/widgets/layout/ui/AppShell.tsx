@@ -1,4 +1,4 @@
-import { Library, Plus } from "lucide-react";
+import { BookCopy, Plus } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/shared/lib";
@@ -7,7 +7,7 @@ import { DemoControls } from "@/features/simulate-failures";
 
 const nav = [
   { key: "new", href: "/", label: "New book", Icon: Plus },
-  { key: "books", href: "/books", label: "My books", Icon: Library },
+  { key: "books", href: "/books", label: "My books", Icon: BookCopy },
 ] as const;
 
 export function AppShell({ active, children }: { active?: "new" | "books"; children: ReactNode }) {

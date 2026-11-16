@@ -48,7 +48,11 @@
 
   --primer-text-primary: var(--ink-900);
   --primer-text-secondary: var(--ink-600);
+  /* Hint text in an empty field: a step lighter than secondary, still 4.8:1 on white. */
+  --primer-text-placeholder: var(--ink-500);
   --primer-text-inverse: var(--paper-50);
+  /* Secondary text on dark: still 7:1 where the ember glow sits behind it. */
+  --primer-text-inverse-secondary: var(--paper-400);
   --primer-text-accent: var(--terracotta-700);
 
   --primer-border-default: var(--paper-300);
@@ -61,7 +65,7 @@
   --primer-glow-warm: var(--peach-200);
   --primer-glow-deep: var(--terracotta-300);
   /*
-   * Headline sweep, after Lovable: three widths of the text. The left third is the text's own colour, the middle a
+   * Headline sweep: three widths of the text. The left third is the text's own colour, the middle a
    * band of ember, the right third transparent. Sliding it from right to left wipes the words in behind the band.
    * currentColor resolves where it is used, so the sweep ends in whatever colour the headline has.
    */
@@ -77,6 +81,10 @@
     transparent 66.67%,
     transparent
   );
+  /* The book's progress on Build: the same ember band, left to right. */
+  --primer-gradient-progress: linear-gradient(90deg, var(--amber-400), var(--ember-400), var(--terracotta-500));
+  /* The rule beside a quote: the sweep's ember band, run top to bottom. */
+  --primer-gradient-rule: linear-gradient(180deg, var(--amber-400), var(--ember-400), var(--terracotta-500));
   --primer-focus-ring: color-mix(in srgb, var(--terracotta-500) 35%, transparent);
 
   --primer-danger: var(--red-600);

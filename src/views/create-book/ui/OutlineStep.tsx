@@ -16,6 +16,7 @@ import {
   stageOrder,
 } from "@/entities/book";
 import { toChapter } from "../model/fastTrack";
+import { DraftingOutline } from "./DraftingOutline";
 import { simulate } from "@/shared/api";
 import { cn } from "@/shared/lib";
 
@@ -39,6 +40,8 @@ function OutlineEditor({ id }: { id: string }) {
   const [rounds, setRounds] = useState<Record<string, number>>({});
   // What a screen reader hears after a change to the list – moving, swapping or adding a chapter.
   const [announcement, setAnnouncement] = useState("");
+  // A freshly drafted outline arrives one chapter at a time; one the author comes back to is simply there.
+  const [fresh, setFresh] = useState(false);
   const started = useRef(false);
 
   const draft = useCallback(async () => {
@@ -47,7 +50,10 @@ function OutlineEditor({ id }: { id: string }) {
       const b = useBooks.getState().books[id];
       const outline = await simulate("outline", () => draftOutline(b), { ms: 900 });
       updateBook(id, { chapters: outline.map(toChapter) });
+      setFresh(true);
       setStatus("ready");
+      // Once the last chapter is in, later additions and moves just appear.
+      setTimeout(() => setFresh(false), outline.length * 110 + 400);
     } catch {
       setStatus("error");
     }
@@ -155,14 +161,7 @@ function OutlineEditor({ id }: { id: string }) {
         back={{ href: `/book/${id}/title`, label: "Back to title" }}
       />
 
-      {status === "loading" && (
-        <div aria-live="polite" className="flex flex-col gap-3">
-          <p className="text-base text-secondary">Drafting your outline…</p>
-          {Array.from({ length: 6 }, (_, i) => (
-            <div key={i} className="h-16 animate-pulse rounded-md bg-subtle" />
-          ))}
-        </div>
-      )}
+      {status === "loading" && <DraftingOutline book={book} />}
 
       {status === "error" && (
         <div
@@ -196,7 +195,14 @@ function OutlineEditor({ id }: { id: string }) {
         <div className="flex flex-col gap-6">
           <ol className="flex flex-col gap-2">
             {chapters.map((c, i) => (
-              <li key={c.id} className="flex items-start gap-3 rounded-md border border-default bg-surface p-3">
+              <li
+                key={c.id}
+                className={cn(
+                  "flex items-start gap-3 rounded-md border border-default bg-surface p-3",
+                  fresh && "motion-safe:animate-[fade-in_350ms_var(--primer-ease)_both]",
+                )}
+                style={fresh ? { animationDelay: `${i * 110}ms` } : undefined}
+              >
                 <span className="mt-2 w-6 shrink-0 text-center font-display text-lg text-secondary">{i + 1}</span>
                 <div className="min-w-0 flex-1">
                   <input
@@ -234,14 +240,10 @@ function OutlineEditor({ id }: { id: string }) {
             ))}
           </ol>
 
-          <div className="flex items-center justify-between">
+          <div>
             <Button variant="secondary" size="sm" icon={<Plus aria-hidden className="size-4" />} onClick={add}>
               Add chapter
             </Button>
-            <p className="text-sm text-secondary">
-              {chapters.length} chapters · ~{pages} pages{minutes ? ` · ${minutes}-minute read` : ""} · ready in about a
-              minute
-            </p>
           </div>
 
           {atMinimum && <p className="text-sm text-secondary">A book needs at least 3 chapters.</p>}
@@ -251,7 +253,8 @@ function OutlineEditor({ id }: { id: string }) {
             </p>
           )}
 
-          <div>
+          {/* The next step stays in reach while a long outline scrolls under it. */}
+          <div className="sticky bottom-0 z-10 -mx-1 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-default bg-canvas px-1 py-4">
             <Button onClick={writeBook}>
               {!writingStarted
                 ? "Write my book"
@@ -261,6 +264,10 @@ function OutlineEditor({ id }: { id: string }) {
                     ? "Back to review"
                     : "Continue"}
             </Button>
+            <p className="text-sm text-secondary">
+              {chapters.length} chapters · ~{pages} pages{minutes ? ` · ${minutes}-minute read` : ""} · ready in about a
+              minute
+            </p>
           </div>
         </div>
       )}

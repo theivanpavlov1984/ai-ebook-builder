@@ -32,7 +32,7 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
   const router = useRouter();
   const book = useBooks((s) => s.books[id]);
   const updateBook = useBooks((s) => s.updateBook);
-  const { items, streaming, resumed, done, failed, stalled, progressText, retry } = useGeneration(id, timing);
+  const { items, streaming, resumed, done, failed, stalled, progress, progressText, retry } = useGeneration(id, timing);
   const [viewing, setViewing] = useState<string>();
 
   useEffect(() => {
@@ -82,20 +82,11 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
 
       <PrototypeNote topic={book.topic} what="chapters" />
 
-      <div className="mb-6 flex min-h-10 items-center justify-between gap-4">
+      <div className="mt-2 mb-8 flex flex-col gap-3">
+        <ProgressBar value={progress} done={done} />
         <p aria-live="polite" className="text-sm font-medium text-secondary">
           {progressText}
         </p>
-        {done && (
-          <Button
-            onClick={() => {
-              updateBook(id, { stage: forwardStage(book, "review") });
-              router.push(`/book/${id}/review`);
-            }}
-          >
-            Review your book
-          </Button>
-        )}
       </div>
 
       {finished.length > 0 && (
@@ -136,6 +127,46 @@ function Builder({ id, timing }: { id: string; timing: Timing }) {
           </div>
         )}
       </article>
+      {/* The one next step, kept on screen while the author reads – the same bar as on Outline. */}
+      {done && (
+        <div className="sticky bottom-0 z-10 -mx-1 mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-default bg-canvas px-1 py-4">
+          <Button
+            onClick={() => {
+              updateBook(id, { stage: forwardStage(book, "review") });
+              router.push(`/book/${id}/review`);
+            }}
+          >
+            Review your book
+          </Button>
+          <p className="text-sm text-secondary">Next: rewrite any chapter, adjust the cover, then share.</p>
+        </div>
+      )}
     </CreationLayout>
+  );
+}
+
+/**
+ * How much of the book exists, as an ember bar that glides to each new value. A light runs along it while the
+ * book is being made and stops when it is done; reduced motion keeps the bar and drops the movement.
+ */
+function ProgressBar({ value, done }: { value: number; done: boolean }) {
+  const pct = Math.round(value * 100);
+  return (
+    <div
+      role="progressbar"
+      aria-label="Your book"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={pct}
+      className="h-1.5 w-full overflow-hidden rounded-full bg-subtle"
+    >
+      <div
+        className={cn(
+          "relative h-full overflow-hidden rounded-full bg-(image:--primer-gradient-progress) transition-[width] duration-1000 ease-standard motion-reduce:transition-none",
+          !done && "progress-shimmer",
+        )}
+        style={{ width: `${Math.max(pct, 2)}%` }}
+      />
+    </div>
   );
 }

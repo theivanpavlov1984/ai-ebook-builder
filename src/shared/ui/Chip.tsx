@@ -54,6 +54,8 @@ type ChipGroupProps<T extends string> =
       value: T;
       onChange: (v: T) => void;
       appearance?: Appearance;
+      /** Segmented only: the track takes the full width and the options share it equally – for a panel. */
+      fill?: boolean;
     }
   | { label: string; options: Option<T>[]; mode: "multi"; value: T[]; onChange: (v: T[]) => void };
 
@@ -81,7 +83,7 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
     );
   }
 
-  const { value, onChange, appearance = "chips" } = props;
+  const { value, onChange, appearance = "chips", fill = false } = props;
   const segmented = appearance === "segmented";
   const selectedIndex = Math.max(
     0,
@@ -109,7 +111,9 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
       role="radiogroup"
       aria-label={label}
       className={
-        segmented ? "inline-flex gap-0.5 rounded-full border border-default bg-subtle/85 p-1" : "flex flex-wrap gap-2"
+        segmented
+          ? cn("gap-0.5 rounded-full border border-default bg-subtle/85 p-1", fill ? "flex w-full" : "inline-flex")
+          : "flex flex-wrap gap-2"
       }
     >
       {options.map((o, i) => {
@@ -126,7 +130,11 @@ export function ChipGroup<T extends string>(props: ChipGroupProps<T>) {
             tabIndex={i === selectedIndex ? 0 : -1}
             onClick={() => onChange(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            className={segmented ? cn(segmentBase, on ? segmentOn : segmentOff) : cn(chipBase, on ? chipOn : chipOff)}
+            className={
+              segmented
+                ? cn(segmentBase, on ? segmentOn : segmentOff, fill && "flex-1 justify-center")
+                : cn(chipBase, on ? chipOn : chipOff)
+            }
           >
             {o.label}
           </button>

@@ -8,10 +8,7 @@ import { ExampleShelf } from "@/widgets/example-shelf";
 import { focusRing, Wordmark } from "@/shared/ui";
 import { cn, useScrollProgress } from "@/shared/lib";
 import { BuildDemo, CountUp, CoverStylesDemo, Reveal, RewriteDemo, SignupsDemo, Sweep } from "./demos";
-import { Eyebrow, ScreenCrop, SectionTitle } from "./parts";
-
-/** Section container. Below lg (1024 px) sections stack into one column; from lg up they are the desktop design. */
-const box = "mx-auto w-full max-w-[1200px] px-5 lg:px-8";
+import { box, Eyebrow, ScreenCrop, SectionTitle } from "./parts";
 
 /* ── Watch it write ──────────────────────────────────────────────────────── */
 function Dot() {
@@ -20,7 +17,7 @@ function Dot() {
 
 export function WatchSection() {
   return (
-    <section aria-labelledby="watch" className="border-y border-default bg-surface py-16 lg:py-28">
+    <section aria-labelledby="watch" className="border-t border-default bg-surface py-16 lg:py-28">
       <div className={cn(box, "grid items-center gap-10 lg:grid-cols-[400px_minmax(0,1fr)] lg:gap-18")}>
         <div>
           <Eyebrow>About a minute</Eyebrow>
@@ -379,91 +376,6 @@ export function Examples() {
   );
 }
 
-/* ── Reviews (sample content) ────────────────────────────────────────────── */
-const reviews = [
-  {
-    quote:
-      "I’d been about to write a guide for two years. Primer got me a first draft over lunch – I spent the afternoon making it sound like me.",
-    name: "Amara Okafor",
-    role: "Nutrition coach",
-    avatar: "amara",
-  },
-  {
-    quote:
-      "Rewrites come as suggestions, so I can see exactly what changed before I keep it. That’s the part that made me trust it.",
-    name: "Hanna Berg",
-    role: "UX writer",
-    avatar: "hanna",
-  },
-  {
-    quote: "From idea to sign-up page in one sitting. My list grew faster than with any webinar I’ve run.",
-    name: "Marcus Bell",
-    role: "Fitness coach",
-    avatar: "marcus",
-  },
-  {
-    quote: "Six short chapters is exactly the right size. People actually finish it – and reply to the last page.",
-    name: "Daniel Reyes",
-    role: "Freelance designer",
-    avatar: "daniel",
-  },
-  {
-    quote:
-      "I tried two other generators. This is the first one that asked who the book was for – and it shows in every chapter.",
-    name: "Sofia Marin",
-    role: "Career coach",
-    avatar: "sofia",
-  },
-  {
-    quote: "The cover looked designed, not generated. I sent the PDF to clients the same afternoon.",
-    name: "Lukas Novak",
-    role: "Agency founder",
-    avatar: "lukas",
-  },
-];
-
-export function Reviews() {
-  return (
-    <section aria-labelledby="reviews" className="py-16 lg:py-28">
-      <div className={box}>
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
-          <div>
-            <Eyebrow>What people say</Eyebrow>
-            <SectionTitle id="reviews" className="max-w-[620px]">
-              Finished books, <Sweep>not abandoned drafts</Sweep>
-            </SectionTitle>
-          </div>
-          <p className="max-w-[280px] text-sm text-secondary lg:text-right">Sample reviews – Primer is a prototype.</p>
-        </div>
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
-          {reviews.map((r, i) => (
-            <li key={r.name}>
-              <Reveal className="h-full" delay={(i % 3) * 90}>
-                <figure className="flex h-full flex-col justify-between gap-6 rounded-[20px] border border-default bg-surface p-6 lg:p-7">
-                  <blockquote className="text-md leading-relaxed">“{r.quote}”</blockquote>
-                  <figcaption className="flex items-center gap-3">
-                    <Image
-                      src={`/landing/avatars/${r.avatar}.webp`}
-                      alt=""
-                      width={40}
-                      height={40}
-                      className="size-10 rounded-full object-cover"
-                    />
-                    <span className="flex flex-col">
-                      <span className="text-base font-semibold">{r.name}</span>
-                      <span className="text-sm text-secondary">{r.role}</span>
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
 /* ── Questions ───────────────────────────────────────────────────────────────
  * The doubts people raise about AI book tools (RESEARCH.md), answered with what the prototype really does. */
 const questions: { q: string; a: string }[] = [
@@ -542,14 +454,11 @@ export function FinalCta({ children }: { children: ReactNode }) {
         className="absolute top-3/5 left-1/2 h-[560px] w-[1100px] -translate-1/2 rounded-full bg-[radial-gradient(closest-side,var(--color-accent),transparent)] opacity-45 blur-2xl"
       />
       <Reveal className="relative flex flex-col items-center px-5 lg:px-8">
-        <h2
-          id="final"
-          className="font-brand text-2xl leading-[1.05] font-bold tracking-tight lg:text-[60px] lg:leading-[1.02]"
-        >
+        <h2 id="final" className="font-brand text-3xl font-bold tracking-tight lg:text-hero">
           You already know enough
           <br className="hidden sm:block" /> <Sweep>to fill a book</Sweep>
         </h2>
-        <p className="mt-4.5 text-md opacity-75 lg:text-lg">It takes about five minutes to prove it.</p>
+        <p className="mt-4.5 text-md text-on-inverse-secondary">It takes about five minutes to prove it.</p>
         <div className="mt-10 w-full max-w-[680px] text-primary">{children}</div>
       </Reveal>
     </section>

@@ -100,7 +100,7 @@ export function StartForm({
             }
           }}
           /* Three lines on phones, so the example in the placeholder fits without a scrollbar. */
-          className="block h-21 w-full resize-none bg-transparent text-lg text-primary outline-hidden placeholder:text-secondary sm:h-auto"
+          className="block h-21 w-full resize-none bg-transparent text-md text-primary outline-hidden placeholder:text-placeholder sm:h-auto"
         />
         <div className="mt-2 flex items-center justify-between gap-4">
           <Button

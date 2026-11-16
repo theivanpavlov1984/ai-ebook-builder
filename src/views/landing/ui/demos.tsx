@@ -335,8 +335,8 @@ export function Reveal({
 }
 
 /**
- * The end of a headline, wiped in behind a band of ember – once, when half of it is on screen (where lovable.dev
- * starts theirs). `immediate` plays it on load (the hero). Without IntersectionObserver, or for reduced motion, it
+ * The end of a headline, wiped in behind a band of ember – once, when half of it is on screen, so the visitor
+ * sees it play. `immediate` plays it on load (the hero). Without IntersectionObserver, or for reduced motion, it
  * is plain text.
  */
 export function Sweep({ children, immediate = false }: { children: ReactNode; immediate?: boolean }) {

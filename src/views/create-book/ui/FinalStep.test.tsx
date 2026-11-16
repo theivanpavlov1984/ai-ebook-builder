@@ -181,4 +181,13 @@ describe("FinalStep – before you share", () => {
     expect(within(progress).getAllByRole("link")).toHaveLength(5);
     expect(screen.getByRole("link", { name: /edit cover/i })).toHaveAttribute("href", `/book/${id}/review`);
   });
+
+  it("shows the page readers will see, opening the same link that is shared", () => {
+    const id = newBook();
+    wrap(<FinalStep id={id} />);
+    const section = screen.getByRole("region", { name: "The page your readers see" });
+    const open = within(section).getByRole("link", { name: /open the page your readers see/i });
+    expect(open).toHaveAttribute("href", screen.getByLabelText<HTMLInputElement>("Share link").value);
+    expect(within(section).getByText(/no email is sent or stored/i)).toBeInTheDocument();
+  });
 });

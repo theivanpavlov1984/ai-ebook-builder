@@ -86,7 +86,9 @@ ink-900       text-primary  input-border-focus
 | `bg-inverse`                 | ink-900                    | Primary button, selected chip                 |
 | `text-primary`               | ink-900                    | Body and headings                             |
 | `text-secondary`             | ink-600                    | Hints, meta – 4.5:1 on every light background |
+| `text-placeholder`           | ink-500                    | Empty-field hints – 4.8:1 on white            |
 | `text-inverse`               | paper-50                   | On dark                                       |
+| `text-on-inverse-secondary`  | paper-400                  | Secondary text on dark – 7:1 over the glow    |
 | `text-accent`                | terracotta-700             | Links, active nav                             |
 | `border-default`             | paper-300                  | Cards, dividers                               |
 | `border-input`               | paper-500                  | Field borders – 3:1 against white and paper   |
@@ -154,8 +156,12 @@ Scale (size / line height, px):
   sinks on scroll (CSS scroll-driven, where supported); "Watch your book being written" writes a book live;
   "How it works" is a sticky scroll story on desktop; bento tiles show a rewrite being kept, cover styles
   trading places and sign-ups arriving; sections rise in once; "~15" counts up; heading endings are wiped in once,
-  left to right behind a band of ember (`--primer-gradient-sweep`, 1.2 s) when half of them is on screen – the
-  timing and gradient layout measured on lovable.dev.
+  left to right behind a band of ember (`--primer-gradient-sweep`, 1.2 s) when half of them is on screen, so the
+  visitor sees it play.
+- **Reviews carousel.** One story at a time: the active card holds the quote
+  (an ember rule, `--primer-gradient-rule`), the reviewer and three numbers; its neighbours shrink to the
+  reviewer's book cover and open that story. Arrows, swipe, a live "Review 2 of 6" for screen readers; the track
+  slides 500 ms, and not at all with reduced motion.
 - **Cover in the hero stays calm.** The demo colours the live cover from the whole example topic; the visitor's
   own typing repaints it only after a 600 ms pause, so the palette never changes letter by letter.
 

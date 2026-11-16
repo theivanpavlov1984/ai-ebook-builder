@@ -2,6 +2,9 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@/shared/lib";
 
+/** Section container. Below lg (1024 px) sections stack into one column; from lg up they are the desktop design. */
+export const box = "mx-auto w-full max-w-[1200px] px-5 lg:px-8";
+
 /** Small uppercase label above a section headline. */
 export function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="text-sm font-semibold tracking-[0.08em] text-accent-strong uppercase">{children}</p>;

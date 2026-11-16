@@ -15,7 +15,9 @@
   --color-inverse: var(--primer-bg-inverse);
   --color-primary: var(--primer-text-primary);
   --color-secondary: var(--primer-text-secondary);
+  --color-placeholder: var(--primer-text-placeholder);
   --color-on-inverse: var(--primer-text-inverse);
+  --color-on-inverse-secondary: var(--primer-text-inverse-secondary);
   --color-accent-strong: var(--primer-text-accent);
   --color-default: var(--primer-border-default);
   --color-strong: var(--primer-border-strong);
@@ -101,7 +103,7 @@
 }
 
 /*
- * Landing hero light, in three layers (after Lovable): it fades in on load, drifts slowly, and – where the
+ * Landing hero light, in three layers: it fades in on load, drifts slowly, and – where the
  * browser supports scroll-driven animation – sinks and fades as the page scrolls. Pure CSS, no script.
  */
 .hero-glow-enter {
@@ -139,7 +141,7 @@
 }
 
 /*
- * Landing headlines (after Lovable, measured on lovable.dev): the end of a heading is wiped in from left to right
+ * Landing headlines: the end of a heading is wiped in from left to right
  * behind a band of ember – 1.2 s, ease-in-out, a 1 px blur that clears. Before it plays the visible third of the
  * gradient is the transparent one, so the words wait unseen. Sweep in views/landing sets data-sweep: "wait" before
  * it comes on screen, "on" to play it once. Reduced motion and forced colours get plain text.
@@ -194,4 +196,24 @@
 body {
   background: var(--primer-bg-canvas);
   color: var(--primer-text-primary);
+}
+
+/* Build's progress bar: a soft light runs along the filled part while the book is being made. */
+.progress-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--paper-0) 55%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: progress-shimmer 1.6s var(--primer-ease) infinite;
+}
+@keyframes progress-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress-shimmer::after {
+    display: none;
+  }
 }

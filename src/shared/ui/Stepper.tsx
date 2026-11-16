@@ -20,7 +20,9 @@ export function Stepper({
   links?: string[];
 }) {
   return (
-    <ol aria-label="Progress" className="flex items-center gap-3 text-sm sm:gap-5">
+    // Each step pads 4 px on both sides, so the current step's rule overhangs its marker and label evenly, like a
+    // tab's indicator; the gap shrinks by the same 8 px, so the row's spacing stays as it was.
+    <ol aria-label="Progress" className="flex items-center gap-1 text-sm sm:gap-3">
       {steps.map((step, i) => {
         const state = i === current ? "current" : i < current || i <= reached ? "done" : "upcoming";
         const href = state === "done" ? links?.[i] : undefined;
@@ -50,7 +52,7 @@ export function Stepper({
             data-state={state}
             aria-current={state === "current" ? "step" : undefined}
             className={cn(
-              "border-b-2 pb-1",
+              "border-b-2 px-1 pb-1",
               state === "current" ? "border-accent font-semibold text-primary" : "border-transparent text-secondary",
             )}
           >

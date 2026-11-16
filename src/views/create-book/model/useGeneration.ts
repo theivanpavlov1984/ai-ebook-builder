@@ -139,8 +139,13 @@ export function useGeneration(bookId: string, timing: Timing = defaultTiming) {
   else if (book?.cover.status === "working") progressText = "Designing your cover…";
   else if (failed) progressText = failed === 1 ? "One part needs another try." : `${failed} parts need another try.`;
 
+  // Share of the book that exists: each chapter and the cover count once, a part being made counts half.
+  const parts = [...chapters.map((c) => c.status), book?.cover.status ?? "idle"];
+  const credit = parts.reduce((sum, s) => sum + (s === "done" ? 1 : s === "writing" || s === "working" ? 0.5 : 0), 0);
+  const progress = done ? 1 : parts.length ? credit / parts.length : 0;
+
   // Nothing left in progress, but some part failed: the book is waiting for the user's "Try again".
   const stalled = !done && failed > 0 && activeIndex < 0 && book?.cover.status !== "working";
 
-  return { items, streaming, resumed, done, failed, stalled, progressText, retry };
+  return { items, streaming, resumed, done, failed, stalled, progress, progressText, retry };
 }

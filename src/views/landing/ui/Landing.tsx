@@ -10,17 +10,8 @@ import { LivePreview } from "@/widgets/live-preview";
 import { StartForm } from "@/features/start-book";
 import { heroExamples, heroFrame } from "../model/demos";
 import { Sweep } from "./demos";
-import {
-  Examples,
-  FinalCta,
-  Footer,
-  HowItWorks,
-  IdeasShelf,
-  Questions,
-  Reviews,
-  WatchSection,
-  WhatYouGet,
-} from "./sections";
+import { Reviews } from "./reviews";
+import { Examples, FinalCta, Footer, HowItWorks, IdeasShelf, Questions, WatchSection, WhatYouGet } from "./sections";
 
 const tones: { value: Mood; label: string }[] = [
   { value: "practical", label: "Practical" },
@@ -167,8 +158,8 @@ export function Landing() {
             />
           </div>
         </section>
-        <WatchSection />
         <IdeasShelf />
+        <WatchSection />
         <HowItWorks />
         <WhatYouGet />
         <Examples />
