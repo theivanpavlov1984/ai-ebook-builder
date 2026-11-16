@@ -57,6 +57,8 @@ renamed or moved chapters keep their text, and a new or swapped chapter is writt
 
 **App shell:** a slim sidebar – _New book_ and _My books_. Familiar for a SaaS tool, but nothing more:
 no stats, no achievements – they don't help someone who comes to make one lead magnet.
+_New book_ and the landing's **Start my book** open a blank book on Describe, inside the app – not a dashboard,
+which would be empty on a first visit. A blank book left that way is reused next time and stays out of My books.
 
 **First visit** – no empty dashboard ("0 eBooks" is a dead end). The home screen _is_ the start:
 

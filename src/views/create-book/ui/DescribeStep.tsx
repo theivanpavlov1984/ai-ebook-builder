@@ -141,12 +141,17 @@ function DescribeForm({ id }: { id: string }) {
           <Textarea
             id="describe-topic"
             label="What's your book about?"
+            placeholder="e.g. Morning routines for remote workers"
+            // Opened blank from "Start my book": the cursor waits where the first answer goes.
+            autoFocus={!book.topic}
             value={book.topic}
             onChange={(e) => {
               updateBook(id, { topic: e.target.value });
               setTopicError(undefined);
             }}
             onBlur={() => {
+              // Leaving an empty field isn't a mistake yet – Continue and "Help me shape" ask for the idea.
+              if (!book.topic.trim()) return;
               const check = validateTopic(book.topic);
               setTopicError(check.ok ? undefined : check.message);
               setTopicSuggestions(check.ok ? [] : check.suggestions);

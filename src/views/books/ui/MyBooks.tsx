@@ -40,7 +40,10 @@ export function MyBooks() {
   const [renaming, setRenaming] = useState<Book>();
   const [name, setName] = useState("");
   if (!hydrated) return null;
-  const list = Object.values(books).sort((a, b) => b.updatedAt - a.updatedAt);
+  // A book opened from "New book" and left blank isn't a book yet.
+  const list = Object.values(books)
+    .filter((b) => b.topic.trim() || b.chapters.length)
+    .sort((a, b) => b.updatedAt - a.updatedAt);
 
   function remove(book: Book) {
     deleteBook(book.id);
@@ -64,7 +67,7 @@ export function MyBooks() {
         <p className="font-brand text-xl font-bold tracking-tight">No books yet</p>
         <p className="text-base text-secondary">Your first one takes about five minutes.</p>
         <Link
-          href="/"
+          href="/new"
           className={cn(
             "inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse",
             focusRing,

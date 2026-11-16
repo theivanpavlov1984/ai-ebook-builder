@@ -23,7 +23,7 @@ export function ContinueCard() {
   const latest = useBooks(
     (s) =>
       Object.values(s.books)
-        .filter((b) => !b.finalizedAt)
+        .filter((b) => !b.finalizedAt && (b.topic.trim() || b.chapters.length))
         .sort((a, b) => b.updatedAt - a.updatedAt)[0],
   );
   if (!hydrated || !latest) return null;

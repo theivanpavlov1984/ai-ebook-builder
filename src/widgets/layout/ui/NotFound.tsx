@@ -22,7 +22,7 @@ export function NotFound({
         <h1 className="font-brand text-2xl font-bold tracking-tight">{title}</h1>
         <p className="text-md text-secondary">{body}</p>
         <Link
-          href="/"
+          href="/new"
           className={cn(
             "inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse",
             focusRing,

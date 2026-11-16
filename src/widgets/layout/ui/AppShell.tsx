@@ -6,7 +6,7 @@ import { CONTENT_ID, focusRing, OfflineBanner, SkipLink, Wordmark } from "@/shar
 import { DemoControls } from "@/features/simulate-failures";
 
 const nav = [
-  { key: "new", href: "/", label: "New book", Icon: Plus },
+  { key: "new", href: "/new", label: "New book", Icon: Plus },
   { key: "books", href: "/books", label: "My books", Icon: BookCopy },
 ] as const;
 

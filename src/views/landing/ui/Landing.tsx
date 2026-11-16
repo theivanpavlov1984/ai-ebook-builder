@@ -23,11 +23,6 @@ const tones: { value: Mood; label: string }[] = [
 
 const avatars = ["amara", "marcus", "hanna", "daniel", "sofia"];
 
-/** Move to the hero and put the cursor in the topic field. */
-function focusStart() {
-  setTimeout(() => document.querySelector<HTMLTextAreaElement>("#start textarea")?.focus(), 300);
-}
-
 const navLink = cn("rounded-sm text-base text-secondary hover:text-primary", focusRing);
 
 export function Landing() {
@@ -77,16 +72,16 @@ export function Landing() {
             My books
           </Link>
         </nav>
-        <a
-          href="#start"
-          onClick={focusStart}
+        {/* Into the app: a new book opens on Describe. The prompt below stays the quick way in. */}
+        <Link
+          href="/new"
           className={cn(
             "inline-flex h-10 items-center rounded-full bg-inverse px-4 text-base font-medium text-on-inverse hover:opacity-90 lg:px-5",
             focusRing,
           )}
         >
           Start my book
-        </a>
+        </Link>
       </header>
 
       <main id={CONTENT_ID} tabIndex={-1} className="outline-hidden">
