@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
@@ -466,20 +466,30 @@ export function FinalCta({ children }: { children: ReactNode }) {
 }
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
-const footLink = cn("rounded-sm text-base text-secondary hover:text-primary", focusRing);
+const footLink = cn("rounded-sm text-base whitespace-nowrap text-secondary hover:text-primary", focusRing);
 
 export function Footer() {
   return (
     <footer className="flex flex-col items-center gap-5 border-t border-default px-5 py-10 text-center lg:flex-row lg:justify-between lg:gap-8 lg:px-16 lg:text-left">
       <Wordmark className="text-xl" />
       <p className="text-base text-secondary">A prototype: the AI is simulated, your books stay in your browser.</p>
-      <nav aria-label="Footer" className="flex gap-7">
+      <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-7 gap-y-2">
         <Link href="/books" className={footLink}>
           My books
         </Link>
         <Link href="/system" className={footLink}>
           Design system
         </Link>
+        {/* For reviewers: the code, research and process log live in the repository. */}
+        <a
+          href="https://github.com/theivanpavlov1984/ai-ebook-builder"
+          target="_blank"
+          rel="noreferrer"
+          className={cn(footLink, "inline-flex items-center gap-1")}
+        >
+          Code on GitHub <ArrowUpRight aria-hidden className="size-3.5" />
+          <span className="sr-only">(opens in a new tab)</span>
+        </a>
       </nav>
     </footer>
   );
