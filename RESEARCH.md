@@ -1,6 +1,6 @@
 # Research
 
-Status: **round 1 – desk research** (Nov 12). Next rounds: hands-on testing of competitors,
+Status: **round 1 – desk research** (Nov 13). Next rounds: hands-on testing of competitors,
 short conversations with potential users, UI pattern review.
 
 Claims from vendor websites are marked _(vendor claim)_ – they describe positioning, not verified facts.
@@ -74,7 +74,7 @@ so this case study and public reviews are my main sources on it.
 it's the first minutes. Success = the user reaches a book they like before they lose patience.
 That's why the flow aims for a readable chapter in under a minute and keeps every early step optional.
 
-## 6. Hands-on: getebook.ai (Nov 12)
+## 6. Hands-on: getebook.ai (Nov 13)
 
 Same input I'll use in our prototype: **"Design Systems for Small Teams"** – a topic I know well,
 so I can judge the content, not just the UI.

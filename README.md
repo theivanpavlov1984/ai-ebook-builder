@@ -14,7 +14,7 @@ with realistic latency and failures you can switch on (`?fail=ch2,cover,all` or 
 - [FLOW.md](FLOW.md) – the user flow and its states
 - [RESEARCH.md](RESEARCH.md) – who it's for and what competitors do
 - [docs/design-system.md](docs/design-system.md) – tokens, components, rules
-- [PROCESS.md](PROCESS.md) – how AI was used, day by day: what worked and where it was wrong
+- [PROCESS.md](PROCESS.md) – how AI was used: the method in short, then day by day – what worked and where it was wrong
 
 ## Run it
 

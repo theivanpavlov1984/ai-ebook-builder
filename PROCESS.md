@@ -1,16 +1,48 @@
 # Process log
 
-A running log of how this project was built and how AI was used along the way:
-what I asked, what worked, what I threw away, and where my own judgment took over.
+How Primer was built in four days, Friday to Monday, and how AI was used along the way: what I asked, what worked, what I threw
+away, and where my own judgment took over. A short version first, then the day-by-day log.
 
-Main AI tool: Claude Code (planning, research support, building). Design: Figma.
+## In short
+
+**The method: AI makes, evidence decides, I judge.** The brief weighs design and building equally, and AI makes
+both cheap – so the scarce part is judgment. I kept the decisions and made AI bring evidence instead of claims:
+a failing test, a screenshot, a measurement.
+
+1. **Think in writing first.** The brief became a checklist, then research (`RESEARCH.md`) and a flow (`FLOW.md`)
+   where every design principle points to a finding. Stakeholder questions settled who it is for.
+2. **Design before code, on a shared canvas.** Moodboards, the landing page, wireframes and the UI kit live in Doop,
+   a canvas where AI draws and I comment; early directions were live HTML mockups side by side.
+3. **Build test-first.** Tests for the cases a reviewer would try – a reload mid-generation, their own topic, a cut
+   share link – then the code, mostly written by AI. ESLint enforces the architecture (Feature-Sliced Design).
+4. **Check like a stranger would.** A real browser after every change, then a first-time walkthrough, a pass on
+   phones, keyboard and contrast, and a Nielsen / NN/g audit of the live site.
+
+**Where AI sped me up:** desk research and reading reviews; three visual directions in minutes; nearly all of the
+code; walking the product as a newcomer and listing what breaks; measuring what I would have guessed – contrast
+from the tokens, real PDF pages per chapter, the timing of a reference animation.
+
+**Where it fell short:** it writes plausible code for the framework it remembers, not the one installed – Next.js 16
+titles, react-pdf bookmarks. A script it wrote corrupted twelve files. Tests passed while the screen was broken – a
+cover three times too big, overlapping PDF contents, a phone layout one word wide. Recreating a reference effect by eye, it
+got the look and missed the mechanics. And neither of us questioned the strip of invented brand logos we had
+settled on – the UX audit flagged it.
+
+**Where my judgment took over:** who the product is for (a lead magnet, confirmed by the stakeholder) and what to cut
+for that person – a pro editor, a dashboard, credits, pricing, EPUB (the brief: "Full editing capabilities are not
+needed"); a warm palette over the default AI blue; a rewrite that arrives as a suggestion, never an overwrite; no
+number on the page we can't back; dropping features that would look broken in a simulation.
+
+**Tools.** Claude Code for research, design on the canvas, building and browser checks, with library docs pulled
+for the installed versions; ChatGPT for a second opinion and the sample covers on the landing page; Doop for design;
+Playwright for motion, phones and the PDF.
 
 ---
 
-## Day 1 – Thu, Nov 12: brief, plan, setup
+## Day 1 – Fri, Nov 13: brief, research, direction
 
 **Brief → plan.** I used Claude to break the brief into a checklist of every requirement
-and evaluation criterion, then into a 5-day plan: research → design system → build → test → video.
+and evaluation criterion, then into a 4-day plan: research → design system → build → test → video.
 The checklist is what I'll verify against before submitting.
 
 **Stakeholder questions.** Claude drafted three questions for the stakeholder. I cut one of them
@@ -33,11 +65,7 @@ but the judgment on content quality (the outline was too technical for the audie
 
 **Flow, draft v1.** Claude drafted `FLOW.md` from the research: principles, screens, failure states,
 cover system, cuts. Each principle is tied to a research finding, so decisions aren't based on taste alone.
-To review tomorrow with fresh eyes before any design work.
-
----
-
-## Day 2 – Fri, Nov 13: stakeholder answers, second opinion
+To review with fresh eyes before any design work.
 
 **Stakeholder answers.** Primary user: people creating a lead magnet. PDF is enough.
 This changed the flow: shorter practical books, a call-to-action page at the end,
@@ -66,7 +94,7 @@ Where the AI's plan was wrong, I kept a record of the decision:
 
 ---
 
-## Day 3 – Sat, Nov 14: building the flow
+## Day 2 – Sat, Nov 14: building the flow and the landing page
 
 **Build decisions first, then a plan.** Before code, I wrote down the few build choices a reviewer would
 notice (`docs/product-build.md`). The one real trade-off – a real PDF file vs the browser's print dialog –
@@ -115,7 +143,7 @@ AI proposed a "Try again" button too; I dropped it – the simulated rewrite is 
 text and look broken. "Rewrite again" with another direction does the honest version of it.
 
 **Fast path and tab progress.** The other two changes from the references. "Write it now" on the Describe step skips
-Title and Outline with the defaults they would suggest – Gamma's "Express" idea. I didn't add a separate
+Title and Outline with the defaults they would suggest – the express path several creation tools offer. I didn't add a separate
 "Decide for me" button: the audience chips already are one-click decisions, tone has a default, and "Write it now"
 fills an empty audience itself – a third button would only repeat them. During Build the tab title counts
 "Writing 3 of 6" and ends with "✓ Your book is ready". AI's first version set `document.title` directly; in the
@@ -125,12 +153,12 @@ The fix: put our own `<title>` element before Next's for the time of the Build s
 It still failed on Vercel: in a production build React moves the metadata `<title>` back to the top after navigation.
 Our element now stays first by watching `<head>` and moving only itself.
 
-**Landing hero, from a moodboard.** The old hero read as a generic AI template, so I collected five landing pages
-in Doop (getebook.ai, Inkfluence, Squibler, Jet Admin, Lovable) next to ours and commented on what to take.
-Jet Admin's centered prompt card won – Primer is "one field" at heart. AI drew two variants in Doop with that
-layout: our warm palette and Jet's blue-lavender one. I picked warm: the cool one looks like every other AI tool
-and fights the book covers. Headings moved to Bricolage Grotesque – the wordmark's face – at 700, not 800, because
-Inkfluence, a direct competitor, uses exactly Bricolage 800. The tone switch above the field is real: it restyles
+**Landing hero, from a moodboard.** The old hero read as a generic AI template, so I collected landing pages of
+competitors and AI products I rate in Doop, next to ours, and commented on what worked and why. One pattern fitted
+Primer best: a centred prompt card as the whole first screen – Primer is "one field" at heart. AI drew two variants
+of it in Doop: in our warm palette and in the cool blue-lavender common to AI tools. I picked warm: the cool one
+looks like every other AI tool and fights the book covers. Headings moved to Bricolage Grotesque – the wordmark's
+face – at 700, not 800, because a direct competitor uses exactly Bricolage 800. The tone switch above the field is real: it restyles
 the visitor's cover live and is saved on the new book. AI's first build broke silently: `weight: "700 800"` is not
 valid for this font in `next/font`, the dev server kept serving stale CSS, and the headline rendered at 14 px;
 a production build showed the classes were fine and a dev-server restart fixed it.
@@ -146,19 +174,23 @@ true ("Works wherever a PDF and a link do": Gumroad, Mailchimp, Substack, Linked
 with stock portraits (Pexels), labelled "Sample reviews – Primer is a prototype". A "2,000+ experts" line under
 the prompt was placeholder copy; before review it became "Built for experts with no time to write" – who the
 product is for and their problem, with no number we can't back. A "Kit" icon was dropped: the library's mark didn't clearly match the brand.
-Late in review I compared the page with Inkfluence AI's home and pointed at two of its blocks. We took the FAQ ("Before
+Late in review I compared the page with a competitor's home and noted two blocks we lacked. We added a FAQ ("Before
 you ask"): six questions answering the doubts from our research – will it sound like me, who owns it, why PDF, where it
-is stored – each answer checked against what the prototype actually does. We left the pricing table: with no payments,
+is stored – each answer checked against what the prototype actually does. We skipped a pricing table: with no payments,
 every price would be invented, so "How much does it cost?" is answered in the FAQ instead – free, it's a prototype.
 
-**Photo covers, after Designrr.** Contrast's Designrr has a new lifetime-offer video; I asked AI to break it down
-frame by frame. My assumption was that its images were AI-generated – the video shows an Unsplash/Pixabay search
-plus uploads, so that was wrong. What we took: photos suggested for the topic and your own upload. What we left:
-free stock search and the layout editor – the complexity Primer avoids. AI drew the panel and its states in Doop,
+**Photo covers.** Contrast's Designrr has a new lifetime-offer video; I asked AI to break it down frame by frame.
+My assumption was that its images were AI-generated – the video shows an Unsplash/Pixabay search plus uploads, so
+that was wrong. The idea I adapted: photos suggested for the topic, plus your own upload. What I left out: free
+stock search and the layout editor – the complexity Primer avoids. AI drew the panel and its states in Doop,
 I approved it as is. 33 Pexels photos ship with the app and are matched to the topic by keywords; three fixed
 layouts keep the title readable. AI's first PDF cover had hard bands where the shading should fade: react-pdf
 ignores gradient stop opacity. Thin strips with stepped opacity left visible lines where they overlapped; the fix
 was nested strips whose opacities add up exactly, with a test for the math.
+
+---
+
+## Day 3 – Sun, Nov 15: walkthroughs, accessibility, a UX audit
 
 **A first-time walkthrough before review.** I asked AI to go through Primer as a new user, from the landing page to
 the reader's link, and list what a reviewer would notice. What it found and we fixed: every new book carried my name
@@ -174,13 +206,13 @@ title.
 **Phones, then the topic parser.** The same walkthrough on a 375 px screen showed the reader's page – the one a
 lead magnet's readers open from an email or a message, usually on a phone – cut off on the right, and the landing
 page breaking apart. Both are now built phones-first: one column below 1024 px, the desktop design from there up
-(unchanged at 1280), checked at 375, 768 and 1280 with no sideways scrolling. The creation flow stays a desktop tool,
-as the brief says. Last, topics like "Negotiating your first salary as a junior designer" put the whole sentence into
+(unchanged at 1280), checked at 375, 768 and 1280 with no sideways scrolling. For now the creation flow stays a desktop tool,
+as the brief says – the UX audit changed that later the same day. Last, topics like "Negotiating your first salary as a junior designer" put the whole sentence into
 every title and chapter, so titles got cut off and the text read oddly. The parser now treats "as a …" like "for …":
 the subject goes into the titles, "junior designers" becomes the audience.
 
-**After a second look at getebook.ai.** I pasted fifteen screenshots of two getebook.ai runs into Doop and asked AI
-to put them in order and say what Primer lacks. Its ranked list: direct text editing, a clickable call to action,
+**After a second look at the competition.** I ran a competitor's flow twice, pasted fifteen screenshots into Doop
+and asked AI to put them in order and say where Primer fell short. Its ranked list: direct text editing, a clickable call to action,
 set-off boxes inside the book, clickable contents, a summary of what the AI understood, a page-by-page PDF preview.
 I took three for now. The last page gets a link and a brand, edited next to its preview; the link is clickable
 in the PDF and on the shared page, and an address that isn't one gets a hint instead of a dead link. Each chapter's
@@ -211,13 +243,12 @@ announced nothing; Review had two main landmarks and didn't mark the selected ch
 Escape; and a book waiting for a retry still said "Writing 6 of 6" in the tab. All fixed, each with a test.
 
 **Bringing the landing page to life.** The page was nearly static, and its "Watch your book being written"
-showed a still screenshot. I asked AI to go through competitors and top AI startups and list what moves on
-their home pages: getebook.ai, Inkfluence, Designrr, Beautiful.ai, Claude, Jet Admin and Lovable (Gamma and
-OpenAI sit behind bot checks; I passed Lovable's myself). What we took is mechanics, not looks: Jet's prompt
-that plays example requests – ours also switches the tone and redraws the cover, which nobody else can show;
-Lovable's live mini-interfaces instead of videos, its three-layer hero light and its sticky scroll story;
-Inkfluence's "new subscriber" notifications, because sign-ups are the point of a lead magnet. What we left:
-floating books, pulsing buttons, gradient text that stays on – the tells of AI slop. Checking it in a real browser found two
+showed a still screenshot. I asked AI to go through competitors and top AI startups, list what moves on their
+home pages and why it works. I took techniques, not looks, and bent each to the product: a prompt that plays
+example requests – ours also switches the tone and redraws the cover, which only a book tool can show; live
+mini-interfaces instead of videos; a layered hero light; a sticky scroll story for "How it works"; "new
+subscriber" notifications, because sign-ups are the point of a lead magnet. What I left: floating books, pulsing
+buttons, gradient text that stays on – the tells of AI slop. Checking it in a real browser found two
 things the tests couldn't: the streaming chapter grew its card and pushed the page down (now it reserves its
 height), and the sign-up times followed names instead of their place in the list. The app's built-in browser
 pane renders no frames while hidden, so the motion was checked with Playwright, including reduced motion.
@@ -225,15 +256,10 @@ pane renders no frames while hidden, so the motion was checked with Playwright, 
 Reviewing it, I pushed back on three things. The hero cover flickered: its colours come from the title, so every
 typed letter repainted it – it read as a bug, not as life. Now the demo colours the cover from the whole example
 topic, and real typing repaints it only after a 600 ms pause. The "How it works" screens were cropped into
-fragments; each step now shows the whole screen in a browser frame. And I did take one gradient after all:
-Lovable's heading endings that light up as they scroll in. Ours runs once through our own ember gradient
+fragments; each step now shows the whole screen in a browser frame. And I did keep one gradient after all:
+heading endings that light up as they scroll in. Ours runs once through our own ember gradient
 (terracotta → ember → amber, one token) and settles back into the heading's colour, so it stays an accent on
 arrival, not decoration that sits there.
-Later Ivan said ours looked already played by the time he saw it, while Lovable's plays in front of you. Copying by
-eye had missed why. Reading their CSS and logging when their class is added showed the trigger was the same – half
-the line on screen, near the bottom edge. The difference was the motion: theirs is a 1.2 s wipe, the words appearing
-behind a coloured band from an invisible start; ours faded in the whole phrase in colour over 2.6 s, so most of it
-happened before the eye arrived. Ours now uses their gradient layout and timing with our colours.
 
 **A UX audit of the live build.** Before submitting I asked AI to walk the production site as a first-time user
 against Nielsen's heuristics, NN/g form and wizard guidance and WCAG, at 375, 768, 1024 and 1440 px, including
@@ -260,15 +286,50 @@ what it's waiting for; My books shows where each book stands and can rename or d
 of the framework's; the "AI is simulated" note shows on Title, where the template titles first appear, not only on
 Build; the Final screen says why the share link is so long. Walking the fixes in the browser turned up one more, which
 the audit had missed: Back from Build to Describe showed the form still busy from "Write it now" – Next keeps the left
-page mounted, state and all – so the page now clears what belonged to the last visit when it is left. Comparing with
-competitors' editors later, I couldn't find the cover in Review myself: it was one small row above the chapters. It is
-now a card with "Edit cover" leading the structure, and the cover preview on Final links straight to it.
+page mounted, state and all – so the page now clears what belonged to the last visit when it is left.
 
 ---
 
-## Template for the next entries
+## Day 4 – Mon, Nov 16: checking against the brief
 
-**What I asked AI** –
-**What worked** –
-**What I threw away / where it was wrong** –
-**My decision and why** –
+**Why there is no pro editor.** Next to getebook.ai, Gamma and Inkfluence – dashboards with credits and profiles,
+editors close to Word – Primer looked plain to me, and I asked whether we had cut too much. We re-read the brief
+together: a "desktop web tool" for "first time users with no writing or design background", where "full editing
+capabilities are not needed". Those products serve people who make books again and again, and their sidebars
+mostly serve the business – credits, upgrades, word counts that read zero on day one. For someone making one lead
+magnet that is noise, and Contrast's own Designrr work started from exactly that pain. The cut stays, now quoted
+from the brief in `FLOW.md`. The comparison did surface one real gap: I couldn't find the cover in Review myself –
+it was one small row above the chapters. It is now a card with "Edit cover" leading the structure, and the cover
+preview on Final links straight to it. Making that link open the cover every time took a second try: Next keeps a
+page you leave mounted, so Review came back on the chapter last read; the request now lives in the store.
+
+**The heading sweep, tuned by measurement.** Ours looked already played by the time I saw it, while in the
+reference I had in mind the effect plays in front of you. Tuning by eye had missed why. Measuring it showed the
+trigger was the same – half the line on screen, near the bottom edge. The difference was the motion: a 1.2 s wipe,
+the words appearing behind a coloured band from an invisible start, against our 2.6 s fade of the whole phrase, most
+of which happened before the eye arrived. Ours is now a wipe in our own ember colours, timed to be seen.
+
+**Five comments on the landing page.** I reviewed a full-length screenshot of the landing page in Doop and left the
+notes on the canvas; Claude read them from there. Three were quick: the prompt text went from 20 to 16 px in a
+lighter grey, the size most tools in the category use; the shelf of covers ("What will yours be
+about?") moved up to second place, before the writing demo; the closing headline now uses the hero's type. For the
+reviews I asked for something less generic than a grid of six cards. We looked at how strong startup sites tell
+customer stories and adapted one technique: one story at a time, with the ones beside it shrunk to a mark. In Primer
+the mark is the reviewer's own book cover, so the section also shows what Primer makes, and three numbers sit
+beside the quote. The numbers are as invented as the
+reviews, and the section still says so.
+
+**The wait before the outline.** I ran a presentation tool twice and dropped the screenshots into Doop; Claude put
+them in order and listed what Primer could use. The useful part was the moment between asking and seeing a plan:
+theirs fills it with the request echoed back and stages that tick off, then the plan arrives item by item; ours
+showed six grey bars. Primer now does the same in its own terms – "You asked for" with the topic, three stages
+("Choosing chapters for junior designers"), chapters arriving one at a time – and "Write my book" sits in a bar at
+the bottom of the screen: at 1280 × 800 it used to start below the fold. Their auto-start timer and tips carousel
+stayed out: one decides for the user, the other fills the wait with filler, while ours fills it with the book.
+
+**The finish line, made ours.** Comparing finals, I asked whether Primer should page through the book in spreads, as
+some tools do. We decided against it: Primer already shows the real PDF, and a spread viewer is a teaser for a
+paywall we don't have. What none of the tools I tried show is the point of a lead magnet – the page a reader lands
+on. Final now ends with that page in a browser frame: a sample reader types an email, gets the book, and a "New
+subscriber" note pops up for the author. It is a loop over a pure time-to-frame function, like the landing demos,
+labelled as an example, and it stays still with reduced motion.
