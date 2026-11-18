@@ -20,7 +20,7 @@ export function ReaderPagePreview({ book, link }: { book: Book; link: string }) 
   const host = safeHost(link);
 
   return (
-    <section aria-labelledby="reader-page" className="mt-12">
+    <section aria-labelledby="reader-page" className="mt-8">
       <h2 id="reader-page" className="font-brand text-xl font-bold tracking-tight">
         The page your readers see
       </h2>

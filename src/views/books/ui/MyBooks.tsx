@@ -1,12 +1,12 @@
 "use client";
 
 import { PenLine, Plus, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type Book, BookCard, bookDesign, type Stage, useBooks, useHydrated } from "@/entities/book";
 import { Button, Dialog, focusRing, Input, useToast } from "@/shared/ui";
 import { cn } from "@/shared/lib";
+import { NewBookLink } from "@/features/start-book";
 
 const stageLabel: Record<Stage, string> = {
   describe: "Describing",
@@ -66,15 +66,14 @@ export function MyBooks() {
       <div className="flex flex-col items-start gap-4 rounded-lg border border-dashed border-strong p-10">
         <p className="font-brand text-xl font-bold tracking-tight">No books yet</p>
         <p className="text-base text-secondary">Your first one takes about five minutes.</p>
-        <Link
-          href="/new"
+        <NewBookLink
           className={cn(
             "inline-flex h-10 items-center gap-2 rounded-md bg-inverse px-4 font-medium text-on-inverse",
             focusRing,
           )}
         >
           <Plus aria-hidden className="size-4" /> Start your first book
-        </Link>
+        </NewBookLink>
       </div>
     );
   }

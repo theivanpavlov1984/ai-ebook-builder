@@ -83,7 +83,8 @@ export function ChapterEditor({
         hint="Leave an empty line between paragraphs. A numbered list under “Try this today:” shows as a box."
         className="font-display text-reader"
       />
-      <div className="flex items-center gap-3">
+      {/* Pinned to the bottom of the reading view: a long chapter on a laptop screen pushed these out of sight. */}
+      <div className="sticky bottom-0 z-10 -mx-2 flex items-center gap-3 border-t border-default bg-canvas/95 px-2 py-3 backdrop-blur-sm">
         <Button type="submit">Save changes</Button>
         <Button variant="secondary" onClick={onDone}>
           Cancel

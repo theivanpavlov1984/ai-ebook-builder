@@ -333,3 +333,14 @@ paywall we don't have. What none of the tools I tried show is the point of a lea
 on. Final now ends with that page in a browser frame: a sample reader types an email, gets the book, and a "New
 subscriber" note pops up for the author. It is a loop over a pure time-to-frame function, like the landing demos,
 labelled as an example, and it stays still with reduced motion.
+
+**After a design review: checked on a laptop.** A review of the app on a 16-inch laptop found what I had missed
+designing on a large monitor. Final had nine actions of equal weight, with the reader page – the point of the book –
+at the bottom; while editing a chapter, Save sat below the fold. The review was right that I should have seen it
+myself, so the fixes were checked at 1728 × 980. Final now has one job, sharing: the reader page leads, Copy share
+link is the only primary button, the PDF comes second, and Last page, the link details and the book plan are folded.
+The editor's Save bar is pinned to the bottom; it only stuck once the reading column stopped being its own scroll
+box, which Claude found by walking up the element tree instead of guessing. Two smaller bugs went with it. On
+Describe the cover was seeded by the topic, so its shapes jumped on every keystroke; an untitled cover is now seeded
+by the book's id. And "Start my book" sometimes left the browser on an empty /new after Back: it went through /new
+and redirected from there. It now opens the blank book in one step, and /new stays only for direct visits.

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Book } from "@/entities/book";
 import { CreationLayout } from "./CreationLayout";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/book/1/outline" }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/book/1/outline", useRouter: () => ({ push: vi.fn() }) }));
 
 const book: Book = {
   id: "1",

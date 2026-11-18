@@ -12,10 +12,14 @@ const moodLabel = {
   playful: "Playful",
 } as const;
 
-export function bookDesign(book: Pick<Book, "title" | "topic" | "mood" | "cover">) {
+/**
+ * The cover's palette and shapes are seeded by the title. Before there is one, the seed is the book's id, not
+ * the topic: seeding by the topic redrew the shapes on every keystroke on Describe.
+ */
+export function bookDesign(book: Pick<Book, "title" | "mood" | "cover"> & { id?: string }) {
   const photo = coverPhoto(book.cover);
   return getCoverDesign({
-    title: book.title || book.topic,
+    title: book.title || book.id || "",
     mood: book.mood,
     direction: book.cover.direction,
     variant: book.cover.variant,

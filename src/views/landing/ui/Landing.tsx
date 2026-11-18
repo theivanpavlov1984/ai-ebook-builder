@@ -7,7 +7,7 @@ import { CONTENT_ID, ChipGroup, SkipLink, Wordmark, focusRing } from "@/shared/u
 import { cn, useInView, usePlayClock, usePrefersReducedMotion } from "@/shared/lib";
 import { ContinueCard, type Mood } from "@/entities/book";
 import { LivePreview } from "@/widgets/live-preview";
-import { StartForm } from "@/features/start-book";
+import { NewBookLink, StartForm } from "@/features/start-book";
 import { heroExamples, heroFrame } from "../model/demos";
 import { Sweep } from "./demos";
 import { Reviews } from "./reviews";
@@ -73,15 +73,14 @@ export function Landing() {
           </Link>
         </nav>
         {/* Into the app: a new book opens on Describe. The prompt below stays the quick way in. */}
-        <Link
-          href="/new"
+        <NewBookLink
           className={cn(
             "inline-flex h-10 items-center rounded-full bg-inverse px-4 text-base font-medium text-on-inverse hover:opacity-90 lg:px-5",
             focusRing,
           )}
         >
           Start my book
-        </Link>
+        </NewBookLink>
       </header>
 
       <main id={CONTENT_ID} tabIndex={-1} className="outline-hidden">

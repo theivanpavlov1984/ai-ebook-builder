@@ -156,22 +156,26 @@ Global **undo** for every change.
 
 ### 6. Finalize
 
-- **How Primer planned your book:** who it's for, the voice, the shape (chapters, pages, reading time) and how it
-  ends – what the book was built from, so the result is explainable.
-- Preview of the cover, contents, chapter 1 and the last page, and **Flip through the PDF**: the exact file
-  Download saves, in the browser's own PDF viewer, page by page (loading, failure + retry, and a new-tab link
-  for a browser without a built-in viewer).
-- **The page your readers see:** below the book, the shared page in a browser frame, with an example reader typing an
-  email, getting the book and a "New subscriber" note popping up for the author. It shows what the book is for – a
-  list that grows – before it is shared; the frame opens the real page. It rests on the empty form off screen and
-  with reduced motion, and says the sign-up is an example.
-- A short check before sharing: author name set · a note that AI can make mistakes, with a link to read the chapters
-  in Review – a reminder, not a blocker (an earlier checkbox gated nothing, so it was a note pretending to be a check).
-- **Last page**, next to its preview: the call to action, an optional link and an optional brand. The link is
-  clickable in the PDF and on the shared page; an address that isn't one ("mysite") gets a plain hint, not a block.
-- **Download PDF** and **Share link** (copy). The book stays editable – finalize is not a dead end.
-- With no server, the whole book rides inside the share link, so it is thousands of characters long. The screen says
-  so next to Copy, with the length, and suggests sending the PDF where an app cuts long links.
+One job: share the book. Everything the author needs to do that sits in a panel that stays in view on a laptop
+screen; the rest is folded.
+
+- **The page your readers see** leads: the shared page in a browser frame, with an example reader typing an email,
+  getting the book and a "New subscriber" note popping up for the author. It shows what the book is for – a list
+  that grows – before it is shared; the frame opens the real page. It rests on the empty form off screen and with
+  reduced motion, and says the sign-up is an example.
+- **Share your book** is the one primary action: **Copy share link**, with "Open the landing page" under it.
+- **Download PDF** comes second, with **Flip through the PDF**: the exact file Download saves, in the browser's own
+  PDF viewer, page by page (loading, failure + retry, and a new-tab link for a browser without a built-in viewer).
+- A short check before sharing: author name set · a note that AI can get facts wrong, with a link to read the
+  chapters in Review – a reminder, not a blocker (an earlier checkbox gated nothing, so it was a note pretending to
+  be a check).
+- Folded: **Last page** (the call to action, an optional link and an optional brand; the link is clickable in the
+  PDF and on the shared page, and an address that isn't one gets a plain hint, not a block) and **Link details**
+  (the link itself and its length: with no server the whole book rides inside it, so it suggests sending the PDF
+  where an app cuts long links).
+- **Inside your book:** the cover, contents, chapter 1 and the last page, and, folded under them, **How Primer
+  planned your book** – who it's for, the voice, the shape and how it ends, so the result is explainable.
+- The book stays editable – finalize is not a dead end.
 - In the PDF the contents link to their chapters and each chapter is a bookmark; every chapter's closing
   "Try this today" list is a box, as it is on screen.
 

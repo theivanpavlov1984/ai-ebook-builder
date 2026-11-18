@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/shared/lib";
 import { CONTENT_ID, focusRing, OfflineBanner, SkipLink, Wordmark } from "@/shared/ui";
 import { DemoControls } from "@/features/simulate-failures";
+import { NewBookLink } from "@/features/start-book";
 
 const nav = [
   { key: "new", href: "/new", label: "New book", Icon: Plus },
@@ -22,8 +23,9 @@ export function AppShell({ active, children }: { active?: "new" | "books"; child
         <nav aria-label="Main" className="flex gap-1 lg:flex-col">
           {nav.map(({ key, href, label, Icon }) => {
             const on = key === active;
+            const Item = key === "new" ? NewBookLink : Link;
             return (
-              <Link
+              <Item
                 key={key}
                 href={href}
                 aria-current={on ? "page" : undefined}
@@ -38,7 +40,7 @@ export function AppShell({ active, children }: { active?: "new" | "books"; child
               >
                 <Icon aria-hidden className="hidden size-4 sm:block" />
                 {label}
-              </Link>
+              </Item>
             );
           })}
         </nav>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, CircleAlert, Download, ExternalLink, Info, Link2 } from "lucide-react";
+import { Check, ChevronDown, CircleAlert, Download, ExternalLink, Info, Link2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { bookDesign, Cover, ctaLink, ctaText, estimate, useBooks, type Book, useBook, shareUrl } from "@/entities/book";
@@ -80,18 +80,31 @@ function Final({ id, download, build }: { id: string; download: Download; build:
   const { pages, minutes } = estimate(book);
   const cta = ctaText(book);
 
+  const details = "group border-t border-default pt-4 [&_summary::-webkit-details-marker]:hidden";
+  const summary = cn(
+    "flex cursor-pointer list-none items-center justify-between gap-3 rounded-sm text-sm font-semibold",
+    focusRing,
+  );
+  const chevron = (
+    <ChevronDown aria-hidden className="size-4 shrink-0 text-secondary transition-transform group-open:rotate-180" />
+  );
+
+  // One job on this screen: share the book. The reader page leads, one primary action; the PDF comes second,
+  // and settings the author rarely needs here (last page, link details, how the book was planned) are folded.
   return (
     <AppShell active="new">
-      <div className="mx-auto flex max-w-[1080px] flex-col gap-6 px-5 py-5 lg:gap-10 lg:px-10 lg:py-8">
+      <div className="mx-auto flex max-w-[1080px] flex-col gap-6 px-5 py-5 lg:gap-8 lg:px-10 lg:py-8">
         <BookStepper book={book} stage="final" />
-        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
+        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-12">
           <section aria-label="Preview">
             <h1 className="font-brand text-2xl font-bold tracking-tight">Your book is ready to share</h1>
             <p className="mt-2 text-md text-secondary">
               {book.chapters.length} chapters · ~{pages} pages · {minutes}-minute read
             </p>
-            <BookPlan book={book} />
-            <div className="mt-8 flex flex-wrap gap-6">
+            <ReaderPagePreview book={book} link={link} />
+
+            <h2 className="mt-10 font-brand text-xl font-bold tracking-tight">Inside your book</h2>
+            <div className="mt-4 flex flex-wrap gap-6">
               <figure className="flex flex-col gap-2">
                 <Cover
                   design={bookDesign(book)}
@@ -137,49 +150,40 @@ function Final({ id, download, build }: { id: string; download: Download; build:
                 </div>
               </PagePreview>
             </div>
-            <ReaderPagePreview book={book} link={link} />
+            <BookPlan book={book} />
           </section>
 
-          <aside aria-label="Finish" className="flex flex-col gap-6 rounded-lg border border-default bg-surface p-6">
-            <div>
-              <p className="text-sm font-semibold">Before you share</p>
-              <ul className="mt-3 flex flex-col gap-2 text-sm">
-                <li className="flex items-start gap-2">
-                  {book.author.trim() ? (
-                    <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" />
-                  ) : (
-                    <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-warning" />
+          {/* Sticky, so the actions stay in view on a laptop screen while the previews scroll. */}
+          <aside
+            aria-label="Finish"
+            className="flex flex-col gap-5 rounded-lg border border-default bg-surface p-6 lg:sticky lg:top-6"
+          >
+            <div className="flex flex-col gap-3">
+              <div>
+                <p className="text-md font-semibold">Share your book</p>
+                <p className="mt-1 text-sm text-secondary">Readers leave their email and get the book.</p>
+              </div>
+              <Button onClick={() => void onCopy()} icon={<Link2 aria-hidden className="size-4" />}>
+                Copy share link
+              </Button>
+              {link && (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={cn(
+                    "inline-flex items-center gap-1.5 self-start rounded-sm text-sm text-accent-strong",
+                    focusRing,
                   )}
-                  <span>
-                    {book.author.trim() ? `Author: ${book.author.trim()}` : "No author name on the cover yet."}{" "}
-                    <Link
-                      href={`/book/${id}/review`}
-                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
-                    >
-                      {book.author.trim() ? "change" : "Add yours"}
-                    </Link>
-                  </span>
-                </li>
-                {/* A note, not a checkbox: ticking a box that gates nothing would only pretend to be a check. */}
-                <li className="flex items-start gap-2">
-                  <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-secondary" />
-                  <span>
-                    AI can make mistakes, especially with facts and numbers – skim the chapters before you share.{" "}
-                    <Link
-                      href={`/book/${id}/review`}
-                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
-                    >
-                      Read them in Review
-                    </Link>
-                  </span>
-                </li>
-              </ul>
+                >
+                  Open the landing page <ExternalLink aria-hidden className="size-3.5" />
+                </a>
+              )}
             </div>
 
-            <LastPage book={book} />
-
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 border-t border-default pt-5">
               <Button
+                variant="secondary"
                 onClick={() => void onDownload()}
                 loading={busy}
                 icon={<Download aria-hidden className="size-4" />}
@@ -201,46 +205,80 @@ function Final({ id, download, build }: { id: string; download: Download; build:
               />
             </div>
 
-            <div className="flex flex-col gap-2 border-t border-default pt-5">
-              <Button variant="secondary" onClick={() => void onCopy()} icon={<Link2 aria-hidden className="size-4" />}>
-                Copy share link
-              </Button>
-              <p className="text-xs text-secondary">
-                The link opens a landing page for your book – readers leave their email to get it.
-              </p>
-              {/* No server in the prototype: the whole book travels inside the link, so say what that costs. */}
-              <p className="text-xs text-secondary">
-                Prototype limit: with no server, the whole book rides inside the link (
-                {link.length.toLocaleString("en-US")} characters). Some email and social apps cut links this long – if
-                one does, send the PDF instead.
-              </p>
-              <label className="sr-only" htmlFor="share-link">
-                Share link
-              </label>
-              <input
-                id="share-link"
-                readOnly
-                value={link}
-                onFocus={(e) => e.currentTarget.select()}
-                className={cn(
-                  "h-9 w-full truncate rounded-md border border-default bg-canvas px-3 text-xs text-secondary",
-                  focusRing,
-                )}
-              />
-              {link && (
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noreferrer"
+            <div className="border-t border-default pt-5">
+              <p className="text-sm font-semibold">Before you share</p>
+              <ul className="mt-2 flex flex-col gap-2 text-sm">
+                <li className="flex items-start gap-2">
+                  {book.author.trim() ? (
+                    <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" />
+                  ) : (
+                    <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-warning" />
+                  )}
+                  <span>
+                    {book.author.trim() ? `Author: ${book.author.trim()}` : "No author name yet."}{" "}
+                    <Link
+                      href={`/book/${id}/review`}
+                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
+                    >
+                      {book.author.trim() ? "change" : "Add yours"}
+                    </Link>
+                  </span>
+                </li>
+                {/* A note, not a checkbox: ticking a box that gates nothing would only pretend to be a check. */}
+                <li className="flex items-start gap-2">
+                  <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-secondary" />
+                  <span>
+                    AI can get facts wrong.{" "}
+                    <Link
+                      href={`/book/${id}/review`}
+                      className={cn("rounded-sm text-accent-strong underline underline-offset-2", focusRing)}
+                    >
+                      Read them in Review
+                    </Link>
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <details className={details}>
+              <summary className={summary}>
+                <span className="min-w-0">
+                  Last page
+                  <span className="block truncate text-xs font-normal text-secondary">
+                    {book.cta.trim() || "A thank-you note"}
+                  </span>
+                </span>
+                {chevron}
+              </summary>
+              <LastPage book={book} />
+            </details>
+
+            <details className={details}>
+              <summary className={summary}>
+                Link details
+                {chevron}
+              </summary>
+              <div className="mt-3 flex flex-col gap-2">
+                <label className="sr-only" htmlFor="share-link">
+                  Share link
+                </label>
+                <input
+                  id="share-link"
+                  readOnly
+                  value={link}
+                  onFocus={(e) => e.currentTarget.select()}
                   className={cn(
-                    "inline-flex items-center gap-1.5 self-start rounded-sm text-sm text-accent-strong",
+                    "h-9 w-full truncate rounded-md border border-default bg-canvas px-3 text-xs text-secondary",
                     focusRing,
                   )}
-                >
-                  Open the landing page <ExternalLink aria-hidden className="size-3.5" />
-                </a>
-              )}
-            </div>
+                />
+                {/* No server in the prototype: the whole book travels inside the link, so say what that costs. */}
+                <p className="text-xs text-secondary">
+                  Prototype limit: with no server, the whole book rides inside the link (
+                  {link.length.toLocaleString("en-US")} characters). If an app cuts it, send the PDF instead.
+                </p>
+              </div>
+            </details>
 
             <Link
               href={`/book/${id}/review`}
@@ -267,13 +305,8 @@ function LastPage({ book }: { book: Book }) {
   const badLink = linkTouched && url.trim() !== "" && !link;
 
   return (
-    <div className="flex flex-col gap-4 border-t border-default pt-5">
-      <div>
-        <p className="text-sm font-semibold">Last page</p>
-        <p className="mt-1 text-sm text-secondary">
-          Where readers go after the book. The link is clickable in the PDF.
-        </p>
-      </div>
+    <div className="mt-3 flex flex-col gap-4">
+      <p className="text-sm text-secondary">Where readers go after the book. The link is clickable in the PDF.</p>
       <Input
         label="What should readers do next?"
         placeholder="e.g. Book a free 20-minute call"
