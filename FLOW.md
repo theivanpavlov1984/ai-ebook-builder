@@ -104,7 +104,9 @@ Three short questions on one screen:
 - AI drafts 6–8 chapters, each with a one-line summary. While it drafts, the screen echoes the user's request
   ("You asked for …") and ticks off the stages: reading the topic, choosing chapters for this audience, putting
   them in order. The chapters then arrive one at a time.
-- Per chapter: rename, remove, reorder (drag), "suggest another idea". Plus "Add chapter".
+- Per chapter: rename, remove, reorder (drag by the handle; the numbers follow the cards while dragging, and the
+  moved card is briefly highlighted where it lands; the arrow keys on the handle do the same), "suggest another
+  idea". Plus "Add chapter".
 - Shows the expected result: "6 chapters · ~16 pages · 20-minute read · ready in about a minute".
   If the outline grows past ~20 pages, a gentle nudge: lead magnets work best short.
 - One button: **Write my book**, in a bar that stays at the bottom of the screen with the book's size, so a long

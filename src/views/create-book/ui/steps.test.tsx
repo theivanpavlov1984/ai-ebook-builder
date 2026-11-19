@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -230,21 +230,28 @@ describe("OutlineStep", () => {
     expect(screen.getByText(/a book needs at least 3 chapters/i)).toBeInTheDocument();
   });
 
-  it("reorders with the move buttons", async () => {
+  it("reorders by dragging a chapter's handle", () => {
     const id = newBook({ title: "Bread", chapters: chapters(3) });
     wrap(<OutlineStep id={id} />);
-    await userEvent.click(screen.getByRole("button", { name: "Move chapter 1 down" }));
-    expect(st().books[id].chapters.map((c) => c.id)).toEqual(["c2", "c1", "c3"]);
+    const handle = screen.getByRole("button", { name: "Reorder chapter 1" });
+    fireEvent.pointerDown(handle, { button: 0, clientY: 0, pointerId: 1 });
+    fireEvent.pointerMove(handle, { clientY: 400, pointerId: 1 });
+    fireEvent.pointerUp(handle, { clientY: 400, pointerId: 1 });
+    expect(st().books[id].chapters.map((c) => c.id)).toEqual(["c2", "c3", "c1"]);
+    expect(screen.getByText("Moved “Chapter 1” to position 3 of 3.")).toBeInTheDocument();
   });
 
-  it("keeps keyboard focus with a moved chapter and announces where it went", async () => {
+  it("reorders with the arrow keys on the handle, keeping focus with the moved chapter", async () => {
     const id = newBook({ title: "Bread", chapters: chapters(3) });
     wrap(<OutlineStep id={id} />);
-    screen.getByRole("button", { name: "Move chapter 2 down" }).focus();
-    await userEvent.keyboard("{Enter}");
-    // Now last: its "down" is disabled, so focus lands on its "up" instead of getting lost.
-    await waitFor(() => expect(screen.getByRole("button", { name: "Move chapter 3 up" })).toHaveFocus());
+    screen.getByRole("button", { name: "Reorder chapter 2" }).focus();
+    await userEvent.keyboard("{ArrowDown}");
+    expect(st().books[id].chapters.map((c) => c.id)).toEqual(["c1", "c3", "c2"]);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Reorder chapter 3" })).toHaveFocus());
     expect(screen.getByText("Moved “Chapter 2” to position 3 of 3.")).toBeInTheDocument();
+    // Already last: another press does nothing.
+    await userEvent.keyboard("{ArrowDown}");
+    expect(st().books[id].chapters.map((c) => c.id)).toEqual(["c1", "c3", "c2"]);
   });
 
   it("puts focus on the next chapter after a removal, and in the new title after adding", async () => {

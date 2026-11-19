@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowDown, ArrowUp, Info, Plus, Sparkles, Trash2 } from "lucide-react";
+import { GripVertical, Info, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { CreationLayout, NotFound } from "@/widgets/layout";
 import { Button, focusRing, useToast, StepHeader } from "@/shared/ui";
 import {
@@ -81,19 +81,86 @@ function OutlineEditor({ id }: { id: string }) {
     });
   }
 
-  function move(i: number, delta: number) {
+  /** Moves a chapter and briefly highlights it where it landed – the numbers stay put, the card is what moves. */
+  function move(from: number, to: number, { focus = false } = {}) {
+    if (to < 0 || to >= chapters.length || to === from) return;
     const next = [...chapters];
-    const [c] = next.splice(i, 1);
-    const to = i + delta;
+    const [c] = next.splice(from, 1);
     next.splice(to, 0, c);
     setChapters(next);
     setAnnouncement(`Moved “${c.title}” to position ${to + 1} of ${next.length}.`);
-    const n = to + 1;
-    focusAfterRender(
-      delta > 0
-        ? [`Move chapter ${n} down`, `Move chapter ${n} up`]
-        : [`Move chapter ${n} up`, `Move chapter ${n} down`],
-    );
+    setMoved(c.id);
+    if (focus) focusAfterRender([`Reorder chapter ${to + 1}`]);
+  }
+
+  // Drag and drop by the handle. The dragged card follows the pointer, the others slide aside to show where it
+  // will land, and the order is saved on release. The handle also takes the arrow keys, for keyboard users.
+  const items = useRef<(HTMLLIElement | null)[]>([]);
+  const [drag, setDrag] = useState<{ from: number; to: number; startY: number; dy: number; shift: number }>();
+  const [moved, setMoved] = useState<string>();
+  const mids = useRef<number[]>([]);
+
+  useEffect(() => {
+    if (!moved) return;
+    const t = setTimeout(() => setMoved(undefined), 900);
+    return () => clearTimeout(t);
+  }, [moved]);
+
+  function onGrab(e: PointerEvent<HTMLButtonElement>, i: number) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    // Keeps the moves coming when the pointer leaves the handle. Optional: some pointers can't be captured.
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
+    const rects = items.current.map((el) => el?.getBoundingClientRect());
+    mids.current = rects.map((r) => (r ? r.top + r.height / 2 : 0));
+    const own = rects[i];
+    const gap = rects[1] && rects[0] ? rects[1].top - rects[0].bottom : 8;
+    setDrag({ from: i, to: i, startY: e.clientY, dy: 0, shift: (own?.height ?? 0) + gap });
+  }
+
+  function onDrag(e: PointerEvent<HTMLButtonElement>) {
+    if (!drag) return;
+    const dy = e.clientY - drag.startY;
+    const center = mids.current[drag.from] + dy;
+    let to = drag.from;
+    mids.current.forEach((mid, j) => {
+      if (j > drag.from && center > mid) to = j;
+      if (j < drag.from && center < mid) to = Math.min(to, j);
+    });
+    setDrag({ ...drag, dy, to });
+  }
+
+  function onDrop() {
+    if (!drag) return;
+    setDrag(undefined);
+    move(drag.from, drag.to);
+  }
+
+  function onHandleKey(e: KeyboardEvent<HTMLButtonElement>, i: number) {
+    const to = e.key === "ArrowUp" ? i - 1 : e.key === "ArrowDown" ? i + 1 : undefined;
+    if (to === undefined) return;
+    e.preventDefault();
+    move(i, to, { focus: true });
+  }
+
+  /** The number a card will have if the drag ends now – so the numbers follow the cards while dragging. */
+  function numberAt(i: number): number {
+    if (!drag) return i + 1;
+    if (i === drag.from) return drag.to + 1;
+    if (drag.from < drag.to && i > drag.from && i <= drag.to) return i;
+    if (drag.to < drag.from && i >= drag.to && i < drag.from) return i + 2;
+    return i + 1;
+  }
+
+  /** Where a card sits while another one is dragged: shifted by one slot if the dragged card passes it. */
+  function offset(i: number): number {
+    if (!drag) return 0;
+    if (i === drag.from) return drag.dy;
+    if (drag.from < drag.to && i > drag.from && i <= drag.to) return -drag.shift;
+    if (drag.to < drag.from && i >= drag.to && i < drag.from) return drag.shift;
+    return 0;
   }
 
   function remove(i: number) {
@@ -157,7 +224,7 @@ function OutlineEditor({ id }: { id: string }) {
     <CreationLayout book={book} stage="outline">
       <StepHeader
         title="Your outline"
-        intro="This is the cheapest moment to steer the book. Rename, reorder or swap chapters – or just continue."
+        intro="This is the cheapest moment to steer the book. Rename, drag to reorder or swap chapters – or just continue."
         back={{ href: `/book/${id}/title`, label: "Back to title" }}
       />
 
@@ -193,17 +260,47 @@ function OutlineEditor({ id }: { id: string }) {
 
       {status === "ready" && (
         <div className="flex flex-col gap-6">
-          <ol className="flex flex-col gap-2">
+          <p id="reorder-hint" className="sr-only">
+            Drag to reorder, or press the up and down arrow keys.
+          </p>
+          <ol className={cn("flex flex-col gap-2", drag && "select-none")}>
             {chapters.map((c, i) => (
               <li
                 key={c.id}
+                ref={(el) => {
+                  items.current[i] = el;
+                }}
                 className={cn(
-                  "flex items-start gap-3 rounded-md border border-default bg-surface p-3",
+                  "relative flex items-start gap-2 rounded-md border border-default bg-surface p-3 transition-[box-shadow,border-color] duration-300",
                   fresh && "motion-safe:animate-[fade-in_350ms_var(--primer-ease)_both]",
+                  // Only while dragging, so the cards don't animate back from their old slots on release.
+                  drag && i !== drag.from && "motion-safe:transition-transform motion-safe:duration-150",
+                  drag?.from === i && "z-10 border-strong shadow-book",
+                  moved === c.id && "border-accent",
                 )}
-                style={fresh ? { animationDelay: `${i * 110}ms` } : undefined}
+                style={{
+                  ...(fresh ? { animationDelay: `${i * 110}ms` } : {}),
+                  ...(drag ? { transform: `translateY(${offset(i)}px)` } : {}),
+                }}
               >
-                <span className="mt-2 w-6 shrink-0 text-center font-display text-lg text-secondary">{i + 1}</span>
+                <button
+                  type="button"
+                  aria-label={`Reorder chapter ${i + 1}`}
+                  aria-describedby="reorder-hint"
+                  title="Drag to reorder"
+                  onPointerDown={(e) => onGrab(e, i)}
+                  onPointerMove={onDrag}
+                  onPointerUp={onDrop}
+                  onPointerCancel={() => setDrag(undefined)}
+                  onKeyDown={(e) => onHandleKey(e, i)}
+                  className={cn(
+                    "mt-1.5 shrink-0 cursor-grab touch-none rounded-sm p-1 text-secondary hover:bg-subtle hover:text-primary active:cursor-grabbing",
+                    focusRing,
+                  )}
+                >
+                  <GripVertical aria-hidden className="size-4" />
+                </button>
+                <span className="mt-2 w-6 shrink-0 text-center font-display text-lg text-secondary">{numberAt(i)}</span>
                 <div className="min-w-0 flex-1">
                   <input
                     aria-label={`Chapter ${i + 1} title`}
@@ -219,16 +316,6 @@ function OutlineEditor({ id }: { id: string }) {
                   <p className="px-1 text-sm text-secondary">{c.summary}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-0.5">
-                  <IconButton label={`Move chapter ${i + 1} up`} disabled={i === 0} onClick={() => move(i, -1)}>
-                    <ArrowUp aria-hidden className="size-4" />
-                  </IconButton>
-                  <IconButton
-                    label={`Move chapter ${i + 1} down`}
-                    disabled={i === chapters.length - 1}
-                    onClick={() => move(i, 1)}
-                  >
-                    <ArrowDown aria-hidden className="size-4" />
-                  </IconButton>
                   <IconButton label={`Suggest another idea for chapter ${i + 1}`} onClick={() => suggest(i)}>
                     <Sparkles aria-hidden className="size-4" />
                   </IconButton>
